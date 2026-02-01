@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="NoticeDAO">
+
+	<!-- 공지 "유효기간" 판정 (오늘 기준) -->
+	<sql id="noticePeriodCondition">
+		(
+			(NOTICE_BGNDE IS NULL OR NOTICE_BGNDE &lt;= TO_CHAR(SYSDATE, 'YYYYMMDD'))
+			AND
+			(NOTICE_ENDDE IS NULL OR NOTICE_ENDDE &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD'))
+		)
+	</sql>
+
+	<!-- 검색 조건 -->
+	<sql id="searchCondition">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<choose>
+				<!-- 0: 제목 -->
+				<when test="searchCondition == '0'">
+					AND NTT_SJ LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<!-- 1: 내용 -->
+				<when test="searchCondition == '1'">
+					AND NTT_CN LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<!-- 2: 작성자 -->
+				<when test="searchCondition == '2'">
+					AND FRST_REGISTER_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<!-- 기본: 제목 -->
+				<otherwise>
+					AND NTT_SJ LIKE '%' || #{searchKeyword} || '%'
+				</otherwise>
+			</choose>
+		</if>
+	</sql>
+
+	<!-- 기본 필터 (삭제/사용) + 게시판 -->
+	<sql id="baseFilter">
+		WHERE 1=1
+		AND BBS_ID = #{bbsId}
+		AND DEL_AT = 'N'
+		AND USE_AT = 'Y'
+	</sql>
+
+
+	<!-- 공지 상단 목록 NOTICE_AT='Y' 이고 기간이 유효한 것만 -->
+	<select id="selectNoticePinnedList"
+		parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
+		resultType="egovframework.let.bbs.ntt.vo.NoticeVO">
+
+		SELECT
+			NTT_ID AS nttId,
+			BBS_ID AS bbsId,
+			NTT_SJ AS nttSj,
+			TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS frstRegistPnttm,
+			FRST_REGISTER_ID AS frstRegisterId,
+			INQIRE_CO AS inqireCo,
+			NOTICE_AT AS noticeAt,
+			NOTICE_BGNDE AS noticeBgnde,
+			NOTICE_ENDDE AS noticeEndde,
+			ATCH_FILE_ID AS atchFileId
+		FROM COMTNBBS
+		<include refid="baseFilter" />
+			AND NOTICE_AT = 'Y'
+			AND
+		<include refid="noticePeriodCondition" />
+		ORDER BY FRST_REGIST_PNTTM DESC, NTT_ID DESC
+	</select>
+
+
+	<!-- 일반 목록(페이징) - 공지(유효) 제외 (중복 방지) 
+		- ROWNUM 페이징 
+		- eGov PaginationInfo 기준: firstIndex: 0-based recordCountPerPage: 페이지 사이즈 
+		- startRow = firstIndex + 1 
+		- endRow = firstIndex + recordCountPerPage -->
+	<select id="selectNoticeList"
+		parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
+		resultType="egovframework.let.bbs.ntt.vo.NoticeVO">
+
+		SELECT *
+		FROM (
+			SELECT
+				ROWNUM AS rnum,
+				A.*
+				FROM (
+				SELECT
+				NTT_ID AS nttId,
+				BBS_ID AS bbsId,
+				NTT_SJ AS nttSj,
+				TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS frstRegistPnttm,
+				FRST_REGISTER_ID AS frstRegisterId,
+				INQIRE_CO AS inqireCo,
+				NOTICE_AT AS noticeAt,
+				NOTICE_BGNDE AS noticeBgnde,
+				NOTICE_ENDDE AS noticeEndde,
+				ATCH_FILE_ID AS atchFileId
+			FROM COMTNBBS
+			<include refid="baseFilter" />
+				<!-- "유효 공지"는 일반 목록에서 제외 -->
+				AND NOT (
+				NOTICE_AT = 'Y'
+				AND
+				<include refid="noticePeriodCondition" />
+				)
+				<include refid="searchCondition" />
+			ORDER BY FRST_REGIST_PNTTM DESC, NTT_ID DESC
+			) A
+			WHERE ROWNUM &lt;= (#{firstIndex} + #{recordCountPerPage})
+		)
+		WHERE rnum &gt;= (#{firstIndex} + 1)
+
+	</select>
+
+
+	<!-- 일반 목록 총건수(페이징용) 
+		- 공지(유효) 제외 
+		- 검색조건 동일 적용 -->
+	<select id="selectNoticeListTotCnt"
+		parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
+		resultType="int">
+
+		SELECT COUNT(1)
+		FROM COMTNBBS
+		<include refid="baseFilter" />
+		AND NOT (
+		NOTICE_AT = 'Y'
+		AND
+		<include refid="noticePeriodCondition" />
+		)
+		<include refid="searchCondition" />
+	</select>
+	
+	<insert id="insertNotice" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO">
+
+  		INSERT INTO COMTNBBS (
+		    NTT_ID,
+		    BBS_ID,
+		    NTT_SJ,
+		    NTT_CN,
+		    INQIRE_CO,
+		    NOTICE_AT,
+		    NOTICE_BGNDE,
+		    NOTICE_ENDDE,
+		    ATCH_FILE_ID,
+		    USE_AT,
+		    DEL_AT,
+		    FRST_REGISTER_ID,
+		    FRST_REGIST_PNTTM,
+		    LAST_UPDUSR_ID,
+		    LAST_UPDT_PNTTM
+		  ) VALUES (
+		    #{nttId},
+		    #{bbsId},
+		    #{nttSj},
+		    #{nttCn},
+		    0,
+		    #{noticeAt},
+		    #{noticeBgnde},
+		    #{noticeEndde},
+		    NULL,
+		    #{useAt},
+		    #{delAt},
+		    #{frstRegisterId},
+		    SYSDATE,
+		    #{frstRegisterId},
+		    SYSDATE
+		  )
+	</insert>
+</mapper>
