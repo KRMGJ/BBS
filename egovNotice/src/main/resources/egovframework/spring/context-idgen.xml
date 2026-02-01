@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="bbsMasterIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="BBSMSTR_" />
+		<property name="fillChar" value="0" />
+		<property name="cipers" value="12" />
+	</bean>
+
+	<bean id="bbsMasterIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="bbsMasterIdStrategy" />
+		<property name="table" value="COMTECOPSEQ" />
+		<property name="tableName" value="COMTCBBSMASTER" />
+		<property name="blockSize" value="1" />
+	</bean>
+
+	<bean id="noticeNttIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="NTT_" />
+		<property name="fillChar" value="0" />
+		<property name="cipers" value="12" />
+	</bean>
+
+	<bean id="noticeNttIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="noticeNttIdStrategy" />
+		<property name="table" value="COMTECOPSEQ" />
+		<property name="tableName" value="COMTNBBS" />
+		<property name="blockSize" value="1" />
+	</bean>
+</beans>

@@ -29,4 +29,13 @@ public interface NoticeService {
 	 * @throws Exception
 	 */
 	List<NoticeVO> selectNoticePinnedList(NoticeVO searchVO) throws Exception;
+
+	/**
+	 * 공지사항을 등록한다.
+	 * 
+	 * @param vo - 등록할 정보가 담긴 VO
+	 * @return 등록된 게시물ID
+	 * @throws Exception
+	 */
+	String insertNotice(NoticeVO vo) throws Exception;
 }

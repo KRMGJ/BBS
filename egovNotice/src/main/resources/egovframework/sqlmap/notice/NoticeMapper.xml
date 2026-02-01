@@ -130,5 +130,41 @@
 		)
 		<include refid="searchCondition" />
 	</select>
+	
+	<insert id="insertNotice" parameterType="egovframework.notice.notice.service.NoticeVO">
 
+  		INSERT INTO COMTNBBS (
+		    NTT_ID,
+		    BBS_ID,
+		    NTT_SJ,
+		    NTT_CN,
+		    INQIRE_CO,
+		    NOTICE_AT,
+		    NOTICE_BGNDE,
+		    NOTICE_ENDDE,
+		    ATCH_FILE_ID,
+		    USE_AT,
+		    DEL_AT,
+		    FRST_REGISTER_ID,
+		    FRST_REGIST_PNTTM,
+		    LAST_UPDUSR_ID,
+		    LAST_UPDT_PNTTM
+		  ) VALUES (
+		    #{nttId},
+		    #{bbsId},
+		    #{nttSj},
+		    #{nttCn},
+		    0,
+		    #{noticeAt},
+		    #{noticeBgnde},
+		    #{noticeEndde},
+		    NULL,
+		    #{useAt},
+		    #{delAt},
+		    #{frstRegisterId},
+		    SYSDATE,
+		    #{frstRegisterId},
+		    SYSDATE
+		  )
+	</insert>
 </mapper>

@@ -28,4 +28,12 @@ public interface NoticeMapper {
 	 * @return 공지사항 상단고정 목록
 	 */
 	List<NoticeVO> selectNoticePinnedList(NoticeVO searchVO);
+
+	/**
+	 * 공지사항을 등록한다.
+	 * 
+	 * @param vo - 등록할 정보가 담긴 VO
+	 * @return nttId - 등록된 게시물ID
+	 */
+	int insertNotice(NoticeVO vo);
 }
