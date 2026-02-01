@@ -89,4 +89,26 @@ public class BbsMasterServiceImpl implements BbsMasterService {
 		return bbsMasterDAO.selectBbsMasterDetail(vo);
 	}
 
+	@Override
+	public int updateBbsMaster(BbsMasterVO vo) throws Exception {
+		// 최소 방어
+		if (!StringUtils.hasText(vo.getFileAtchPosblAt())) {
+			vo.setFileAtchPosblAt("Y");
+		}
+		if (!StringUtils.hasText(vo.getUseAt())) {
+			vo.setUseAt("Y");
+		}
+		if (vo.getAtchPosblFileNumber() < 0) {
+			vo.setAtchPosblFileNumber(0);
+		}
+		if (vo.getAtchPosblFileSize() < 0) {
+			vo.setAtchPosblFileSize(0);
+		}
+
+		String loginId = getLoginIdOrNull();
+		vo.setLastUpdusrId(loginId);
+
+		return bbsMasterDAO.updateBbsMaster(vo);
+	}
+
 }

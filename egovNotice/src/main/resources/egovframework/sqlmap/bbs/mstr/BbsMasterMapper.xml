@@ -86,6 +86,7 @@
 		ORDER BY rn
 	</select>
 	
+	<!-- 등록 -->
 	<insert id="insertBbsMaster" parameterType="egovframework.let.bbs.mstr.vo.BbsMasterVO">
 	  INSERT INTO COMTCBBSMASTER (
 	  	BBS_ID,
@@ -121,20 +122,36 @@
 	        parameterType="egovframework.let.bbs.mstr.vo.BbsMasterVO"
 	        resultType="egovframework.let.bbs.mstr.vo.BbsMasterVO">
 	  SELECT
-	    BBS_ID                 AS bbsId,
-	    BBS_NM                 AS bbsNm,
-	    BBS_INTRCN             AS bbsIntrcn,
-	    BBS_TY_CODE            AS bbsTyCode,
-	    FILE_ATCH_POSBL_AT     AS fileAtchPosblAt,
+	    BBS_ID AS bbsId,
+	    BBS_NM AS bbsNm,
+	    BBS_INTRCN AS bbsIntrcn,
+	    BBS_TY_CODE AS bbsTyCode,
+	    FILE_ATCH_POSBL_AT AS fileAtchPosblAt,
 	    ATCH_POSBL_FILE_NUMBER AS atchPosblFileNumber,
-	    ATCH_POSBL_FILE_SIZE   AS atchPosblFileSize,
-	    USE_AT                 AS useAt,
-	    FRST_REGISTER_ID       AS frstRegisterId,
-	    FRST_REGIST_PNTTM      AS frstRegistPnttm,
-	    LAST_UPDUSR_ID         AS lastUpdusrId,
-	    LAST_UPDT_PNTTM        AS lastUpdtPnttm
+	    ATCH_POSBL_FILE_SIZE AS atchPosblFileSize,
+	    USE_AT AS useAt,
+	    FRST_REGISTER_ID AS frstRegisterId,
+	    FRST_REGIST_PNTTM AS frstRegistPnttm,
+	    LAST_UPDUSR_ID AS lastUpdusrId,
+	    LAST_UPDT_PNTTM AS lastUpdtPnttm
 	  FROM COMTCBBSMASTER
 	  WHERE BBS_ID = #{bbsId}
 	</select>
+	
+	<!-- 수정 -->
+	<update id="updateBbsMaster" parameterType="egovframework.let.bbs.mstr.vo.BbsMasterVO">
+	  UPDATE COMTCBBSMASTER
+	     SET
+	       BBS_NM = #{bbsNm},
+	       BBS_INTRCN = #{bbsIntrcn},
+	       BBS_TY_CODE = #{bbsTyCode},
+	       FILE_ATCH_POSBL_AT = #{fileAtchPosblAt},
+	       ATCH_POSBL_FILE_NUMBER = #{atchPosblFileNumber},
+	       ATCH_POSBL_FILE_SIZE = #{atchPosblFileSize},
+	       USE_AT = #{useAt},
+	       LAST_UPDUSR_ID = #{lastUpdusrId},
+	       LAST_UPDT_PNTTM = SYSDATE
+	   WHERE BBS_ID = #{bbsId}
+	</update>
 
 </mapper>

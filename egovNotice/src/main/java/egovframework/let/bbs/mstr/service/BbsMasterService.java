@@ -41,4 +41,13 @@ public interface BbsMasterService {
 	 * @throws Exception
 	 */
 	BbsMasterVO selectBbsMasterDetail(BbsMasterVO vo) throws Exception;
+
+	/**
+	 * 게시판 마스터 정보를 수정한다.
+	 * 
+	 * @param bbsMasterVO - 수정할 정보가 담긴 VO
+	 * @return int - 수정 결과
+	 * @throws Exception
+	 */
+	int updateBbsMaster(BbsMasterVO vo) throws Exception;
 }

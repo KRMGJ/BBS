@@ -134,4 +134,53 @@ public class BbsMasterController {
 		return "mstr/bbsMasterDetail";
 	}
 
+	/**
+	 * 게시판 마스터 수정화면으로 이동한다.
+	 * 
+	 * @param vo    - 수정할 정보가 담긴 VO
+	 * @param model - 모델
+	 * @return mstr/bbsMasterModify
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/admin/bbsMaster/updateBbsMasterView.do")
+	public String updateBbsMasterView(@ModelAttribute("searchVO") BbsMasterVO searchVO, Model model) throws Exception {
+
+		if (searchVO.getBbsId() == null || searchVO.getBbsId().trim().isEmpty()) {
+			return "redirect:/admin/bbsMaster/selectBbsMasterList.do";
+		}
+
+		BbsMasterVO detail = bbsMasterService.selectBbsMasterDetail(searchVO);
+		model.addAttribute("bbsMasterVO", detail);
+
+		return "mstr/bbsMasterModify";
+	}
+
+	/**
+	 * 게시판 마스터 정보를 수정한다.
+	 * 
+	 * @param bbsMasterVO - 수정할 정보가 담긴 VO
+	 * @param searchVO    - 검색정보가 담긴 VO
+	 * @param model       - 모델
+	 * @return "redirect:/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=..."
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/admin/bbsMaster/updateBbsMaster.do")
+	public String updateBbsMaster(@ModelAttribute("bbsMasterVO") BbsMasterVO bbsMasterVO,
+			@ModelAttribute("searchVO") BbsMasterVO searchVO, Model model) throws Exception {
+
+		// 필수값 최소 검증
+		if (bbsMasterVO.getBbsId() == null || bbsMasterVO.getBbsId().trim().isEmpty()) {
+			return "redirect:/admin/bbsMaster/selectBbsMasterList.do";
+		}
+		if (bbsMasterVO.getBbsNm() == null || bbsMasterVO.getBbsNm().trim().isEmpty()) {
+			// 수정 화면으로 복귀(상세 다시 로드해서 뿌려도 됨)
+			model.addAttribute("bbsMasterVO", bbsMasterService.selectBbsMasterDetail(bbsMasterVO));
+			return "mstr/bbsMasterModify";
+		}
+
+		bbsMasterService.updateBbsMaster(bbsMasterVO);
+
+		return "redirect:/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=" + bbsMasterVO.getBbsId();
+	}
+
 }

@@ -1,0 +1,118 @@
+.bm-wrap {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.bm-title {
+	font-size: 20px;
+	font-weight: 700;
+	margin: 12px 0 14px;
+}
+
+.bm-search {
+	border: 1px solid #ddd;
+	padding: 12px;
+	margin-bottom: 12px;
+}
+
+.bm-search .row {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.bm-search label {
+	font-weight: 600;
+	margin-right: 6px;
+}
+
+.bm-search input[type="text"], .bm-search select {
+	height: 32px;
+	padding: 0 8px;
+}
+
+.bm-search .btns {
+	margin-left: auto;
+	display: flex;
+	gap: 8px;
+}
+
+.bm-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.bm-table th, .bm-table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.bm-table th {
+	background: #f7f7f7;
+	text-align: center;
+}
+
+.bm-table td.center {
+	text-align: center;
+}
+
+.bm-table td.right {
+	text-align: right;
+}
+
+.bm-actions {
+	margin-top: 12px;
+	display: flex;
+	gap: 8px;
+}
+
+.bm-btn {
+	height: 34px;
+	padding: 0 12px;
+	border: 1px solid #bbb;
+	background: #fff;
+	cursor: pointer;
+}
+
+.bm-btn.primary {
+	border-color: #2b6cb0;
+	color: #2b6cb0;
+}
+
+.bm-btn.danger {
+	border-color: #c53030;
+	color: #c53030;
+}
+
+.bm-form {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.bm-form th, .bm-form td {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.bm-form th {
+	background: #f7f7f7;
+	width: 220px;
+	text-align: left;
+}
+
+.bm-form input[type="text"], .bm-form input[type="number"], .bm-form select,
+	.bm-form textarea {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 8px;
+}
+
+.bm-form textarea {
+	resize: vertical;
+}
+
+.bm-paging {
+	margin-top: 12px;
+	text-align: center;
+}

@@ -48,4 +48,14 @@ public class BbsMasterDAO extends EgovAbstractMapper {
 	public BbsMasterVO selectBbsMasterDetail(BbsMasterVO vo) {
 		return selectOne("BbsMasterDAO.selectBbsMasterDetail", vo);
 	}
+
+	/**
+	 * 게시판 마스터 정보를 수정한다.
+	 * 
+	 * @param vo - 수정할 정보가 담긴 VO
+	 * @return int - 수정 결과
+	 */
+	public int updateBbsMaster(BbsMasterVO vo) {
+		return update("BbsMasterDAO.updateBbsMaster", vo);
+	}
 }
