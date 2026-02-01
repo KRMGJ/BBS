@@ -1,4 +1,4 @@
-package egovframework.notice.notice.service.impl;
+package egovframework.let.bbs.ntt.service.impl;
 
 import java.util.List;
 
@@ -8,15 +8,15 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import egovframework.notice.notice.mapper.NoticeMapper;
-import egovframework.notice.notice.service.NoticeService;
-import egovframework.notice.notice.service.NoticeVO;
+import egovframework.let.bbs.ntt.dao.NoticeDAO;
+import egovframework.let.bbs.ntt.service.NoticeService;
+import egovframework.let.bbs.ntt.vo.NoticeVO;
 
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
 
-	@Resource(name = "noticeMapper")
-	private NoticeMapper noticeMapper;
+	@Resource(name = "noticeDAO")
+	private NoticeDAO noticeDAO;
 
 	@Resource(name = "noticeNttIdGnrService")
 	private EgovIdGnrService noticeNttIdGnrService;
@@ -26,7 +26,7 @@ public class NoticeServiceImpl implements NoticeService {
 	 */
 	@Override
 	public List<NoticeVO> selectNoticeList(NoticeVO searchVO) throws Exception {
-		return noticeMapper.selectNoticeList(searchVO);
+		return noticeDAO.selectNoticeList(searchVO);
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class NoticeServiceImpl implements NoticeService {
 	 */
 	@Override
 	public int selectNoticeListTotCnt(NoticeVO searchVO) throws Exception {
-		return noticeMapper.selectNoticeListTotCnt(searchVO);
+		return noticeDAO.selectNoticeListTotCnt(searchVO);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
 	 */
 	@Override
 	public List<NoticeVO> selectNoticePinnedList(NoticeVO searchVO) throws Exception {
-		return noticeMapper.selectNoticePinnedList(searchVO);
+		return noticeDAO.selectNoticePinnedList(searchVO);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class NoticeServiceImpl implements NoticeService {
 		String nextId = noticeNttIdGnrService.getNextStringId();
 		vo.setNttId(nextId);
 
-		noticeMapper.insertNotice(vo);
+		noticeDAO.insertNotice(vo);
 		return vo.getNttId();
 	}
 

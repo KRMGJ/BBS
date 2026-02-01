@@ -28,5 +28,5 @@
 	</bean>
 
 	<!-- Service/Component 스캔 (web 패키지는 dispatcher-servlet.xml에서 스캔) -->
-	<context:component-scan base-package="egovframework.notice.notice.service.impl" />
+	<context:component-scan base-package="egovframework.let.bbs" />
 </beans>

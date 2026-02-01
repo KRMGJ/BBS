@@ -1,4 +1,4 @@
-package egovframework.notice.notice.web;
+package egovframework.let.bbs.ntt.web;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import egovframework.notice.notice.service.NoticeService;
-import egovframework.notice.notice.service.NoticeVO;
+import egovframework.let.bbs.ntt.service.NoticeService;
+import egovframework.let.bbs.ntt.vo.NoticeVO;
 
 @Controller
 public class NoticeController {

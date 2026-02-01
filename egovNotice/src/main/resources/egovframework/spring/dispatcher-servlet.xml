@@ -9,7 +9,7 @@
          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Controller 스캔 -->
-	<context:component-scan base-package="egovframework.notice.notice.web" />
+	<context:component-scan base-package="egovframework.let.bbs" />
 
 	<mvc:annotation-driven />
 

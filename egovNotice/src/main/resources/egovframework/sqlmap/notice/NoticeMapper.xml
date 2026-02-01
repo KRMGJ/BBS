@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="egovframework.notice.notice.mapper.NoticeMapper">
+<mapper namespace="NoticeDAO">
 
 	<!-- 공지 "유효기간" 판정 (오늘 기준) -->
 	<sql id="noticePeriodCondition">
@@ -46,8 +46,8 @@
 
 	<!-- 공지 상단 목록 NOTICE_AT='Y' 이고 기간이 유효한 것만 -->
 	<select id="selectNoticePinnedList"
-		parameterType="egovframework.notice.notice.service.NoticeVO"
-		resultType="egovframework.notice.notice.service.NoticeVO">
+		parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
+		resultType="egovframework.let.bbs.ntt.vo.NoticeVO">
 
 		SELECT
 			NTT_ID AS nttId,
@@ -75,8 +75,8 @@
 		- startRow = firstIndex + 1 
 		- endRow = firstIndex + recordCountPerPage -->
 	<select id="selectNoticeList"
-		parameterType="egovframework.notice.notice.service.NoticeVO"
-		resultType="egovframework.notice.notice.service.NoticeVO">
+		parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
+		resultType="egovframework.let.bbs.ntt.vo.NoticeVO">
 
 		SELECT *
 		FROM (
@@ -117,7 +117,7 @@
 		- 공지(유효) 제외 
 		- 검색조건 동일 적용 -->
 	<select id="selectNoticeListTotCnt"
-		parameterType="egovframework.notice.notice.service.NoticeVO"
+		parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
 		resultType="int">
 
 		SELECT COUNT(1)
@@ -131,7 +131,7 @@
 		<include refid="searchCondition" />
 	</select>
 	
-	<insert id="insertNotice" parameterType="egovframework.notice.notice.service.NoticeVO">
+	<insert id="insertNotice" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO">
 
   		INSERT INTO COMTNBBS (
 		    NTT_ID,

@@ -1,4 +1,4 @@
-package egovframework.notice.notice.service;
+package egovframework.let.bbs.ntt.vo;
 
 import java.io.Serializable;
 

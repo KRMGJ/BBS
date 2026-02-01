@@ -11,14 +11,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations" value="classpath:/egovframework/sqlmap/**/*.xml" />
 	</bean>
+	
+	<alias name="sqlSessionFactory" alias="sqlSession"/>
 
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="sqlSessionFactory" />
-	</bean>
-
-	<!-- Mapper 인터페이스 자동 스캔 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="egovframework.notice.notice.mapper" />
-		<property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
-	</bean>
 </beans>
