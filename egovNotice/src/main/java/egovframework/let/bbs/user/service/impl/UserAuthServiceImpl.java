@@ -20,6 +20,9 @@ public class UserAuthServiceImpl implements UserAuthService {
 	@Resource(name = "egovPasswordEncoder")
 	private EgovPasswordEncoder passwordEncoder;
 
+	/**
+	 * 로그인 처리
+	 */
 	@Override
 	public LoginVO login(String userId, String rawPassword) {
 		ComtnUserVO user = comtnUserDAO.selectUserForLogin(userId);
@@ -45,11 +48,17 @@ public class UserAuthServiceImpl implements UserAuthService {
 		return loginVO;
 	}
 
+	/**
+	 * 로그아웃 처리
+	 */
 	@Override
 	public void logout() {
 		EgovUserDetailsHelper.clearAuthenticatedUser();
 	}
 
+	/**
+	 * 현재 로그인 사용자 정보 조회(로그인하지 않은 경우 null 반환)
+	 */
 	@Override
 	public LoginVO meOrNull() {
 		Object obj = EgovUserDetailsHelper.getAuthenticatedUser();
