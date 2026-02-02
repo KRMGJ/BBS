@@ -1,4 +1,4 @@
-package egovframework.let.bbs.user.auth.vo;
+package egovframework.let.bbs.user.vo;
 
 import java.io.Serializable;
 import java.util.Date;

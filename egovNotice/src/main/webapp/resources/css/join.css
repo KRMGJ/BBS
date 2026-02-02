@@ -1,0 +1,23 @@
+.join-wrap {
+	width: 380px;
+	margin: 80px auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+}
+
+.join-wrap input {
+	width: 100%;
+	margin-bottom: 8px;
+	padding: 8px;
+}
+
+.join-wrap button {
+	width: 100%;
+	padding: 10px;
+	margin-top: 6px;
+}
+
+.msg {
+	margin-top: 10px;
+	color: #c00;
+}

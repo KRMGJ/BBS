@@ -31,4 +31,34 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<insert id="insertUser" parameterType="egovframework.let.bbs.user.vo.ComtnUserVO">
+	    INSERT INTO COMTNUSER (
+	        USER_ID,
+	        USER_NM,
+	        PASSWORD,
+	        EMAIL,
+	        MOBILE,
+	        USE_AT,
+	        LOCK_AT,
+	        FRST_REGISTER_ID,
+	        FRST_REGIST_PNTTM
+	    ) VALUES (
+	        #{userId},
+	        #{userNm},
+	        #{password},
+	        #{email},
+	        #{mobile},
+	        'Y',
+	        'N',
+	        #{frstRegisterId},
+	        SYSDATE
+	    )
+	</insert>
+
+	<select id="selectUserIdCount" parameterType="string" resultType="int">
+	    SELECT COUNT(*)
+	    FROM COMTNUSER
+	    WHERE USER_ID = #{userId}
+	</select>
+	
 </mapper>

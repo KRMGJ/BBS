@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.vo.LoginVO;
-import egovframework.let.bbs.user.auth.dao.ComtnUserDAO;
 import egovframework.let.bbs.user.auth.service.UserAuthService;
-import egovframework.let.bbs.user.auth.vo.ComtnUserVO;
+import egovframework.let.bbs.user.dao.ComtnUserDAO;
+import egovframework.let.bbs.user.vo.ComtnUserVO;
 
 @Service("userAuthService")
 public class UserAuthServiceImpl implements UserAuthService {
