@@ -1,6 +1,6 @@
 package egovframework.let.bbs.user.service;
 
-import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.vo.LoginVO;
 
 public interface UserAuthService {
 

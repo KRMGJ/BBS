@@ -5,8 +5,8 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.user.dao.ComtnUserDAO;
 import egovframework.let.bbs.user.service.UserAuthService;
 import egovframework.let.bbs.user.vo.ComtnUserVO;

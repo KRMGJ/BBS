@@ -9,20 +9,20 @@ $(function() {
 		}
 
 		$.ajax({
-			url: "/user/login.do",
+			url: "/bbs/user/login.do",
 			type: "POST",
 			dataType: "json",
 			data: { userId: userId, password: password },
 			success: function(res) {
 				if (res && res.result === "OK") {
 					location.href = "/notice/list.do";
-				} else {
-					$("#msg").text("로그인 실패");
+					return;
 				}
+				$("#msg").text("로그인 실패");
 			},
 			error: function(xhr) {
-				if (xhr.responseJSON && xhr.responseJSON.message) {
-					$("#msg").text(xhr.responseJSON.message);
+				if (xhr.responseJSON && xhr.responseJSON.error && xhr.responseJSON.error.message) {
+					$("#msg").text(xhr.responseJSON.error.message);
 					return;
 				}
 				$("#msg").text("로그인 실패");

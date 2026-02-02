@@ -8,8 +8,8 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.mstr.dao.BbsMasterDAO;
 import egovframework.let.bbs.mstr.service.BbsMasterService;
 import egovframework.let.bbs.mstr.vo.BbsMasterVO;

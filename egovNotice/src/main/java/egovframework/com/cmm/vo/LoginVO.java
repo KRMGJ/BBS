@@ -1,4 +1,4 @@
-package egovframework.com.cmm;
+package egovframework.com.cmm.vo;
 
 import java.io.Serializable;
 

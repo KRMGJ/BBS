@@ -3,7 +3,7 @@ package egovframework.com.cmm.util;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.vo.LoginVO;
 
 public class EgovUserDetailsHelper {
 
