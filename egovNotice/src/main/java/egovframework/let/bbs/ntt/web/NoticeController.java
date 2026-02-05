@@ -3,6 +3,7 @@ package egovframework.let.bbs.ntt.web;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.ntt.service.NoticeService;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
@@ -87,8 +89,8 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "/notice/insert.do", method = RequestMethod.POST)
-	public String insertNotice(@ModelAttribute("notice") NoticeVO vo, RedirectAttributes redirectAttributes)
-			throws Exception {
+	public String insertNotice(@ModelAttribute("notice") NoticeVO vo, RedirectAttributes redirectAttributes,
+			HttpSession session) throws Exception {
 
 		if (vo.getBbsId() == null || vo.getBbsId().isEmpty()) {
 			vo.setBbsId("BBSMSTR_000000000001");
@@ -101,11 +103,8 @@ public class NoticeController {
 			redirectAttributes.addFlashAttribute("msg", "내용은 필수입니다.");
 			return "redirect:/notice/form.do";
 		}
-
-		// 작성자(로그인 붙이기 전 임시)
-		if (vo.getFrstRegisterId() == null || vo.getFrstRegisterId().isEmpty()) {
-			vo.setFrstRegisterId("admin"); // TODO: 로그인 연동 시 세션 사용자ID로 교체
-		}
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		vo.setFrstRegisterId(loginVO.getUniqId());
 
 		String nttId = noticeService.insertNotice(vo);
 
