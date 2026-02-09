@@ -66,12 +66,12 @@
 
 			<!-- 일반 목록 -->
 			<c:choose>
-				<c:when test="${not empty resultList}">
-					<c:forEach var="n" items="${resultList}">
+				<c:when test="${not empty noticeList}">
+					<c:forEach var="n" items="${noticeList}">
 						<tr>
 							<td class="nt-col-no"><c:out value="${n.nttId}" /></td>
 							<td>
-								<a href="<c:url value='/notice/detail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
+								<a href="<c:url value='/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
 									<c:out value="${n.nttSj}" />
 								</a> 
 								<c:if test="${not empty n.atchFileId}">
