@@ -52,4 +52,12 @@ public interface NoticeService {
 	NoticeVO selectNoticeDetail(NoticeVO vo, boolean increaseViewCnt) throws Exception;
 
 	String selectAtchFileIdByNttId(NoticeVO vo) throws Exception;
+
+	/**
+	 * 공지사항을 수정한다.
+	 * 
+	 * @param vo - 수정할 정보가 담긴 VO
+	 * @throws Exception
+	 */
+	void updateNotice(NoticeVO vo) throws Exception;
 }

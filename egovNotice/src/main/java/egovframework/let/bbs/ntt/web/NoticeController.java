@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.vo.LoginVO;
@@ -100,8 +102,9 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "/notice/insert.do", method = RequestMethod.POST)
-	public String insertNotice(@ModelAttribute("notice") NoticeVO vo, RedirectAttributes redirectAttributes,
-			HttpSession session) throws Exception {
+	public String insertNotice(@ModelAttribute("notice") NoticeVO vo,
+			@RequestParam(value = "files", required = false) MultipartFile[] files,
+			RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
 
 		if (vo.getBbsId() == null || vo.getBbsId().isEmpty()) {
 			vo.setBbsId("BBSMSTR_000000000001");
@@ -116,6 +119,11 @@ public class NoticeController {
 		}
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		vo.setFrstRegisterId(loginVO.getUniqId());
+
+		if (files != null && files.length > 0 && !files[0].isEmpty()) {
+			String atchFileId = fileMngService.saveFilesNewGroup(files);
+			vo.setAtchFileId(atchFileId);
+		}
 
 		String nttId = noticeService.insertNotice(vo);
 
@@ -141,22 +149,22 @@ public class NoticeController {
 		// 조회수 세션 중복방지
 		boolean increase = shouldIncreaseViewCount(request.getSession(), searchVO.getNttId());
 
-		NoticeVO result = noticeService.selectNoticeDetail(searchVO, increase);
-		if (result == null) {
+		NoticeVO notice = noticeService.selectNoticeDetail(searchVO, increase);
+		if (notice == null) {
 			throw new IllegalStateException("존재하지 않거나 삭제된 게시물입니다.");
 		}
 
 		// 첨부파일 목록 (우리 파일 모듈 사용)
-		if (result.getAtchFileId() != null && !result.getAtchFileId().isBlank()) {
-			List<FileVO> fileList = fileMngService.selectFileList(result.getAtchFileId());
+		if (notice.getAtchFileId() != null && !notice.getAtchFileId().isBlank()) {
+			List<FileVO> fileList = fileMngService.selectFileList(notice.getAtchFileId());
 			model.addAttribute("fileList", fileList);
 		}
 
 		// 권한: 일단 "작성자ID == 세션 loginId" 기준(관리자 확장 가능)
 		String loginId = getLoginIdOrNull(request.getSession());
-		boolean canEdit = (loginId != null && loginId.equals(result.getFrstRegisterId()));
+		boolean canEdit = (loginId != null && loginId.equals(notice.getFrstRegisterId()));
 
-		model.addAttribute("result", result);
+		model.addAttribute("notice", notice);
 		model.addAttribute("canEdit", canEdit);
 
 		return "ntt/noticeDetail";
@@ -216,6 +224,17 @@ public class NoticeController {
 		try (FileInputStream in = new FileInputStream(file)) {
 			in.transferTo(response.getOutputStream());
 		}
+	}
+
+	@RequestMapping(value = "/notice/updateNoticeView.do", method = RequestMethod.GET)
+	public String updateForm(@ModelAttribute("notice") NoticeVO vo, Model model) throws Exception {
+		// bbsId가 없으면 임시 기본값
+		if (vo.getBbsId() == null || vo.getBbsId().isEmpty()) {
+			vo.setBbsId("BBSMSTR_000000000001");
+		}
+		NoticeVO result = noticeService.selectNoticeDetail(vo, false);
+		model.addAttribute("notice", result);
+		return "ntt/noticeForm";
 	}
 
 	/**

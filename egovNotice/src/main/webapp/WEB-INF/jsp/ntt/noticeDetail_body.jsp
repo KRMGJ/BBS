@@ -15,33 +15,33 @@
 
 		<!-- 제목 -->
 		<h2 class="nt-title">
-			<c:if test="${result.noticeAt eq 'Y'}">
+			<c:if test="${notice.noticeAt eq 'Y'}">
 				<span class="nt-badge-notice">[공지]</span>
 			</c:if>
-			<c:out value="${result.nttSj}" />
+			<c:out value="${notice.nttSj}" />
 		</h2>
 
 		<!-- 메타 정보 -->
 		<div class="nt-meta">
-			<span>작성자: <c:out value="${result.frstRegisterId}" /></span> <span>작성일:
-				<c:out value="${result.frstRegistPnttm}" />
-			</span> <span>조회수: <c:out value="${result.inqireCo}" /></span>
+			<span>작성자: <c:out value="${notice.frstRegisterId}" /></span> <span>작성일:
+				<c:out value="${notice.frstRegistPnttm}" />
+			</span> <span>조회수: <c:out value="${notice.inqireCo}" /></span>
 		</div>
 
 		<!-- 공지 기간 -->
 		<c:if
-			test="${result.noticeAt eq 'Y' && (not empty result.noticeBgnde || not empty result.noticeEndde)}">
+			test="${notice.noticeAt eq 'Y' && (not empty notice.noticeBgnde || not empty notice.noticeEndde)}">
 			<div class="nt-notice-period nt-muted">
 				게시기간 :
-				<c:out value="${result.noticeBgnde}" />
+				<c:out value="${notice.noticeBgnde}" />
 				~
-				<c:out value="${result.noticeEndde}" />
+				<c:out value="${notice.noticeEndde}" />
 			</div>
 		</c:if>
 
 		<!-- 내용 -->
 		<div class="nt-content">
-			<c:out value="${result.nttCn}" />
+			<c:out value="${notice.nttCn}" />
 		</div>
 
 		<!-- 첨부파일 -->
@@ -58,7 +58,7 @@
 							<li><a href="#" class="js-file-download"
 								data-atch="${f.atchFileId}" data-sn="${f.fileSn}"> <c:out
 										value="${f.orignlFileNm}" />
-							</a> <span class="nt-muted"> (<c:out value="${f.fileMg}" />
+							</a> <span class="nt-muted"> (<c:out value="${f.fileSize}" />
 									byte)
 							</span></li>
 						</c:forEach>
@@ -68,7 +68,7 @@
 					<form id="downloadForm" method="post"
 						action="<c:url value='/notice/downloadNoticeFile.do'/>">
 						<input type="hidden" name="nttId"
-							value="<c:out value='${result.nttId}'/>" /> <input type="hidden"
+							value="<c:out value='${notice.nttId}'/>" /> <input type="hidden"
 							name="atchFileId" /> <input type="hidden" name="fileSn" />
 					</form>
 				</c:otherwise>
@@ -78,12 +78,12 @@
 		<!-- 버튼 -->
 		<div class="nt-actions">
 			<a class="nt-btn"
-				href="<c:url value='/notice/selectNoticeList.do'/>?pageIndex=${pageIndex}&searchCondition=${fn:escapeXml(searchCondition)}&searchKeyword=${fn:escapeXml(searchKeyword)}">
+				href="<c:url value='/notice/list.do'/>?pageIndex=${pageIndex}&searchCondition=${fn:escapeXml(searchCondition)}&searchKeyword=${fn:escapeXml(searchKeyword)}">
 				목록 </a>
 
 			<c:if test="${canEdit eq true}">
 				<a class="nt-btn"
-					href="<c:url value='/notice/updateNoticeView.do'/>?nttId=${result.nttId}&pageIndex=${pageIndex}">
+					href="<c:url value='/notice/updateNoticeView.do'/>?nttId=${notice.nttId}&pageIndex=${pageIndex}">
 					수정 </a>
 
 				<button type="button" class="js-delete nt-btn">삭제</button>
@@ -92,8 +92,8 @@
 				<form id="deleteForm" method="post"
 					action="<c:url value='/notice/deleteNotice.do'/>">
 					<input type="hidden" name="nttId"
-						value="<c:out value='${result.nttId}'/>" /> <input type="hidden"
-						name="bbsId" value="<c:out value='${result.bbsId}'/>" />
+						value="<c:out value='${notice.nttId}'/>" /> <input type="hidden"
+						name="bbsId" value="<c:out value='${notice.bbsId}'/>" />
 				</form>
 			</c:if>
 		</div>

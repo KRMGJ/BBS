@@ -73,4 +73,13 @@ public class NoticeDAO extends EgovAbstractMapper {
 	public String selectAtchFileIdByNttId(NoticeVO vo) {
 		return selectOne("NoticeDAO.selectAtchFileIdByNttId", vo);
 	}
+
+	/**
+	 * 공지사항을 수정한다.
+	 * 
+	 * @param vo - 수정할 정보가 담긴 VO
+	 */
+	public void updateNotice(NoticeVO vo) {
+		update("NoticeDAO.updateNotice", vo);
+	}
 }

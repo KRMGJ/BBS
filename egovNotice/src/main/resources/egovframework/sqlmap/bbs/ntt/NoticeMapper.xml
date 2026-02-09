@@ -158,7 +158,7 @@
 		    #{noticeAt},
 		    #{noticeBgnde},
 		    #{noticeEndde},
-		    NULL,
+		    #{atchFileId},
 		    #{useAt},
 		    #{delAt},
 		    #{frstRegisterId},
@@ -209,4 +209,20 @@
 			AND DEL_AT = 'N'
 			AND USE_AT = 'Y'
 	</select>
+	
+	<!-- 공지 수정 -->
+	<update id="updateNotice" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO">
+        UPDATE COMTNBBS
+        SET
+            NTT_SJ = #{nttSj},
+            NTT_CN = #{nttCn},
+            NOTICE_AT = #{noticeAt},
+            NOTICE_BGNDE = #{noticeBgnde},
+            NOTICE_ENDDE = #{noticeEndde},
+            LAST_UPDUSR_ID = #{lastUpdusrId},
+            LAST_UPDT_PNTTM = SYSDATE
+        WHERE NTT_ID = #{nttId}
+            AND DEL_AT = 'N'
+            AND USE_AT = 'Y'
+	</update>
 </mapper>

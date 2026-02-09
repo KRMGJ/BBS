@@ -48,7 +48,7 @@ public class FileStorageUtil {
 		if (name == null) {
 			return "file";
 		}
-		return name.replaceAll("[\\\\/\\r\\n\\t\\0]", "_");
+		return name.replaceAll("[\\\\/:*?\"<>|\\r\\n\\t]", "_");
 	}
 
 	private String extractExt(String filename) {

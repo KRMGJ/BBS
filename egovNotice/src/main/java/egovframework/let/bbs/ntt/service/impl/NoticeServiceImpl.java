@@ -86,4 +86,9 @@ public class NoticeServiceImpl implements NoticeService {
 	public String selectAtchFileIdByNttId(NoticeVO vo) throws Exception {
 		return noticeDAO.selectAtchFileIdByNttId(vo);
 	}
+
+	@Override
+	public void updateNotice(NoticeVO vo) throws Exception {
+		noticeDAO.updateNotice(vo);
+	}
 }

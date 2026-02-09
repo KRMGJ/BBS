@@ -8,8 +8,8 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.let.bbs.cmm.fms.dao.FileMngDAO;
@@ -25,8 +25,7 @@ public class FileMngServiceImpl implements FileMngService {
 
 	private FileStorageUtil storage;
 
-	@Value("${file.upload.path}")
-	private String uploadPath;
+	private String uploadPath = "C:/egovframework/upload"; // 기본 업로드 경로
 
 	@PostConstruct
 	public void init() {
@@ -37,6 +36,7 @@ public class FileMngServiceImpl implements FileMngService {
 	 * 파일그룹 생성 및 파일등록
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public String saveFilesNewGroup(MultipartFile[] files) throws Exception {
 		String atchFileId = newAtchFileId();
 		fileMngDAO.insertFileGroup(atchFileId);
