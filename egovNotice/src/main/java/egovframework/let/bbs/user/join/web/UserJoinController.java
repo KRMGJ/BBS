@@ -1,5 +1,8 @@
 package egovframework.let.bbs.user.join.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.ResponseEntity;
@@ -32,12 +35,14 @@ public class UserJoinController {
 	 */
 	@RequestMapping(value = "/user/join.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Model> join(ComtnUserVO user, Model model) throws Exception {
+	public ResponseEntity<Map<String, Object>> join(ComtnUserVO user, Model model) throws Exception {
 
 		userJoinService.join(user);
 
-		model.addAttribute("result", "OK");
-		return ResponseEntity.ok(model);
+		Map<String, Object> res = new HashMap<>();
+		res.put("result", "OK");
+
+		return ResponseEntity.ok(res);
 	}
 
 	/**
