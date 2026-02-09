@@ -164,3 +164,26 @@ textarea {
 	font-size: 12px;
 	margin-top: 4px;
 }
+
+.nt-title {
+	font-size: 18px;
+	margin: 0 0 8px;
+}
+
+.nt-badge-notice {
+	color: #d46b08;
+	font-weight: 700;
+	margin-right: 6px;
+}
+
+.nt-notice-period {
+	margin-bottom: 10px;
+}
+
+.nt-files ul li a {
+	font-size: 14px;
+}
+
+.nt-files ul li a:hover {
+	text-decoration: underline;
+}

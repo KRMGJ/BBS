@@ -68,4 +68,22 @@ public class NoticeServiceImpl implements NoticeService {
 		return vo.getNttId();
 	}
 
+	/**
+	 * 공지사항 상세를 조회한다.
+	 */
+	@Override
+	public NoticeVO selectNoticeDetail(NoticeVO vo, boolean increaseViewCnt) throws Exception {
+		if (increaseViewCnt) {
+			noticeDAO.updateInqireCo(vo);
+		}
+		return noticeDAO.selectNoticeDetail(vo);
+	}
+
+	/**
+	 * 다운로드 소속검증용
+	 */
+	@Override
+	public String selectAtchFileIdByNttId(NoticeVO vo) throws Exception {
+		return noticeDAO.selectAtchFileIdByNttId(vo);
+	}
 }

@@ -40,4 +40,16 @@ public interface NoticeService {
 	 * @throws Exception
 	 */
 	String insertNotice(NoticeVO vo) throws Exception;
+
+	/**
+	 * 공지사항 상세를 조회한다.
+	 * 
+	 * @param vo              - 조회할 정보가 담긴 VO
+	 * @param increaseViewCnt - 조회수 증가 여부
+	 * @return 공지사항 상세정보
+	 * @throws Exception
+	 */
+	NoticeVO selectNoticeDetail(NoticeVO vo, boolean increaseViewCnt) throws Exception;
+
+	String selectAtchFileIdByNttId(NoticeVO vo) throws Exception;
 }

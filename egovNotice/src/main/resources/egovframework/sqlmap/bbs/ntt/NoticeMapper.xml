@@ -167,4 +167,46 @@
 		    SYSDATE
 		  )
 	</insert>
+	
+	<!-- 상세: 삭제/미사용 제외 -->
+	<select id="selectNoticeDetail"
+	        parameterType="egovframework.let.bbs.ntt.vo.NoticeVO"
+	        resultType="egovframework.let.bbs.ntt.vo.NoticeVO">
+		SELECT
+			NTT_ID AS nttId,
+			BBS_ID AS bbsId,
+			NTT_SJ AS nttSj,
+			NTT_CN AS nttCn,
+			FRST_REGISTER_ID AS frstRegisterId,
+			TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS frstRegistPnttm,
+			INQIRE_CO AS inqireCo,
+			NOTICE_AT AS noticeAt,
+			NOTICE_BGNDE AS noticeBgnde,
+			NOTICE_ENDDE AS noticeEndde,
+			DEL_AT AS delAt,
+			USE_AT AS useAt,
+			ATCH_FILE_ID AS atchFileId
+		FROM COMTNBBS
+		WHERE NTT_ID = #{nttId}
+			AND DEL_AT = 'N'
+			AND USE_AT = 'Y'
+	</select>
+
+    <!-- 조회수 증가 -->
+	<update id="updateInqireCo" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO">
+		UPDATE COMTNBBS
+		SET INQIRE_CO = INQIRE_CO + 1
+		WHERE NTT_ID = #{nttId}
+			AND DEL_AT = 'N'
+			AND USE_AT = 'Y'
+	</update>
+
+	<!-- 소속검증: nttId로 atchFileId 조회 -->
+	<select id="selectAtchFileIdByNttId" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO" resultType="string">
+		SELECT ATCH_FILE_ID
+		FROM COMTNBBS
+		WHERE NTT_ID = #{nttId}
+			AND DEL_AT = 'N'
+			AND USE_AT = 'Y'
+	</select>
 </mapper>

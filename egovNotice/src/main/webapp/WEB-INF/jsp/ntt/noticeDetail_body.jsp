@@ -1,61 +1,102 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<c:set var="pageIndex"
+	value="${empty searchVO.pageIndex ? 1 : searchVO.pageIndex}" />
+<c:set var="searchCondition"
+	value="${empty searchVO.searchCondition ? '' : searchVO.searchCondition}" />
+<c:set var="searchKeyword"
+	value="${empty searchVO.searchKeyword ? '' : searchVO.searchKeyword}" />
+
 <div class="nt-wrap">
+	<!-- 상세 박스 -->
 	<div class="nt-box">
-		<div style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">
-			<c:out value="${notice.nttSj}" />
-		</div>
 
-		<div class="nt-meta">
-			<div>
-				등록일:
-				<c:out value="${notice.frstRegistPnttm}" />
-			</div>
-			<div>
-				작성자:
-				<c:out value="${notice.frstRegisterId}" />
-			</div>
-			<div>
-				조회수:
-				<c:out value="${notice.inqireCo}" />
-			</div>
-			<c:if test="${notice.noticeAt == 'Y'}">
-				<div class="nt-muted">[공지]</div>
+		<!-- 제목 -->
+		<h2 class="nt-title">
+			<c:if test="${result.noticeAt eq 'Y'}">
+				<span class="nt-badge-notice">[공지]</span>
 			</c:if>
+			<c:out value="${result.nttSj}" />
+		</h2>
+
+		<!-- 메타 정보 -->
+		<div class="nt-meta">
+			<span>작성자: <c:out value="${result.frstRegisterId}" /></span> <span>작성일:
+				<c:out value="${result.frstRegistPnttm}" />
+			</span> <span>조회수: <c:out value="${result.inqireCo}" /></span>
 		</div>
 
+		<!-- 공지 기간 -->
+		<c:if
+			test="${result.noticeAt eq 'Y' && (not empty result.noticeBgnde || not empty result.noticeEndde)}">
+			<div class="nt-notice-period nt-muted">
+				게시기간 :
+				<c:out value="${result.noticeBgnde}" />
+				~
+				<c:out value="${result.noticeEndde}" />
+			</div>
+		</c:if>
+
+		<!-- 내용 -->
 		<div class="nt-content">
-			<c:out value="${notice.nttCn}" />
+			<c:out value="${result.nttCn}" />
 		</div>
 
+		<!-- 첨부파일 -->
 		<div class="nt-files">
-			<div style="font-weight: 700;">첨부파일</div>
+			<strong>첨부파일</strong>
+
 			<c:choose>
-				<c:when test="${not empty fileList}">
-					<ul>
-						<c:forEach var="f" items="${fileList}">
-							<li>
-								<a href="<c:url value='/notice/file/download.do'>
-                         				<c:param name='atchFileId' value='${f.atchFileId}'/>
-                         				<c:param name='fileSn' value='${f.fileSn}'/>
-                       				</c:url>">
-									<c:out value="${f.orignlFileNm}" />
-								</a> 
-								<span class="nt-muted">(<c:out value="${f.fileSize}" />bytes)</span>
-							</li>
-						</c:forEach>
-					</ul>
+				<c:when test="${empty fileList}">
+					<div class="nt-muted">첨부파일이 없습니다.</div>
 				</c:when>
 				<c:otherwise>
-					<div class="nt-muted">첨부파일이 없습니다.</div>
+					<ul>
+						<c:forEach var="f" items="${fileList}">
+							<li><a href="#" class="js-file-download"
+								data-atch="${f.atchFileId}" data-sn="${f.fileSn}"> <c:out
+										value="${f.orignlFileNm}" />
+							</a> <span class="nt-muted"> (<c:out value="${f.fileMg}" />
+									byte)
+							</span></li>
+						</c:forEach>
+					</ul>
+
+					<!-- 파일 다운로드 (소속검증용) -->
+					<form id="downloadForm" method="post"
+						action="<c:url value='/notice/downloadNoticeFile.do'/>">
+						<input type="hidden" name="nttId"
+							value="<c:out value='${result.nttId}'/>" /> <input type="hidden"
+							name="atchFileId" /> <input type="hidden" name="fileSn" />
+					</form>
 				</c:otherwise>
 			</c:choose>
 		</div>
 
+		<!-- 버튼 -->
 		<div class="nt-actions">
-			<button type="button" id="btnList">목록</button>
-			<button type="button" id="btnEdit">수정</button>
-			<button type="button" id="btnDelete">삭제</button>
+			<a class="nt-btn"
+				href="<c:url value='/notice/selectNoticeList.do'/>?pageIndex=${pageIndex}&searchCondition=${fn:escapeXml(searchCondition)}&searchKeyword=${fn:escapeXml(searchKeyword)}">
+				목록 </a>
+
+			<c:if test="${canEdit eq true}">
+				<a class="nt-btn"
+					href="<c:url value='/notice/updateNoticeView.do'/>?nttId=${result.nttId}&pageIndex=${pageIndex}">
+					수정 </a>
+
+				<button type="button" class="js-delete nt-btn">삭제</button>
+
+				<!-- 논리 삭제 -->
+				<form id="deleteForm" method="post"
+					action="<c:url value='/notice/deleteNotice.do'/>">
+					<input type="hidden" name="nttId"
+						value="<c:out value='${result.nttId}'/>" /> <input type="hidden"
+						name="bbsId" value="<c:out value='${result.bbsId}'/>" />
+				</form>
+			</c:if>
 		</div>
+
 	</div>
 </div>

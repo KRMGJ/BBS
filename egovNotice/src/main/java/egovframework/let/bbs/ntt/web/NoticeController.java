@@ -1,8 +1,14 @@
 package egovframework.let.bbs.ntt.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -14,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.vo.LoginVO;
+import egovframework.let.bbs.cmm.fms.service.FileMngService;
+import egovframework.let.bbs.cmm.fms.vo.FileVO;
 import egovframework.let.bbs.ntt.service.NoticeService;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
@@ -22,6 +30,9 @@ public class NoticeController {
 
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
+
+	@Resource(name = "fileMngService")
+	private FileMngService fileMngService;
 
 	/**
 	 * 공지사항 목록을 조회한다.
@@ -110,7 +121,131 @@ public class NoticeController {
 
 		// 상세로 보내거나 목록으로 보냄
 		redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
-//		return "redirect:/notice/detail.do?nttId=" + nttId;
+//		return "redirect:/notice/selectNoticeDetail.do?nttId=" + nttId;
 		return "redirect:/notice/list.do";
+	}
+
+	/**
+	 * 공지사항 상세를 조회한다.
+	 * 
+	 * @param searchVO - 조회할 정보가 담긴 VO
+	 * @param request  - HttpServletRequest
+	 * @param model    - 화면모델
+	 * @return 공지사항 상세 View
+	 * @throws Exception
+	 */
+	@RequestMapping("/notice/selectNoticeDetail.do")
+	public String selectNoticeDetail(@ModelAttribute("searchVO") NoticeVO searchVO, HttpServletRequest request,
+			Model model) throws Exception {
+
+		// 조회수 세션 중복방지
+		boolean increase = shouldIncreaseViewCount(request.getSession(), searchVO.getNttId());
+
+		NoticeVO result = noticeService.selectNoticeDetail(searchVO, increase);
+		if (result == null) {
+			throw new IllegalStateException("존재하지 않거나 삭제된 게시물입니다.");
+		}
+
+		// 첨부파일 목록 (우리 파일 모듈 사용)
+		if (result.getAtchFileId() != null && !result.getAtchFileId().isBlank()) {
+			List<FileVO> fileList = fileMngService.selectFileList(result.getAtchFileId());
+			model.addAttribute("fileList", fileList);
+		}
+
+		// 권한: 일단 "작성자ID == 세션 loginId" 기준(관리자 확장 가능)
+		String loginId = getLoginIdOrNull(request.getSession());
+		boolean canEdit = (loginId != null && loginId.equals(result.getFrstRegisterId()));
+
+		model.addAttribute("result", result);
+		model.addAttribute("canEdit", canEdit);
+
+		return "ntt/noticeDetail";
+	}
+
+	/**
+	 * 다운로드 (소속검증 포함) JSP에서 POST: nttId + atchFileId + fileSn
+	 */
+	@RequestMapping("/notice/downloadNoticeFile.do")
+	public void downloadNoticeFile(@ModelAttribute("searchVO") NoticeVO vo, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		String reqAtchFileId = request.getParameter("atchFileId");
+		String reqFileSn = request.getParameter("fileSn");
+
+		if (vo.getNttId() == null || vo.getNttId().isBlank()) {
+			throw new IllegalArgumentException("nttId가 없습니다.");
+		}
+		if (reqAtchFileId == null || reqAtchFileId.isBlank()) {
+			throw new IllegalArgumentException("atchFileId가 없습니다.");
+		}
+		if (reqFileSn == null || reqFileSn.isBlank()) {
+			throw new IllegalArgumentException("fileSn이 없습니다.");
+		}
+
+		int fileSn;
+		try {
+			fileSn = Integer.parseInt(reqFileSn);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("fileSn 형식이 올바르지 않습니다.");
+		}
+
+		// 소속검증: nttId의 atchFileId == 요청 atchFileId
+		String dbAtchFileId = noticeService.selectAtchFileIdByNttId(vo);
+		if (dbAtchFileId == null || dbAtchFileId.isBlank() || !dbAtchFileId.equals(reqAtchFileId)) {
+			throw new IllegalStateException("잘못된 요청(파일 소속 불일치)입니다.");
+		}
+
+		// 파일 조회
+		FileVO f = fileMngService.selectFileOne(reqAtchFileId, fileSn);
+		if (f == null || !"Y".equals(f.getUseAt())) {
+			throw new IllegalStateException("파일이 존재하지 않습니다.");
+		}
+
+		// 3) 디스크 스트리밍
+		File file = new File(f.getFileStreCours(), f.getStreFileNm());
+		if (!file.exists()) {
+			throw new IllegalStateException("파일이 존재하지 않습니다.");
+		}
+
+		String downloadName = encodeFilename(f.getOrignlFileNm());
+
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadName + "\"");
+		response.setHeader("Content-Length", String.valueOf(file.length()));
+
+		try (FileInputStream in = new FileInputStream(file)) {
+			in.transferTo(response.getOutputStream());
+		}
+	}
+
+	/**
+	 * 세션 기반 조회수 증가 여부 판단
+	 */
+	private boolean shouldIncreaseViewCount(HttpSession session, String nttId) {
+		if (nttId == null || nttId.isBlank()) {
+			return false;
+		}
+		String key = "NOTICE_VIEWED_" + nttId;
+		if (session.getAttribute(key) != null) {
+			return false;
+		}
+		session.setAttribute(key, Boolean.TRUE);
+		return true;
+	}
+
+	/**
+	 * 세션에서 loginId를 얻는다.
+	 */
+	private String getLoginIdOrNull(HttpSession session) {
+		LoginVO vo = (LoginVO) session.getAttribute("loginVO");
+		return (vo == null) ? null : vo.getUniqId();
+	}
+
+	private String encodeFilename(String name) {
+		if (name == null || name.isBlank()) {
+			name = "file";
+		}
+		String encoded = URLEncoder.encode(name, StandardCharsets.UTF_8);
+		return encoded.replaceAll("\\+", "%20");
 	}
 }

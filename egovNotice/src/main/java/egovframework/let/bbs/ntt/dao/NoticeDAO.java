@@ -48,4 +48,29 @@ public class NoticeDAO extends EgovAbstractMapper {
 	public int insertNotice(NoticeVO vo) {
 		return insert("NoticeDAO.insertNotice", vo);
 	}
+
+	/**
+	 * 공지사항 상세를 조회한다.
+	 * 
+	 * @param vo - 조회할 정보가 담긴 VO
+	 * @return 공지사항 상세정보
+	 */
+	public NoticeVO selectNoticeDetail(NoticeVO vo) {
+		return selectOne("NoticeDAO.selectNoticeDetail", vo);
+	}
+
+	/**
+	 * 공지사항을 수정한다.
+	 * 
+	 * @param vo - 수정할 정보가 담긴 VO
+	 * @return void
+	 */
+	public int updateInqireCo(NoticeVO vo) {
+		return update("NoticeDAO.updateInqireCo", vo);
+	}
+
+	/** 다운로드 소속검증용 */
+	public String selectAtchFileIdByNttId(NoticeVO vo) {
+		return selectOne("NoticeDAO.selectAtchFileIdByNttId", vo);
+	}
 }
