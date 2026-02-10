@@ -17,13 +17,14 @@ import egovframework.let.bbs.user.join.service.UserJoinService;
 import egovframework.let.bbs.user.vo.ComtnUserVO;
 
 @Controller
+@RequestMapping("/bbs/user")
 public class UserJoinController {
 
 	@Resource(name = "userJoinService")
 	private UserJoinService userJoinService;
 
 	/** 회원가입 화면 */
-	@RequestMapping(value = "/user/joinView.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/joinView.do", method = RequestMethod.GET)
 	public String joinView() {
 		return "user/join";
 	}
@@ -33,7 +34,7 @@ public class UserJoinController {
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/join.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/join.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> join(ComtnUserVO user, Model model) throws Exception {
 
@@ -50,7 +51,7 @@ public class UserJoinController {
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/checkUserId.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkUserId.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Model> checkUserId(@RequestParam("userId") String userId, Model model) throws Exception {
 

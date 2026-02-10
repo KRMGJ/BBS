@@ -51,7 +51,7 @@
 					<tr class="nt-notice">
 						<td class="nt-col-no">공지</td>
 						<td>
-							<a href="<c:url value='/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
+							<a href="<c:url value='/bbs/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
 								<c:out value="${n.subject}" />
 							</a> 
 							<c:if test="${not empty n.atchFileId}">
@@ -71,7 +71,7 @@
 						<tr>
 							<td class="nt-col-no"><c:out value="${n.nttId}" /></td>
 							<td>
-								<a href="<c:url value='/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
+								<a href="<c:url value='/bbs/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
 									<c:out value="${n.subject}" />
 								</a> 
 								<c:if test="${not empty n.atchFileId}">

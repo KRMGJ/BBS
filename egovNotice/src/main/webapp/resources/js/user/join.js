@@ -9,7 +9,7 @@ $(function() {
 			return;
 		}
 
-		$.get("/user/checkUserId.do", { userId: userId }, function(res) {
+		$.get("/bbs/user/checkUserId.do", { userId: userId }, function(res) {
 			if (res.duplicated) {
 				$msg.addClass("err").text("이미 사용 중인 아이디입니다.");
 			} else {
@@ -20,7 +20,7 @@ $(function() {
 
 	$("#btnJoin").on("click", function() {
 		$.ajax({
-			url: "/user/join.do",
+			url: "/bbs/user/join.do",
 			type: "POST",
 			dataType: "json",
 			data: {
@@ -33,7 +33,7 @@ $(function() {
 			success: function(res) {
 				if (res.result === "OK") {
 					alert("회원가입이 완료되었습니다.");
-					location.href = "/user/loginView.do";
+					location.href = "/bbs/user/loginView.do";
 				}
 			},
 			error: function(xhr) {

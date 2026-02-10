@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="bm-wrap">
 	<form id="bmRegForm" method="post"
-		data-insert-url="<c:url value='/admin/bbsMaster/insertBbsMaster.do'/>"
-		data-list-url="<c:url value='/admin/bbsMaster/selectBbsMasterList.do'/>">
+		data-insert-url="<c:url value='/bbs/admin/bbsMaster/insertBbsMaster.do'/>"
+		data-list-url="<c:url value='/bbs/admin/bbsMaster/selectBbsMasterList.do'/>">
 
 		<table class="bm-form">
 			<tbody>

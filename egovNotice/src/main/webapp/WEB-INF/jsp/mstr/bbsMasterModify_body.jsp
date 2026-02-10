@@ -3,8 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="bm-wrap">
 	<form id="bmModForm" method="post"
-		data-update-url="<c:url value='/admin/bbsMaster/updateBbsMaster.do'/>"
-		data-detail-url="<c:url value='/admin/bbsMaster/selectBbsMasterDetail.do'/>">
+		data-update-url="<c:url value='/bbs/admin/bbsMaster/updateBbsMaster.do'/>"
+		data-detail-url="<c:url value='/bbs/admin/bbsMaster/selectBbsMasterDetail.do'/>">
 		<input type="hidden" name="bbsId" value="${bbsMasterVO.bbsId}" />
 
 		<table class="bm-form">

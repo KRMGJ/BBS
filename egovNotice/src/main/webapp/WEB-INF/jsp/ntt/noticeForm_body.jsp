@@ -6,7 +6,7 @@
 		<c:set var="isEdit" value="${not empty notice and not empty notice.nttId}" />
 
 		<form id="noticeForm" method="post" enctype="multipart/form-data"
-			action="<c:url value='${isEdit ? "/notice/update.do" : "/notice/insert.do"}'/>">
+			action="<c:url value='${isEdit ? "/bbs/notice/update.do" : "/bbs/notice/insert.do"}'/>">
 
 			<input type="hidden" name="nttId" value="${notice.nttId}" /> 
 			<input type="hidden" name="bbsId" value="${empty notice.bbsId ? param.bbsId : notice.bbsId}" />

@@ -12,13 +12,13 @@ $(function() {
 		}
 
 		$.ajax({
-			url: "/user/login.do",
+			url: "/bbs/user/login.do",
 			type: "POST",
 			dataType: "json",
 			data: { userId: userId, password: password },
 			success: function(res) {
 				if (res && res.result === "OK") {
-					location.href = "/notice/list.do";
+					location.href = "/bbs/notice/list.do";
 					return;
 				}
 				$msg.addClass("err").text("로그인 실패");
@@ -34,6 +34,6 @@ $(function() {
 	});
 
 	$("#btnJoin").on("click", function() {
-		location.href = "/user/joinView.do";
+		location.href = "/bbs/user/joinView.do";
 	});
 });

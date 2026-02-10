@@ -13,8 +13,8 @@
 		<!-- GNB -->
 		<nav class="gnb">
 			<ul>
-				<li><a href="<c:url value='/notice/list.do' />">공지사항</a></li>
-				<li><a href="#">자료실</a></li>
+				<li><a href="<c:url value='/bbs/notice/list.do' />">공지사항</a></li>
+				<li><a href="<c:url value='/bbs/dta/list.do' />">자료실</a></li>
 				<li><a href="#">민원안내</a></li>
 			</ul>
 		</nav>
@@ -27,7 +27,7 @@
 					<a href="" class="btn" id="logout">로그아웃</a>
 				</c:when>
 				<c:otherwise>
-					<a href="<c:url value='/user/loginView.do' />" class="btn">로그인</a>
+					<a href="<c:url value='/bbs/user/loginView.do' />" class="btn">로그인</a>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -46,11 +46,11 @@
 		$("#logout").on("click", function() {
             if (confirm("로그아웃 하시겠습니까?")) {
                 $.ajax({
-                    url: "<c:url value='/user/logout.do'/>",
+                    url: "<c:url value='/bbs/user/logout.do'/>",
                     method: "POST",
                     success: function() {
                         alert("로그아웃 되었습니다.");
-                        location.href = "<c:url value='/notice/list.do'/>";
+                        location.href = "<c:url value='/bbs/notice/list.do'/>";
                     },
                     error: function() {
                         alert("로그아웃 중 오류가 발생했습니다.");

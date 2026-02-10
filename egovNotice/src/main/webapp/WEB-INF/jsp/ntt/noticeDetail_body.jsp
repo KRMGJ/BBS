@@ -65,11 +65,10 @@
 					</ul>
 
 					<!-- 파일 다운로드 (소속검증용) -->
-					<form id="downloadForm" method="post"
-						action="<c:url value='/notice/downloadNoticeFile.do'/>">
-						<input type="hidden" name="nttId"
-							value="<c:out value='${notice.nttId}'/>" /> <input type="hidden"
-							name="atchFileId" /> <input type="hidden" name="fileSn" />
+					<form id="downloadForm" method="post" action="<c:url value='/bbs/notice/downloadNoticeFile.do'/>">
+						<input type="hidden" name="nttId" value="<c:out value='${notice.nttId}'/>" /> 
+						<input type="hidden" name="atchFileId" /> 
+						<input type="hidden" name="fileSn" />
 					</form>
 				</c:otherwise>
 			</c:choose>
@@ -78,22 +77,20 @@
 		<!-- 버튼 -->
 		<div class="nt-actions">
 			<a class="nt-btn"
-				href="<c:url value='/notice/list.do'/>?pageIndex=${pageIndex}&searchCondition=${fn:escapeXml(searchCondition)}&searchKeyword=${fn:escapeXml(searchKeyword)}">
+				href="<c:url value='/bbs/notice/list.do'/>?pageIndex=${pageIndex}&searchCondition=${fn:escapeXml(searchCondition)}&searchKeyword=${fn:escapeXml(searchKeyword)}">
 				목록 </a>
 
 			<c:if test="${canEdit eq true}">
 				<a class="nt-btn"
-					href="<c:url value='/notice/updateNoticeView.do'/>?nttId=${notice.nttId}&pageIndex=${pageIndex}">
+					href="<c:url value='/bbs/notice/updateNoticeView.do'/>?nttId=${notice.nttId}&pageIndex=${pageIndex}">
 					수정 </a>
 
 				<button type="button" class="js-delete nt-btn">삭제</button>
 
 				<!-- 논리 삭제 -->
-				<form id="deleteForm" method="post"
-					action="<c:url value='/notice/deleteNotice.do'/>">
-					<input type="hidden" name="nttId"
-						value="<c:out value='${notice.nttId}'/>" /> <input type="hidden"
-						name="bbsId" value="<c:out value='${notice.bbsId}'/>" />
+				<form id="deleteForm" method="post" action="<c:url value='/bbs/notice/deleteNotice.do'/>">
+					<input type="hidden" name="nttId" value="<c:out value='${notice.nttId}'/>" /> 
+					<input type="hidden" name="bbsId" value="<c:out value='${notice.bbsId}'/>" />
 				</form>
 			</c:if>
 		</div>

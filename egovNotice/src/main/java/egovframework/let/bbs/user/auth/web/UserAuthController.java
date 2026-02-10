@@ -14,13 +14,14 @@ import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.user.auth.service.UserAuthService;
 
 @Controller
+@RequestMapping("/bbs/user")
 public class UserAuthController {
 
 	@Resource(name = "userAuthService")
 	private UserAuthService userAuthService;
 
 	/** 로그인 화면 */
-	@RequestMapping(value = "/user/loginView.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/loginView.do", method = RequestMethod.GET)
 	public String loginView() {
 		return "user/login";
 	}
@@ -30,7 +31,7 @@ public class UserAuthController {
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/login.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Model> login(@RequestParam("userId") String userId, @RequestParam("password") String password,
 			Model model) throws Exception {
@@ -46,7 +47,7 @@ public class UserAuthController {
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/logout.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/logout.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Model> logout(Model model) throws Exception {
 		userAuthService.logout();
@@ -59,7 +60,7 @@ public class UserAuthController {
 	 * 
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/me.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/me.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Model> me(Model model) throws Exception {
 		LoginVO loginVO = userAuthService.meOrNull();

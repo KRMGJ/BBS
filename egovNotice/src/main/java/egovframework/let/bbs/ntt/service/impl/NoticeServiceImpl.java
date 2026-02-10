@@ -19,8 +19,8 @@ public class NoticeServiceImpl implements NoticeService {
 	@Resource(name = "noticeDAO")
 	private NoticeDAO noticeDAO;
 
-	@Resource(name = "noticeNttIdGnrService")
-	private EgovIdGnrService noticeNttIdGnrService;
+	@Resource(name = "egovNttIdGnrService")
+	private EgovIdGnrService egovNttIdGnrService;
 
 	@Resource(name = "fileMngService")
 	private FileMngService fileMngService;
@@ -65,7 +65,7 @@ public class NoticeServiceImpl implements NoticeService {
 			vo.setPinnedAt("N");
 		}
 
-		String nextId = noticeNttIdGnrService.getNextStringId();
+		String nextId = egovNttIdGnrService.getNextStringId();
 		vo.setNttId(nextId);
 
 		noticeDAO.insertNotice(vo);

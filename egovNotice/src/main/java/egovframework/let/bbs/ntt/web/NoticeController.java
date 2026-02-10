@@ -30,6 +30,7 @@ import egovframework.let.bbs.ntt.service.NoticeService;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
 @Controller
+@RequestMapping("/bbs/notice")
 public class NoticeController {
 
 	@Resource(name = "noticeService")
@@ -37,6 +38,8 @@ public class NoticeController {
 
 	@Resource(name = "fileMngService")
 	private FileMngService fileMngService;
+
+	private static final String NOTICE_BBS_ID = "BBSMSTR_000000000001";
 
 	/**
 	 * 공지사항 목록을 조회한다.
@@ -46,11 +49,10 @@ public class NoticeController {
 	 * @return 공지사항 목록 View
 	 * @throws Exception
 	 */
-	@RequestMapping("/notice/list.do")
+	@RequestMapping("/list.do")
 	public String noticeList(NoticeVO searchVO, Model model) throws Exception {
-		if (searchVO.getBbsId() == null || searchVO.getBbsId().isEmpty()) {
-			searchVO.setBbsId("BBSMSTR_000000000001");
-		}
+		searchVO.setBbsId(NOTICE_BBS_ID);
+
 		if (searchVO.getPageIndex() < 1) {
 			searchVO.setPageIndex(1);
 		}
@@ -93,12 +95,10 @@ public class NoticeController {
 	 * @return 공지사항 등록 View
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/notice/form.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/form.do", method = RequestMethod.GET)
 	public String noticeForm(@ModelAttribute("notice") NoticeVO vo, Model model) throws Exception {
-		// bbsId가 없으면 임시 기본값
-		if (vo.getBbsId() == null || vo.getBbsId().isEmpty()) {
-			vo.setBbsId("BBSMSTR_000000000001");
-		}
+		vo.setBbsId(NOTICE_BBS_ID);
+
 		model.addAttribute("notice", vo);
 		return "ntt/noticeForm";
 	}
@@ -113,23 +113,21 @@ public class NoticeController {
 	 * @return 공지사항 목록 View로 리다이렉트
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/notice/insert.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/insert.do", method = RequestMethod.POST)
 	public String insertNotice(@ModelAttribute("notice") NoticeVO vo,
 			@RequestParam(value = "files", required = false) MultipartFile[] files,
 			RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
 
-		if (vo.getBbsId() == null || vo.getBbsId().isEmpty()) {
-			vo.setBbsId("BBSMSTR_000000000001");
-		}
+		vo.setBbsId(NOTICE_BBS_ID);
 
 		if (vo.getSubject() == null || vo.getSubject().trim().isEmpty()) {
 			redirectAttributes.addFlashAttribute("msg", "제목은 필수입니다.");
-			return "redirect:/notice/form.do";
+			return "redirect:/bbs/notice/form.do";
 		}
 
 		if (vo.getContent() == null || vo.getContent().trim().isEmpty()) {
 			redirectAttributes.addFlashAttribute("msg", "내용은 필수입니다.");
-			return "redirect:/notice/form.do";
+			return "redirect:/bbs/notice/form.do";
 		}
 
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
@@ -154,7 +152,7 @@ public class NoticeController {
 		}
 
 		redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
-		return "redirect:/notice/list.do";
+		return "redirect:/bbs/notice/list.do";
 	}
 
 	/**
@@ -166,7 +164,7 @@ public class NoticeController {
 	 * @return 공지사항 상세 View
 	 * @throws Exception
 	 */
-	@RequestMapping("/notice/selectNoticeDetail.do")
+	@RequestMapping("/selectNoticeDetail.do")
 	public String selectNoticeDetail(@ModelAttribute("searchVO") NoticeVO searchVO, HttpServletRequest request,
 			Model model) throws Exception {
 
@@ -197,7 +195,7 @@ public class NoticeController {
 	/**
 	 * 다운로드 (소속검증 포함) JSP에서 POST: nttId + atchFileId + fileSn
 	 */
-	@RequestMapping("/notice/downloadNoticeFile.do")
+	@RequestMapping("/downloadNoticeFile.do")
 	public void downloadNoticeFile(@ModelAttribute("searchVO") NoticeVO vo, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -258,12 +256,11 @@ public class NoticeController {
 	 * @return 공지사항 수정 View
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/notice/updateNoticeView.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateNoticeView.do", method = RequestMethod.GET)
 	public String updateForm(@ModelAttribute("notice") NoticeVO vo, Model model) throws Exception {
-		// bbsId가 없으면 임시 기본값
-		if (vo.getBbsId() == null || vo.getBbsId().isEmpty()) {
-			vo.setBbsId("BBSMSTR_000000000001");
-		}
+
+		vo.setBbsId(NOTICE_BBS_ID);
+
 		NoticeVO result = noticeService.selectNoticeDetail(vo, false);
 		model.addAttribute("notice", result);
 
@@ -285,7 +282,7 @@ public class NoticeController {
 	 * @return 공지사항 상세 View로 리다이렉트
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/notice/update.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
 	public String updateNotice(@ModelAttribute("notice") NoticeVO vo,
 			@RequestParam(value = "files", required = false) MultipartFile[] files,
 			@RequestParam(value = "delFileSn", required = false) int[] delFileSn, RedirectAttributes redirectAttributes,
@@ -310,7 +307,7 @@ public class NoticeController {
 			noticeService.updateNotice(vo);
 
 			redirectAttributes.addFlashAttribute("msg", "수정되었습니다.");
-			return "redirect:/notice/detail.do?nttId=" + vo.getNttId();
+			return "redirect:/bbs/notice/detail.do?nttId=" + vo.getNttId();
 
 		} catch (Exception e) {
 			for (String path : savedFilePaths) {

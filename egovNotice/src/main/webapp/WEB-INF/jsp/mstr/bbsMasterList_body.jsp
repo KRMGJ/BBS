@@ -4,9 +4,9 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <div class="bm-wrap">
 	<form id="bmListForm" method="post"
-		data-list-url="<c:url value='/admin/bbsMaster/selectBbsMasterList.do'/>"
-		data-regist-view-url="<c:url value='/admin/bbsMaster/insertBbsMasterView.do'/>"
-		data-detail-url="<c:url value='/admin/bbsMaster/selectBbsMasterDetail.do'/>">
+		data-list-url="<c:url value='/bbs/admin/bbsMaster/selectBbsMasterList.do'/>"
+		data-regist-view-url="<c:url value='/bbs/admin/bbsMaster/insertBbsMasterView.do'/>"
+		data-detail-url="<c:url value='/bbs/admin/bbsMaster/selectBbsMasterDetail.do'/>">
 
 		<input type="hidden" name="pageIndex" value="${searchVO.pageIndex}" />
 		<input type="hidden" name="bbsId" value="" />

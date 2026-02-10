@@ -15,6 +15,7 @@ import egovframework.let.bbs.mstr.service.BbsMasterService;
 import egovframework.let.bbs.mstr.vo.BbsMasterVO;
 
 @Controller
+@RequestMapping("/bbs/admin/bbsMaster")
 public class BbsMasterController {
 
 	@Resource(name = "bbsMasterService")
@@ -28,7 +29,7 @@ public class BbsMasterController {
 	 * @return mstr/bbsMasterList
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/admin/bbsMaster/selectBbsMasterList.do")
+	@RequestMapping(value = "/selectBbsMasterList.do")
 	public String selectBbsMasterList(@ModelAttribute("searchVO") BbsMasterVO searchVO, Model model) throws Exception {
 
 		if (searchVO.getPageIndex() < 1) {
@@ -69,7 +70,7 @@ public class BbsMasterController {
 	 * @return mstr/bbsMasterRegist
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/admin/bbsMaster/insertBbsMasterView.do")
+	@RequestMapping(value = "/insertBbsMasterView.do")
 	public String insertBbsMasterView(@ModelAttribute("bbsMasterVO") BbsMasterVO vo, ModelMap model) throws Exception {
 		// 기본값(화면 기본값과 맞춤)
 		if (vo.getAtchPosblFileNumber() == 0) {
@@ -92,10 +93,10 @@ public class BbsMasterController {
 	 * 게시판 마스터 정보를 등록한다.
 	 * 
 	 * @param vo - 등록할 정보가 담긴 VO
-	 * @return "redirect:/admin/bbsMaster/selectBbsMasterList.do"
+	 * @return "redirect:/bbs/admin/bbsMaster/selectBbsMasterList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/admin/bbsMaster/insertBbsMaster.do")
+	@RequestMapping(value = "/insertBbsMaster.do")
 	public String insertBbsMaster(@ModelAttribute("bbsMasterVO") BbsMasterVO vo) throws Exception {
 
 		// 서버 측 필수값 검증(최소)
@@ -107,7 +108,7 @@ public class BbsMasterController {
 		String bbsId = bbsMasterService.insertBbsMaster(vo);
 
 		// 등록 후 상세로 이동
-		return "redirect:/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=" + bbsId;
+		return "redirect:/bbs/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=" + bbsId;
 		// 목록으로 보내려면 아래 주석 해제
 		// return "redirect:/admin/bbsMaster/selectBbsMasterList.do";
 	}
@@ -120,12 +121,12 @@ public class BbsMasterController {
 	 * @return mstr/bbsMasterDetail
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/admin/bbsMaster/selectBbsMasterDetail.do")
+	@RequestMapping(value = "/selectBbsMasterDetail.do")
 	public String selectBbsMasterDetail(@ModelAttribute("searchVO") BbsMasterVO searchVO, Model model)
 			throws Exception {
 		if (searchVO.getBbsId() == null || searchVO.getBbsId().trim().isEmpty()) {
 			// bbsId 없으면 목록으로(필요하면 에러 메시지 처리)
-			return "redirect:/admin/bbsMaster/selectBbsMasterList.do";
+			return "redirect:/bbs/admin/bbsMaster/selectBbsMasterList.do";
 		}
 
 		BbsMasterVO bbsMasterVO = bbsMasterService.selectBbsMasterDetail(searchVO);
@@ -142,11 +143,11 @@ public class BbsMasterController {
 	 * @return mstr/bbsMasterModify
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/admin/bbsMaster/updateBbsMasterView.do")
+	@RequestMapping(value = "/updateBbsMasterView.do")
 	public String updateBbsMasterView(@ModelAttribute("searchVO") BbsMasterVO searchVO, Model model) throws Exception {
 
 		if (searchVO.getBbsId() == null || searchVO.getBbsId().trim().isEmpty()) {
-			return "redirect:/admin/bbsMaster/selectBbsMasterList.do";
+			return "redirect:/bbs/admin/bbsMaster/selectBbsMasterList.do";
 		}
 
 		BbsMasterVO detail = bbsMasterService.selectBbsMasterDetail(searchVO);
@@ -161,16 +162,16 @@ public class BbsMasterController {
 	 * @param bbsMasterVO - 수정할 정보가 담긴 VO
 	 * @param searchVO    - 검색정보가 담긴 VO
 	 * @param model       - 모델
-	 * @return "redirect:/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=..."
+	 * @return "redirect:/bbs/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=..."
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/admin/bbsMaster/updateBbsMaster.do")
+	@RequestMapping(value = "/updateBbsMaster.do")
 	public String updateBbsMaster(@ModelAttribute("bbsMasterVO") BbsMasterVO bbsMasterVO,
 			@ModelAttribute("searchVO") BbsMasterVO searchVO, Model model) throws Exception {
 
 		// 필수값 최소 검증
 		if (bbsMasterVO.getBbsId() == null || bbsMasterVO.getBbsId().trim().isEmpty()) {
-			return "redirect:/admin/bbsMaster/selectBbsMasterList.do";
+			return "redirect:/bbs/admin/bbsMaster/selectBbsMasterList.do";
 		}
 		if (bbsMasterVO.getBbsNm() == null || bbsMasterVO.getBbsNm().trim().isEmpty()) {
 			// 수정 화면으로 복귀(상세 다시 로드해서 뿌려도 됨)
@@ -180,7 +181,7 @@ public class BbsMasterController {
 
 		bbsMasterService.updateBbsMaster(bbsMasterVO);
 
-		return "redirect:/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=" + bbsMasterVO.getBbsId();
+		return "redirect:/bbs/admin/bbsMaster/selectBbsMasterDetail.do?bbsId=" + bbsMasterVO.getBbsId();
 	}
 
 }
