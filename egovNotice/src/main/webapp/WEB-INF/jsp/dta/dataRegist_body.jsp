@@ -20,9 +20,9 @@
 			</div>
 
 			<div class="dta-row">
-				<label>첨부파일</label> 
-				<input type="file" name="file_1" class="dta-file" />
-				<div class="dta-hint">※ 여러 파일 업로드는 백엔드에서 확장 예정</div>
+				<label for="files">첨부파일</label> 
+				<input type="file" id="files" name="files" multiple />
+				<div class="nt-hint">여러 파일 선택 가능</div>
 			</div>
 
 		</div>

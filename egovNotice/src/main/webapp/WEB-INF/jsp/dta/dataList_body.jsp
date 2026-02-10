@@ -23,6 +23,9 @@
 
 				<button type="submit">검색</button>
 			</div>
+			<div>
+				<button type="button" id="btnReg">등록</button>
+			</div>
 		</div>
 	</form>
 

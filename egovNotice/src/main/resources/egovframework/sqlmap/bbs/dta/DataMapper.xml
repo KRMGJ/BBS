@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="DataDAO">
 
+	<!-- 자료실 목록 -->
 	<select id="selectDataList"
 		parameterType="egovframework.let.bbs.dta.vo.DataVO"
 		resultType="egovframework.let.bbs.dta.vo.DataVO">
@@ -42,6 +43,7 @@
         ]]>
 	</select>
 
+    <!-- 자료실 목록 카운트 -->
 	<select id="selectDataListCnt" parameterType="egovframework.let.bbs.dta.vo.DataVO" resultType="int">
 
 		SELECT COUNT(*)
@@ -51,4 +53,65 @@
 			AND USE_AT = 'Y'
 			AND PINNED_AT = 'N'
 	</select>
+	
+	<!-- 자료실 등록 -->
+	<insert id="insertData" parameterType="egovframework.let.bbs.dta.vo.DataVO">
+		INSERT INTO COMTNBBS (
+			NTT_ID,
+			BBS_ID,
+			SUBJECT,
+			CONTENT,
+			VIEW_CNT,
+			PINNED_AT,
+			ATCH_FILE_ID,
+			USE_AT,
+			DEL_AT,
+			FRST_REGISTER_ID,
+			FRST_REGIST_PNTTM
+		) VALUES (
+			#{nttId},
+			#{bbsId},
+			#{subject},
+			#{content},
+			0,
+			'N',
+			#{atchFileId},
+			'Y',
+			'N',
+			#{frstRegisterId},
+			SYSDATE
+		)
+	</insert>
+	
+	<!-- 자료실 상세 -->
+	<select id="selectDataDetail" resultType="egovframework.let.bbs.dta.vo.DataVO">
+		SELECT
+			NTT_ID       AS nttId,
+			BBS_ID       AS bbsId,
+			SUBJECT      AS subject,
+			CONTENT      AS content,
+			VIEW_CNT     AS viewCnt,
+			ATCH_FILE_ID AS atchFileId,
+			FRST_REGISTER_ID AS frstRegisterId,
+			TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD') AS frstRegistPnttm
+		FROM COMTNBBS
+		WHERE NTT_ID = #{nttId}
+			AND DEL_AT = 'N'
+	</select>
+
+    <!-- 자료실 조회수 업데이트 -->
+	<update id="updateViewCnt">
+		UPDATE COMTNBBS
+		SET VIEW_CNT = VIEW_CNT + 1
+		WHERE NTT_ID = #{nttId}
+	</update>
+	
+	<select id="selectAtchFileIdByNttId" parameterType="egovframework.let.bbs.dta.vo.DataVO" resultType="string">
+		SELECT ATCH_FILE_ID
+		FROM COMTNBBS
+		WHERE NTT_ID = #{nttId}
+			AND DEL_AT = 'N'
+			AND USE_AT = 'Y'
+	</select>
+	
 </mapper>

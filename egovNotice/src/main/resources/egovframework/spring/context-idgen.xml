@@ -17,15 +17,15 @@
 		<property name="blockSize" value="1" />
 	</bean>
 
-	<bean id="noticeNttIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+	<bean id="nttIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
 		<property name="prefix" value="NTT_" />
 		<property name="fillChar" value="0" />
 		<property name="cipers" value="12" />
 	</bean>
 
-	<bean id="noticeNttIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
+	<bean id="egovNttIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
 		<property name="dataSource" ref="dataSource" />
-		<property name="strategy" ref="noticeNttIdStrategy" />
+		<property name="strategy" ref="nttIdStrategy" />
 		<property name="table" value="COMTECOPSEQ" />
 		<property name="tableName" value="COMTNBBS" />
 		<property name="blockSize" value="1" />

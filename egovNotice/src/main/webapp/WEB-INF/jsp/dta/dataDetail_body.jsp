@@ -1,50 +1,57 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<div class="dta-board-detail">
+<div class="dta-wrap">
 
-	<h3 class="dta-title">
-		<c:out value="${result.subject}" />
-	</h3>
+	<div class="dta-box">
 
-	<div class="dta-info">
-		<span>작성자 : <c:out value="${result.frstRegisterId}" /></span> <span>작성일
-			: <c:out value="${fn:substring(result.frstRegistPnttm, 0, 10)}" />
-		</span> <span>조회수 : <c:out value="${result.viewCnt}" /></span>
-	</div>
+		<h2 class="dta-title">
+			<c:out value="${result.subject}" />
+		</h2>
 
-	<div class="dta-content">
-		<c:out value="${result.content}" escapeXml="false" />
-	</div>
-
-	<c:if test="${not empty result.atchFileId}">
-		<div class="dta-attach">
-			<h4>첨부파일</h4>
-			<ul>
-				<c:forEach var="file" items="${fileList}">
-					<li><a class="dta-file-link"
-						href="<c:url value='/cmm/fms/FileDown.do'>
-                                    <c:param name='atchFileId' value='${file.atchFileId}'/>
-                                    <c:param name='fileSn' value='${file.fileSn}'/>
-                                 </c:url>">
-							<c:out value="${file.orignlFileNm}" />
-					</a> (<c:out value="${file.fileSize}" /> byte)</li>
-				</c:forEach>
-			</ul>
+		<div class="dta-meta">
+			<span>작성자: <c:out value="${result.frstRegisterId}" /></span> 
+			<span>작성일: <c:out value="${result.frstRegistPnttm}" /></span> 
+			<span>조회수: <c:out value="${result.viewCnt}" /></span>
 		</div>
-	</c:if>
 
-	<div class="dta-btn-area">
-		<a class="dta-btn" href="<c:url value='/bbs/dta/list.do'/>">목록</a> <a
-			class="dta-btn"
-			href="<c:url value='/bbs/dta/modify.do'>
-                    <c:param name='nttId' value='${result.nttId}'/>
-                 </c:url>">수정</a>
-		<a class="dta-btn dta-btn-delete"
-			href="<c:url value='/bbs/dta/delete.do'>
-                    <c:param name='nttId' value='${result.nttId}'/>
-                 </c:url>">삭제</a>
+		<div class="dta-content">
+			<c:out value="${result.content}" />
+		</div>
+
+		<div class="dta-files">
+			<strong>첨부파일</strong>
+
+			<c:choose>
+				<c:when test="${empty fileList}">
+					<div class="dta-muted">첨부파일이 없습니다.</div>
+				</c:when>
+				<c:otherwise>
+					<ul>
+						<c:forEach var="f" items="${fileList}">
+							<li><a href="#" class="js-file-download"
+								data-atch="${f.atchFileId}" data-sn="${f.fileSn}"> <c:out
+										value="${f.orignlFileNm}" />
+							</a> <span class="dta-muted"> (<c:out value="${f.fileSize}" />
+									byte)
+							</span></li>
+						</c:forEach>
+					</ul>
+
+					<!-- 파일 다운로드 (소속검증용) -->
+					<form id="downloadForm" method="post" action="<c:url value='/bbs/dta/downloadDataFile.do'/>">
+						<input type="hidden" name="nttId" value="<c:out value='${result.nttId}'/>" /> 
+						<input type="hidden" name="atchFileId" /> 
+						<input type="hidden" name="fileSn" />
+					</form>
+				</c:otherwise>
+			</c:choose>
+		</div>
+
+	</div>
+
+	<div class="dta-actions">
+		<button type="button" class="dta-btn" id="btnList">목록</button>
 	</div>
 
 </div>
