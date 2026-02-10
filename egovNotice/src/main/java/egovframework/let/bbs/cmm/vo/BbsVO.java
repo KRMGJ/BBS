@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class BbsVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String nttId; // NTT_ID (게시물ID)
 	private String bbsId; // BBS_ID (게시판ID)
 	private String subject; // 제목
 	private String content; // 내용
@@ -185,5 +186,13 @@ public class BbsVO implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getNttId() {
+		return nttId;
+	}
+
+	public void setNttId(String nttId) {
+		this.nttId = nttId;
 	}
 }

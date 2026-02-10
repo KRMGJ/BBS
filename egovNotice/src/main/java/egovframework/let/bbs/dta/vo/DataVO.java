@@ -1,7 +1,8 @@
 package egovframework.let.bbs.dta.vo;
 
-import java.io.Serializable;
+import egovframework.let.bbs.cmm.vo.BbsVO;
 
-public class DataVO implements Serializable {
+public class DataVO extends BbsVO {
+	private static final long serialVersionUID = 1L;
 
 }
