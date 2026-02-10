@@ -2,8 +2,6 @@ package egovframework.let.bbs.ntt.web;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +24,7 @@ import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.cmm.fms.service.FileMngService;
 import egovframework.let.bbs.cmm.fms.service.impl.FileMngServiceImpl.FileSaveResult;
 import egovframework.let.bbs.cmm.fms.vo.FileVO;
+import egovframework.let.bbs.cmm.util.Util;
 import egovframework.let.bbs.ntt.service.NoticeService;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
@@ -169,7 +168,7 @@ public class NoticeController {
 			Model model) throws Exception {
 
 		// 조회수 세션 중복방지
-		boolean increase = shouldIncreaseViewCount(request.getSession(), searchVO.getNttId());
+		boolean increase = Util.shouldIncreaseViewCount(request.getSession(), searchVO.getNttId());
 
 		NoticeVO notice = noticeService.selectNoticeDetail(searchVO, increase);
 		if (notice == null) {
@@ -183,7 +182,7 @@ public class NoticeController {
 		}
 
 		// 권한: 일단 "작성자ID == 세션 loginId" 기준(관리자 확장 가능)
-		String loginId = getLoginIdOrNull(request.getSession());
+		String loginId = Util.getLoginIdOrNull(request.getSession());
 		boolean canEdit = (loginId != null && loginId.equals(notice.getFrstRegisterId()));
 
 		model.addAttribute("notice", notice);
@@ -237,7 +236,7 @@ public class NoticeController {
 			throw new IllegalStateException("파일이 존재하지 않습니다.");
 		}
 
-		String downloadName = encodeFilename(f.getOrignlFileNm());
+		String downloadName = Util.encodeFilename(f.getOrignlFileNm());
 
 		response.setContentType("application/octet-stream");
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadName + "\"");
@@ -315,36 +314,5 @@ public class NoticeController {
 			}
 			throw e;
 		}
-	}
-
-	/**
-	 * 세션 기반 조회수 증가 여부 판단
-	 */
-	private boolean shouldIncreaseViewCount(HttpSession session, String nttId) {
-		if (nttId == null || nttId.isBlank()) {
-			return false;
-		}
-		String key = "NOTICE_VIEWED_" + nttId;
-		if (session.getAttribute(key) != null) {
-			return false;
-		}
-		session.setAttribute(key, Boolean.TRUE);
-		return true;
-	}
-
-	/**
-	 * 세션에서 loginId를 얻는다.
-	 */
-	private String getLoginIdOrNull(HttpSession session) {
-		LoginVO vo = (LoginVO) session.getAttribute("loginVO");
-		return (vo == null) ? null : vo.getUniqId();
-	}
-
-	private String encodeFilename(String name) {
-		if (name == null || name.isBlank()) {
-			name = "file";
-		}
-		String encoded = URLEncoder.encode(name, StandardCharsets.UTF_8);
-		return encoded.replaceAll("\\+", "%20");
 	}
 }

@@ -51,6 +51,13 @@ public interface NoticeService {
 	 */
 	NoticeVO selectNoticeDetail(NoticeVO vo, boolean increaseViewCnt) throws Exception;
 
+	/**
+	 * 공지사항 첨부파일 ID를 조회한다.
+	 * 
+	 * @param vo - 조회할 정보가 담긴 VO
+	 * @return 첨부파일 ID
+	 * @throws Exception
+	 */
 	String selectAtchFileIdByNttId(NoticeVO vo) throws Exception;
 
 	/**
