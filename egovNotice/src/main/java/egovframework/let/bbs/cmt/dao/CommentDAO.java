@@ -37,4 +37,13 @@ public class CommentDAO extends EgovAbstractMapper {
 	public void deleteComment(CommentVO vo) {
 		update("CommentDAO.deleteComment", vo);
 	}
+
+	/**
+	 * 댓글 수정
+	 * 
+	 * @param vo - 수정할 댓글 정보가 담긴 CommentVO
+	 */
+	public void updateComment(CommentVO vo) {
+		update("CommentDAO.updateComment", vo);
+	}
 }

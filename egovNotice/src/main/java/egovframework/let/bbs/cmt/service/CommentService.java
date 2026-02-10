@@ -31,4 +31,12 @@ public interface CommentService {
 	 * @throws Exception
 	 */
 	void deleteComment(CommentVO vo) throws Exception;
+
+	/**
+	 * 댓글 수정
+	 * 
+	 * @param vo - 수정할 댓글 정보가 담긴 CommentVO
+	 * @throws Exception
+	 */
+	void updateComment(CommentVO vo) throws Exception;
 }

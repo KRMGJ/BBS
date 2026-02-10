@@ -57,8 +57,28 @@ public class CommentController {
 	@ResponseBody
 	public String deleteComment(CommentVO vo) throws Exception {
 
-		// TODO: 작성자 본인 / 관리자 체크
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (!loginVO.getUniqId().equals(vo.getFrstRegisterId())) {
+			return "NOT_AUTHORIZED";
+		}
 		commentService.deleteComment(vo);
+		return "OK";
+	}
+
+	/**
+	 * 댓글 수정
+	 */
+	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateComment(CommentVO vo) throws Exception {
+
+		vo.setCommentCn(EgovUtil.clearXSS(vo.getCommentCn()));
+
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (!loginVO.getUniqId().equals(vo.getFrstRegisterId())) {
+			return "NOT_AUTHORIZED";
+		}
+		commentService.updateComment(vo);
 		return "OK";
 	}
 }

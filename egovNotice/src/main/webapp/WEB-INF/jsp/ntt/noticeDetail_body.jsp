@@ -11,6 +11,7 @@
 
 <div class="nt-wrap">
 	<input type="hidden" id="nttId" value="<c:out value='${notice.nttId}'/>" /> 
+	<input type="hidden" id="loginUserId" value="${sessionScope.loginVO.uniqId}" />
 	<!-- 상세 박스 -->
 	<div class="nt-box">
 

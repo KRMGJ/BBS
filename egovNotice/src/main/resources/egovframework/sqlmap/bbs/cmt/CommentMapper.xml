@@ -34,5 +34,12 @@
 			DEL_AT = 'Y'
 		WHERE COMMENT_ID = #{commentId}
 	</update>
+	
+	<update id="updateComment" parameterType="egovframework.let.bbs.cmt.vo.CommentVO">
+        UPDATE COMTNBBS_COMMENT
+        SET 
+            COMMENT_CN = #{commentCn}
+        WHERE COMMENT_ID = #{commentId}
+	</update>
 
 </mapper>
