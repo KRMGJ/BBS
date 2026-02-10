@@ -52,14 +52,14 @@
 						<td class="nt-col-no">공지</td>
 						<td>
 							<a href="<c:url value='/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
-								<c:out value="${n.nttSj}" />
+								<c:out value="${n.subject}" />
 							</a> 
 							<c:if test="${not empty n.atchFileId}">
 								<span class="nt-muted">[첨부]</span>
 							</c:if>
 						</td>
 						<td class="nt-col-date"><c:out value="${n.frstRegistPnttm}" /></td>
-						<td class="nt-col-view"><c:out value="${n.inqireCo}" /></td>
+						<td class="nt-col-view"><c:out value="${n.viewCnt}" /></td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -72,14 +72,14 @@
 							<td class="nt-col-no"><c:out value="${n.nttId}" /></td>
 							<td>
 								<a href="<c:url value='/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
-									<c:out value="${n.nttSj}" />
+									<c:out value="${n.subject}" />
 								</a> 
 								<c:if test="${not empty n.atchFileId}">
 									<span class="muted">[첨부]</span>
 								</c:if>
 							</td>
 							<td class="nt-col-date"><c:out value="${n.frstRegistPnttm}" /></td>
-							<td class="nt-col-view"><c:out value="${n.inqireCo}" /></td>
+							<td class="nt-col-view"><c:out value="${n.viewCnt}" /></td>
 						</tr>
 					</c:forEach>
 				</c:when>

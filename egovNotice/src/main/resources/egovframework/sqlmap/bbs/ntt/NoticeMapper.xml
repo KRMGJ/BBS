@@ -5,9 +5,9 @@
 	<!-- 공지 "유효기간" 판정 (오늘 기준) -->
 	<sql id="noticePeriodCondition">
 		(
-			(NOTICE_BGNDE IS NULL OR NOTICE_BGNDE &lt;= TO_CHAR(SYSDATE, 'YYYYMMDD'))
+			(START_DATE IS NULL OR START_DATE &lt;= TO_CHAR(SYSDATE, 'YYYYMMDD'))
 			AND
-			(NOTICE_ENDDE IS NULL OR NOTICE_ENDDE &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD'))
+			(END_DATE IS NULL OR END_DATE &gt;= TO_CHAR(SYSDATE, 'YYYYMMDD'))
 		)
 	</sql>
 
@@ -17,11 +17,11 @@
 			<choose>
 				<!-- 0: 제목 -->
 				<when test="searchCondition == '0'">
-					AND NTT_SJ LIKE '%' || #{searchKeyword} || '%'
+					AND SUBJECT LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<!-- 1: 내용 -->
 				<when test="searchCondition == '1'">
-					AND NTT_CN LIKE '%' || #{searchKeyword} || '%'
+					AND CONTENT LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<!-- 2: 작성자 -->
 				<when test="searchCondition == '2'">
@@ -29,7 +29,7 @@
 				</when>
 				<!-- 기본: 제목 -->
 				<otherwise>
-					AND NTT_SJ LIKE '%' || #{searchKeyword} || '%'
+					AND SUBJECT LIKE '%' || #{searchKeyword} || '%'
 				</otherwise>
 			</choose>
 		</if>
@@ -52,17 +52,17 @@
 		SELECT
 			NTT_ID AS nttId,
 			BBS_ID AS bbsId,
-			NTT_SJ AS nttSj,
+			SUBJECT AS subject,
 			TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS frstRegistPnttm,
 			FRST_REGISTER_ID AS frstRegisterId,
-			INQIRE_CO AS inqireCo,
-			NOTICE_AT AS noticeAt,
-			NOTICE_BGNDE AS noticeBgnde,
-			NOTICE_ENDDE AS noticeEndde,
+			VIEW_CNT AS viewCnt,
+			PINNED_AT AS pinnedAt,
+			START_DATE AS startDate,
+			END_DATE AS endDate,
 			ATCH_FILE_ID AS atchFileId
 		FROM COMTNBBS
 		<include refid="baseFilter" />
-			AND NOTICE_AT = 'Y'
+			AND PINNED_AT = 'Y'
 			AND
 		<include refid="noticePeriodCondition" />
 		ORDER BY FRST_REGIST_PNTTM DESC, NTT_ID DESC
@@ -87,19 +87,19 @@
 				SELECT
 				NTT_ID AS nttId,
 				BBS_ID AS bbsId,
-				NTT_SJ AS nttSj,
+				SUBJECT AS subject,
 				TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS frstRegistPnttm,
 				FRST_REGISTER_ID AS frstRegisterId,
-				INQIRE_CO AS inqireCo,
-				NOTICE_AT AS noticeAt,
-				NOTICE_BGNDE AS noticeBgnde,
-				NOTICE_ENDDE AS noticeEndde,
+				VIEW_CNT AS viewCnt,
+				PINNED_AT AS pinnedAt,
+				START_DATE AS startDate,
+				END_DATE AS endDate,
 				ATCH_FILE_ID AS atchFileId
 			FROM COMTNBBS
 			<include refid="baseFilter" />
 				<!-- "유효 공지"는 일반 목록에서 제외 -->
 				AND NOT (
-				NOTICE_AT = 'Y'
+				PINNED_AT = 'Y'
 				AND
 				<include refid="noticePeriodCondition" />
 				)
@@ -124,7 +124,7 @@
 		FROM COMTNBBS
 		<include refid="baseFilter" />
 		AND NOT (
-		NOTICE_AT = 'Y'
+		PINNED_AT = 'Y'
 		AND
 		<include refid="noticePeriodCondition" />
 		)
@@ -136,12 +136,12 @@
   		INSERT INTO COMTNBBS (
 		    NTT_ID,
 		    BBS_ID,
-		    NTT_SJ,
-		    NTT_CN,
-		    INQIRE_CO,
-		    NOTICE_AT,
-		    NOTICE_BGNDE,
-		    NOTICE_ENDDE,
+		    SUBJECT,
+		    CONTENT,
+		    VIEW_CNT,
+		    PINNED_AT,
+		    START_DATE,
+		    END_DATE,
 		    ATCH_FILE_ID,
 		    USE_AT,
 		    DEL_AT,
@@ -152,12 +152,12 @@
 		  ) VALUES (
 		    #{nttId},
 		    #{bbsId},
-		    #{nttSj},
-		    #{nttCn},
+		    #{subject},
+		    #{content},
 		    0,
-		    #{noticeAt},
-		    #{noticeBgnde},
-		    #{noticeEndde},
+		    #{pinnedAt},
+		    #{startDate},
+		    #{endDate},
 		    #{atchFileId},
 		    #{useAt},
 		    #{delAt},
@@ -175,14 +175,14 @@
 		SELECT
 			NTT_ID AS nttId,
 			BBS_ID AS bbsId,
-			NTT_SJ AS nttSj,
-			NTT_CN AS nttCn,
+			SUBJECT AS subject,
+			CONTENT AS content,
 			FRST_REGISTER_ID AS frstRegisterId,
 			TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS frstRegistPnttm,
-			INQIRE_CO AS inqireCo,
-			NOTICE_AT AS noticeAt,
-			NOTICE_BGNDE AS noticeBgnde,
-			NOTICE_ENDDE AS noticeEndde,
+			VIEW_CNT AS viewCnt,
+			PINNED_AT AS pinnedAt,
+			START_DATE AS startDate,
+			END_DATE AS endDate,
 			DEL_AT AS delAt,
 			USE_AT AS useAt,
 			ATCH_FILE_ID AS atchFileId
@@ -195,7 +195,7 @@
     <!-- 조회수 증가 -->
 	<update id="updateInqireCo" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO">
 		UPDATE COMTNBBS
-		SET INQIRE_CO = INQIRE_CO + 1
+		SET VIEW_CNT = VIEW_CNT + 1
 		WHERE NTT_ID = #{nttId}
 			AND DEL_AT = 'N'
 			AND USE_AT = 'Y'
@@ -214,25 +214,25 @@
 	<update id="updateNotice" parameterType="egovframework.let.bbs.ntt.vo.NoticeVO">
 		UPDATE COMTNBBS
 		  <set>
-		      NTT_SJ = #{nttSj},
-		      NTT_CN = #{nttCn},
-		      NOTICE_AT = #{noticeAt},
+		      SUBJECT = #{subject},
+		      CONTENT = #{content},
+		      PINNED_AT = #{pinnedAt},
 		
 		      <choose>
-		          <when test="noticeBgnde != null and noticeBgnde != ''">
-		              NOTICE_BGNDE = #{noticeBgnde},
+		          <when test="startDate != null and startDate != ''">
+		              START_DATE = #{startDate},
 		          </when>
 		          <otherwise>
-		              NOTICE_BGNDE = NULL,
+		              START_DATE = NULL,
 		          </otherwise>
 		      </choose>
 		
 		      <choose>
-		          <when test="noticeEndde != null and noticeEndde != ''">
-		              NOTICE_ENDDE = #{noticeEndde},
+		          <when test="endDate != null and endDate != ''">
+		              END_DATE = #{endDate},
 		          </when>
 		          <otherwise>
-		              NOTICE_ENDDE = NULL,
+		              END_DATE = NULL,
 		          </otherwise>
 		      </choose>
 		

@@ -12,23 +12,23 @@
 			<input type="hidden" name="bbsId" value="${empty notice.bbsId ? param.bbsId : notice.bbsId}" />
 
 			<div class="nt-row">
-				<label for="nttSj">제목</label> 
-				<input type="text" id="nttSj" name="nttSj" value="${fn:escapeXml(notice.nttSj)}" maxlength="500" />
+				<label for="subject">제목</label> 
+				<input type="text" id="subject" name="subject" value="${fn:escapeXml(notice.subject)}" maxlength="500" />
 			</div>
 
 			<div class="nt-row">
-				<label for="nttCn">내용</label>
-				<textarea id="nttCn" name="nttCn"><c:out value="${notice.nttCn}" /></textarea>
+				<label for="content">내용</label>
+				<textarea id="content" name="content"><c:out value="${notice.content}" /></textarea>
 			</div>
 
 			<div class="nt-row nt-grid2">
 				<div>
-					<label for="noticeAt">공지 설정</label> 
-					<select id="noticeAt" name="noticeAt">
+					<label for="pinnedAt">공지 설정</label> 
+					<select id="pinnedAt" name="pinnedAt">
 						<option value="N"
-							<c:if test="${notice.noticeAt != 'Y'}">selected</c:if>>일반</option>
+							<c:if test="${notice.pinnedAt != 'Y'}">selected</c:if>>일반</option>
 						<option value="Y"
-							<c:if test="${notice.noticeAt == 'Y'}">selected</c:if>>공지(상단)</option>
+							<c:if test="${notice.pinnedAt == 'Y'}">selected</c:if>>공지(상단)</option>
 					</select>
 					<div class="nt-hint">공지(상단) 선택 시 목록 상단에 노출</div>
 				</div>
@@ -36,10 +36,10 @@
 				<div>
 					<label>게시기간(선택)</label>
 					<div class="nt-grid2" style="grid-template-columns: 1fr 1fr;">
-						<input type="text" name="noticeBgnde" placeholder="시작(YYYYMMDD)"
-							value="${fn:escapeXml(notice.noticeBgnde)}" /> 
-						<input type="text" name="noticeEndde" placeholder="종료(YYYYMMDD)"
-							value="${fn:escapeXml(notice.noticeEndde)}" />
+						<input type="text" name="startDate" placeholder="시작(YYYYMMDD)"
+							value="${fn:escapeXml(notice.startDate)}" /> 
+						<input type="text" name="endDate" placeholder="종료(YYYYMMDD)"
+							value="${fn:escapeXml(notice.endDate)}" />
 					</div>
 					<div class="nt-hint">비우면 기간 제한 없이 노출(백엔드 정책에 따라)</div>
 				</div>

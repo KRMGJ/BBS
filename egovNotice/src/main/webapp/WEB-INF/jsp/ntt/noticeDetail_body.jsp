@@ -15,33 +15,33 @@
 
 		<!-- 제목 -->
 		<h2 class="nt-title">
-			<c:if test="${notice.noticeAt eq 'Y'}">
+			<c:if test="${notice.pinnedAt eq 'Y'}">
 				<span class="nt-badge-notice">[공지]</span>
 			</c:if>
-			<c:out value="${notice.nttSj}" />
+			<c:out value="${notice.subject}" />
 		</h2>
 
 		<!-- 메타 정보 -->
 		<div class="nt-meta">
 			<span>작성자: <c:out value="${notice.frstRegisterId}" /></span> <span>작성일:
 				<c:out value="${notice.frstRegistPnttm}" />
-			</span> <span>조회수: <c:out value="${notice.inqireCo}" /></span>
+			</span> <span>조회수: <c:out value="${notice.viewCnt}" /></span>
 		</div>
 
 		<!-- 공지 기간 -->
 		<c:if
-			test="${notice.noticeAt eq 'Y' && (not empty notice.noticeBgnde || not empty notice.noticeEndde)}">
+			test="${notice.pinnedAt eq 'Y' && (not empty notice.startDate || not empty notice.endDate)}">
 			<div class="nt-notice-period nt-muted">
 				게시기간 :
-				<c:out value="${notice.noticeBgnde}" />
+				<c:out value="${notice.startDate}" />
 				~
-				<c:out value="${notice.noticeEndde}" />
+				<c:out value="${notice.endDate}" />
 			</div>
 		</c:if>
 
 		<!-- 내용 -->
 		<div class="nt-content">
-			<c:out value="${notice.nttCn}" />
+			<c:out value="${notice.content}" />
 		</div>
 
 		<!-- 첨부파일 -->

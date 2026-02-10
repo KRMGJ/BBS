@@ -122,12 +122,12 @@ public class NoticeController {
 			vo.setBbsId("BBSMSTR_000000000001");
 		}
 
-		if (vo.getNttSj() == null || vo.getNttSj().trim().isEmpty()) {
+		if (vo.getSubject() == null || vo.getSubject().trim().isEmpty()) {
 			redirectAttributes.addFlashAttribute("msg", "제목은 필수입니다.");
 			return "redirect:/notice/form.do";
 		}
 
-		if (vo.getNttCn() == null || vo.getNttCn().trim().isEmpty()) {
+		if (vo.getContent() == null || vo.getContent().trim().isEmpty()) {
 			redirectAttributes.addFlashAttribute("msg", "내용은 필수입니다.");
 			return "redirect:/notice/form.do";
 		}

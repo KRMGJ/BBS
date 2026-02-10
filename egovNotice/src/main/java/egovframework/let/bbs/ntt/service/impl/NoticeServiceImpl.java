@@ -61,8 +61,8 @@ public class NoticeServiceImpl implements NoticeService {
 		if (vo.getDelAt() == null || vo.getDelAt().isEmpty()) {
 			vo.setDelAt("N");
 		}
-		if (vo.getNoticeAt() == null || vo.getNoticeAt().isEmpty()) {
-			vo.setNoticeAt("N");
+		if (vo.getPinnedAt() == null || vo.getPinnedAt().isEmpty()) {
+			vo.setPinnedAt("N");
 		}
 
 		String nextId = noticeNttIdGnrService.getNextStringId();
