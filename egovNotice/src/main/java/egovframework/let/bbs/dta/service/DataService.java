@@ -1,5 +1,11 @@
 package egovframework.let.bbs.dta.service;
 
-public interface DataService {
+import java.util.List;
 
+import egovframework.let.bbs.dta.vo.DataVO;
+
+public interface DataService {
+	List<DataVO> selectDataList(DataVO searchVO) throws Exception;
+
+	int selectDataListCnt(DataVO searchVO) throws Exception;
 }

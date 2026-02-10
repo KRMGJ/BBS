@@ -1,0 +1,167 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 20px;
+}
+
+h1 {
+    font-size: 22px;
+    margin: 0 0 16px;
+}
+
+.dta-wrap {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.dta-toolbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
+	gap: 12px;
+	margin: 12px 0;
+}
+
+.dta-search {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.dta-search select, .dta-search input[type="text"] {
+	height: 32px;
+	padding: 0 8px;
+	box-sizing: border-box;
+}
+
+.dta-toolbar button {
+	height: 32px;
+	padding: 0 12px;
+	cursor: pointer;
+}
+
+.dta-muted {
+	color: #666;
+	font-size: 12px;
+	margin-bottom: 6px;
+}
+
+.dta-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+.dta-table th, .dta-table td {
+	border: 1px solid #ddd;
+	padding: 10px;
+	font-size: 14px;
+}
+
+.dta-table th {
+	background: #f7f7f7;
+}
+
+.dta-col-no {
+	width: 70px;
+	text-align: center;
+}
+
+.dta-col-date {
+	width: 170px;
+	text-align: center;
+}
+
+.dta-col-view {
+	width: 90px;
+	text-align: center;
+}
+
+.dta-title-td {
+	text-align: left;
+}
+
+.dta-notice {
+	background: #fff7e6;
+}
+
+.dta-title-link {
+	color: #1a73e8;
+	text-decoration: none;
+}
+
+.dta-title-link:hover {
+	text-decoration: underline;
+}
+
+.dta-attach {
+	color: #666;
+	font-size: 12px;
+	margin-left: 4px;
+}
+
+.dta-pagination {
+	margin: 16px 0;
+	display: flex;
+	justify-content: center;
+}
+
+.dta-box {
+	border: 1px solid #ddd;
+	padding: 14px;
+	border-radius: 6px;
+}
+
+.dta-meta {
+	display: flex;
+	gap: 16px;
+	color: #666;
+	font-size: 13px;
+	margin-bottom: 12px;
+	flex-wrap: wrap;
+}
+
+.dta-content {
+	white-space: pre-wrap;
+	line-height: 1.6;
+	font-size: 14px;
+}
+
+.dta-files {
+	margin-top: 14px;
+}
+
+.dta-files ul {
+	margin: 6px 0 0;
+	padding-left: 18px;
+}
+
+.dta-actions {
+	margin-top: 14px;
+	display: flex;
+	gap: 8px;
+}
+
+.dta-actions button {
+	height: 34px;
+}
+
+.dta-col-attach {
+	width: 80px;
+	text-align: center;
+}
+
+.dta-title-td {
+	text-align: left;
+}
+
+.dta-attach {
+	font-size: 14px;
+}
+
+.dta-search input::placeholder {
+	color: #aaa;
+}
+
+/* .dta-table tbody tr td[colspan] {
+	padding: 30px 0;
+} */
