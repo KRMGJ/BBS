@@ -21,6 +21,7 @@ public class DataController {
 
 	private static final String DATA_BBS_ID = "BBSMSTR_000000000002"; // 자료실 BBS_ID
 
+	/** 자료실 목록을 조회한다. */
 	@RequestMapping("/list.do")
 	public String selectDataList(DataVO searchVO, Model model) throws Exception {
 
