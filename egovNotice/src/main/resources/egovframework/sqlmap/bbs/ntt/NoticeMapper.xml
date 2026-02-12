@@ -243,4 +243,14 @@
 		    AND DEL_AT = 'N'
 		    AND USE_AT = 'Y'
 	</update>
+	
+	<!-- 공지 삭제(논리삭제) -->
+	<update id="deleteNoticeList" parameterType="list">
+	    UPDATE COMTNBBS
+	       SET DEL_AT = 'Y'
+	     WHERE NTT_ID IN
+	     <foreach collection="list" item="nttId" open="(" separator="," close=")">
+	         #{nttId}
+	     </foreach>
+	</update>
 </mapper>

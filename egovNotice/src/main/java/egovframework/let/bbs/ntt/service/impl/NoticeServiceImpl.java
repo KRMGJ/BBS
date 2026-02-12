@@ -91,9 +91,19 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeDAO.selectAtchFileIdByNttId(vo);
 	}
 
+	/**
+	 * 공지사항을 수정한다.
+	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void updateNotice(NoticeVO vo) throws Exception {
 		noticeDAO.updateNotice(vo);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteNoticeList(List<String> nttIdList) throws Exception {
+
+		noticeDAO.deleteNoticeList(nttIdList);
 	}
 }

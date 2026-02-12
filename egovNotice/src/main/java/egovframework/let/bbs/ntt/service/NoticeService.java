@@ -67,4 +67,11 @@ public interface NoticeService {
 	 * @throws Exception
 	 */
 	void updateNotice(NoticeVO vo) throws Exception;
+
+	/**
+	 * 공지사항을 삭제한다.
+	 * 
+	 * @param nttIdList - 삭제할 공지사항ID 리스트
+	 */
+	void deleteNoticeList(List<String> nttIdList) throws Exception;
 }

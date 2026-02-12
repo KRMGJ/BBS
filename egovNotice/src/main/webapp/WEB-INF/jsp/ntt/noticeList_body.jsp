@@ -37,6 +37,7 @@
 	<table>
 		<thead>
 			<tr>
+				<th><input type="checkbox" id="checkAll"/></th>
 				<th class="nt-col-no">번호</th>
 				<th>제목</th>
 				<th class="nt-col-date">등록일</th>
@@ -49,6 +50,9 @@
 			<c:if test="${not empty pinnedList}">
 				<c:forEach var="n" items="${pinnedList}">
 					<tr class="nt-notice">
+						<td>
+							<input type="checkbox" name="nttId" value="${n.nttId}" />
+						</td>
 						<td class="nt-col-no">공지</td>
 						<td>
 							<a href="<c:url value='/bbs/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
@@ -69,6 +73,9 @@
 				<c:when test="${not empty noticeList}">
 					<c:forEach var="n" items="${noticeList}">
 						<tr>
+							<td>
+								<input type="checkbox" name="nttId" value="${n.nttId}" />
+							</td>
 							<td class="nt-col-no"><c:out value="${n.nttId}" /></td>
 							<td>
 								<a href="<c:url value='/bbs/notice/selectNoticeDetail.do'><c:param name='nttId' value='${n.nttId}'/></c:url>">
@@ -91,6 +98,10 @@
 			</c:choose>
 		</tbody>
 	</table>
+	
+    <div class="btn-area">
+        <button type="button" id="btnDelete">선택삭제</button>
+    </div>
 
 	<div class="pagination">
 		<c:if test="${not empty paginationInfo}">

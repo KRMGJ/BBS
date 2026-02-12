@@ -82,4 +82,14 @@ public class NoticeDAO extends EgovAbstractMapper {
 	public void updateNotice(NoticeVO vo) {
 		update("NoticeDAO.updateNotice", vo);
 	}
+
+	/**
+	 * 공지사항을 삭제한다.
+	 * 
+	 * @param nttIdList - 삭제할 공지사항 ID 목록
+	 */
+	public void deleteNoticeList(List<String> nttIdList) {
+		delete("NoticeDAO.deleteNoticeList", nttIdList);
+
+	}
 }
