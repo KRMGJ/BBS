@@ -35,23 +35,6 @@ public class NoticeServiceImpl implements NoticeService {
 	 */
 	@Override
 	public List<NoticeVO> selectNoticeList(NoticeVO searchVO) throws Exception {
-//		List<NoticeVO> list = noticeDAO.selectNoticeTreeList(searchVO);
-//
-//		for (NoticeVO vo : list) {
-//
-//			// 부모가 삭제된 경우 표시
-//			if ("Y".equals(vo.getParentDelAt())) {
-//				vo.setSubject("[삭제된 게시물의 답글] " + vo.getSubject());
-//			}
-//
-//			// 본인이 삭제된 경우 목록에서 제거
-//			if ("Y".equals(vo.getDelAt())) {
-//				vo.setHidden(true);
-//			}
-//		}
-//
-//		return list;
-
 		List<NoticeVO> parentList = noticeDAO.selectNoticeParentList(searchVO);
 
 		if (parentList.isEmpty()) {

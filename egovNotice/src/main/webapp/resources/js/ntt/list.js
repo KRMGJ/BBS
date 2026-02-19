@@ -109,6 +109,7 @@ $(document).on("click", ".parent-title", function(e) {
 		children.hide();
 		icon.text("▶");
 
+		// 열린 상태에서 닫히면 opened 배열에서 제거
 		opened = opened.filter(id => id != rootId);
 
 	} else {

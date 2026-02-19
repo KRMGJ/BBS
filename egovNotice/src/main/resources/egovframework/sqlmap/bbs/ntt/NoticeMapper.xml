@@ -142,7 +142,7 @@
 	            WHERE n.BBS_ID = #{bbsId}
 	              AND n.PARNT_NTT_ID IS NULL
 	              AND n.USE_AT = 'Y'
-	            ORDER BY n.NTT_ID DESC
+	            ORDER BY TO_NUMBER(SUBSTR(n.NTT_ID, 5)) DESC
 	        ) A
 	        WHERE ROWNUM 
 	        <![CDATA[<=]]>
@@ -162,40 +162,46 @@
 	
 	<select id="selectNoticeChildTreeList" parameterType="map" resultType="egovframework.let.bbs.ntt.vo.NoticeVO">
 
-	    SELECT
-	        n.*,
-	        LEVEL AS NTT_LEVEL,
-	        CONNECT_BY_ROOT n.NTT_ID AS ROOT_ID,
-	        CONNECT_BY_ROOT n.DEL_AT AS ROOT_DEL_AT,
-            CASE
-	            WHEN EXISTS (
-	                SELECT 1
-	                FROM COMTNBBS p
-	                WHERE p.NTT_ID = n.PARNT_NTT_ID
-	                  AND p.DEL_AT = 'Y'
-	            )
-	            THEN 'Y'
-	            ELSE 'N'
-        	END AS PARENT_DEL_AT,
-	        CASE
-	            WHEN EXISTS (
-	                SELECT 1
-	                FROM COMTNBBS c
-	                WHERE c.PARNT_NTT_ID = n.NTT_ID
-	                  AND c.USE_AT = 'Y'
-	            )
-	            THEN 'Y'
-	            ELSE 'N'
-	        END AS HAS_CHILD
-	    FROM COMTNBBS n
-	    WHERE n.BBS_ID = #{bbsId}
-	      AND n.USE_AT = 'Y'
-	    START WITH n.NTT_ID IN
-	    <foreach collection="parentIdList" item="id" open="(" separator="," close=")">
-	        #{id}
-	    </foreach>
-	    CONNECT BY PRIOR n.NTT_ID = n.PARNT_NTT_ID
-	    ORDER SIBLINGS BY n.NTT_ID ASC
+		SELECT
+			n.NTT_ID,
+			n.BBS_ID,
+			n.SUBJECT,
+			n.DEL_AT,
+			n.FRST_REGIST_PNTTM,
+			n.VIEW_CNT,
+			LEVEL AS NTT_LEVEL,
+			CONNECT_BY_ROOT n.NTT_ID AS ROOT_ID,
+			CONNECT_BY_ROOT n.DEL_AT AS ROOT_DEL_AT,
+			CASE
+				WHEN EXISTS (
+				    SELECT 1
+				    FROM COMTNBBS p
+				    WHERE p.NTT_ID = n.PARNT_NTT_ID
+				      AND p.DEL_AT = 'Y'
+				)
+				THEN 'Y'
+				ELSE 'N'
+			END AS PARENT_DEL_AT,
+			CASE
+			    WHEN EXISTS (
+			        SELECT 1
+			        FROM COMTNBBS c
+			        WHERE c.PARNT_NTT_ID = n.NTT_ID
+			          AND c.USE_AT = 'Y'
+			    )
+			    THEN 'Y'
+			    ELSE 'N'
+			END AS HAS_CHILD
+		FROM COMTNBBS n
+		WHERE n.BBS_ID = #{bbsId}
+			AND n.USE_AT = 'Y'
+		START WITH n.NTT_ID IN
+		<foreach collection="parentIdList" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		CONNECT BY PRIOR n.NTT_ID = n.PARNT_NTT_ID
+		ORDER SIBLINGS BY TO_NUMBER(SUBSTR(n.NTT_ID,5)) DESC
+
 	</select>
 
 	<!-- 일반 목록 총건수(페이징용) 
