@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import egovframework.let.bbs.cmm.fms.service.FileMngService;
 import egovframework.let.bbs.ntt.dao.NoticeDAO;
 import egovframework.let.bbs.ntt.service.NoticeService;
+import egovframework.let.bbs.ntt.vo.NoticeLikeVO;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,9 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Resource(name = "egovCVLIdGnrService")
 	private EgovIdGnrService egovCVLIdGnrService;
+
+	@Resource(name = "egovCBLIdGnrService")
+	private EgovIdGnrService egovCBLIdGnrService;
 
 	@Resource(name = "fileMngService")
 	private FileMngService fileMngService;
@@ -145,5 +149,27 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int selectNoticeParentListTotCnt(NoticeVO searchVO) throws Exception {
 		return noticeDAO.selectNoticeParentListTotCnt(searchVO);
+	}
+
+	@Override
+	public String likeNotice(NoticeVO vo, String userId) throws Exception {
+		NoticeLikeVO like = noticeDAO.selectLike(vo, userId);
+
+		if (like == null) {
+			vo.setLikeId(egovCBLIdGnrService.getNextStringId());
+			noticeDAO.insertLike(vo, userId);
+			noticeDAO.updateLikeCount(vo, 1);
+			return "LIKED";
+		}
+
+		if ("Y".equals(like.getUseAt())) {
+			noticeDAO.updateLikeUseAt(vo, userId, "N");
+			noticeDAO.updateLikeCount(vo, -1);
+			return "UNLIKED";
+		} else {
+			noticeDAO.updateLikeUseAt(vo, userId, "Y");
+			noticeDAO.updateLikeCount(vo, 1);
+			return "LIKED";
+		}
 	}
 }

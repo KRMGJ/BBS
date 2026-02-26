@@ -6,6 +6,7 @@ import java.util.Map;
 import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
 import org.springframework.stereotype.Repository;
 
+import egovframework.let.bbs.ntt.vo.NoticeLikeVO;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
 @Repository("noticeDAO")
@@ -153,5 +154,47 @@ public class NoticeDAO extends EgovAbstractMapper {
 	 */
 	public int selectViewHistory(NoticeVO vo, String viewerId) {
 		return selectOne("NoticeDAO.selectViewHistory", Map.of("nttId", vo.getNttId(), "viewerId", viewerId));
+	}
+
+	/**
+	 * 공지사항 좋아요를 조회한다.
+	 * 
+	 * @param vo     - 조회할 정보가 담긴 VO
+	 * @param userId - 좋아요를 누른 사용자 ID
+	 * @return NoticeLikeVO - 좋아요 정보가 담긴 VO
+	 */
+	public NoticeLikeVO selectLike(NoticeVO vo, String userId) {
+		return selectOne("NoticeDAO.selectLike", Map.of("nttId", vo.getNttId(), "userId", userId));
+	}
+
+	/**
+	 * 공지사항 좋아요를 등록한다.
+	 * 
+	 * @param vo     - 등록할 정보가 담긴 VO
+	 * @param userId - 좋아요를 누른 사용자 ID
+	 */
+	public void insertLike(NoticeVO vo, String userId) {
+		insert("NoticeDAO.insertLike", Map.of("likeId", vo.getLikeId(), "nttId", vo.getNttId(), "userId", userId));
+	}
+
+	/**
+	 * 공지사항 좋아요 수를 업데이트한다.
+	 * 
+	 * @param vo - 업데이트할 정보가 담긴 VO
+	 * @param i  - 업데이트할 좋아요 수 (증가 또는 감소)
+	 */
+	public void updateLikeCount(NoticeVO vo, int i) {
+		update("NoticeDAO.updateLikeCount", Map.of("nttId", vo.getNttId(), "likeCount", i));
+	}
+
+	/**
+	 * 공지사항 좋아요 사용 여부를 업데이트한다.
+	 * 
+	 * @param vo     - 업데이트할 정보가 담긴 VO
+	 * @param userId - 좋아요를 누른 사용자 ID
+	 * @param string - 업데이트할 사용 여부 (Y/N)
+	 */
+	public void updateLikeUseAt(NoticeVO vo, String userId, String string) {
+		update("NoticeDAO.updateLikeUseAt", Map.of("nttId", vo.getNttId(), "userId", userId, "useAt", string));
 	}
 }

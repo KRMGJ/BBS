@@ -91,4 +91,6 @@ public interface NoticeService {
 	 * @throws Exception
 	 */
 	int selectNoticeParentListTotCnt(NoticeVO searchVO) throws Exception;
+
+	String likeNotice(NoticeVO vo, String userId) throws Exception;
 }

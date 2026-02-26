@@ -366,4 +366,15 @@ public class NoticeController {
 		redirectAttributes.addFlashAttribute("msg", "답글이 등록되었습니다.");
 		return "redirect:/bbs/notice/list.do";
 	}
+
+	@RequestMapping(value = "/like.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String likeNotice(@ModelAttribute NoticeVO vo, HttpSession session) throws Exception {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String userId = loginVO.getUniqId();
+
+		String result = noticeService.likeNotice(vo, userId);
+
+		return result;
+	}
 }

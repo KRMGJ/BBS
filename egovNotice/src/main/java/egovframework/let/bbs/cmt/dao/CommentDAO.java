@@ -78,19 +78,45 @@ public class CommentDAO extends EgovAbstractMapper {
 		return selectOne("CommentDAO.selectMaxOrder", nttId);
 	}
 
+	/**
+	 * 댓글 좋아요 조회
+	 * 
+	 * @param vo     - 좋아요할 댓글 정보가 담긴 CommentVO
+	 * @param userId - 좋아요를 누른 사용자ID
+	 * @return 댓글 좋아요 정보가 담긴 CommentLikeVO (좋아요가 없는 경우 null)
+	 */
 	public CommentLikeVO selectLike(CommentVO vo, String userId) {
 		return selectOne("CommentDAO.selectLike", Map.of("commentId", vo.getCommentId(), "userId", userId));
 	}
 
+	/**
+	 * 댓글 좋아요 수 업데이트
+	 * 
+	 * @param vo - 좋아요할 댓글 정보가 담긴 CommentVO
+	 * @param i  - 업데이트할 좋아요 수 (증가 또는 감소)
+	 */
 	public void updateLikeCount(CommentVO vo, int i) {
 		update("CommentDAO.updateLikeCount", Map.of("commentId", vo.getCommentId(), "likeCount", i));
 	}
 
+	/**
+	 * 댓글 좋아요 등록
+	 * 
+	 * @param vo     - 좋아요할 댓글 정보가 담긴 CommentVO
+	 * @param userId - 좋아요를 누른 사용자ID
+	 */
 	public void insertLike(CommentVO vo, String userId) {
 		insert("CommentDAO.insertLike",
 				Map.of("likeId", vo.getLikeId(), "commentId", vo.getCommentId(), "userId", userId));
 	}
 
+	/**
+	 * 댓글 좋아요 사용 여부 업데이트
+	 * 
+	 * @param vo     - 좋아요할 댓글 정보가 담긴 CommentVO
+	 * @param userId - 좋아요를 누른 사용자ID
+	 * @param string - 사용 여부 ("Y" 또는 "N")
+	 */
 	public void updateLikeUseAt(CommentVO vo, String userId, String string) {
 		update("CommentDAO.updateLikeUseAt", Map.of("commentId", vo.getCommentId(), "userId", userId, "useAt", string));
 

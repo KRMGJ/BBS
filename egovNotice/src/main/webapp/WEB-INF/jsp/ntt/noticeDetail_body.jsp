@@ -25,9 +25,15 @@
 
 		<!-- 메타 정보 -->
 		<div class="nt-meta">
-			<span>작성자: <c:out value="${notice.frstRegisterId}" /></span> <span>작성일:
-				<c:out value="${notice.frstRegistPnttm}" />
-			</span> <span>조회수: <c:out value="${notice.viewCnt}" /></span>
+			<span>작성자: <c:out value="${notice.frstRegisterId}" /></span> 
+			<span>작성일: <c:out value="${notice.frstRegistPnttm}" /></span> 
+			<span>조회수: <c:out value="${notice.viewCnt}" /></span>
+			<span class="nt-like-area">
+        		<button type="button" id="btnNoticeLike" class="nt-like-btn">
+            		👍 <span id="noticeLikeCnt"><c:out value="${notice.likeCnt}" />
+            </span>
+        </button>
+    </span>
 		</div>
 
 		<!-- 공지 기간 -->

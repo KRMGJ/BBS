@@ -267,3 +267,17 @@ textarea {
 	padding: 0 14px;
 	font-weight: 500;
 }
+
+.nt-like-btn {
+	border: 1px solid #ccc;
+	background: #fff;
+	cursor: pointer;
+	padding: 4px 10px;
+	border-radius: 4px;
+}
+
+.nt-like-btn.active {
+	color: #fff;
+	background: #e74c3c;
+	border-color: #e74c3c;
+}

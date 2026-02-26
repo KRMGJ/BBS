@@ -45,3 +45,46 @@ $(function() {
 	});
 
 });
+
+$(document).ready(function() {
+
+	const nttId = $("#nttId").val();
+	const loginUserId = $("#loginUserId").val();
+
+	$("#btnNoticeLike").on("click", function() {
+
+		if (!loginUserId) {
+			alert("로그인 후 이용하세요.");
+			return;
+		}
+
+		const $btn = $(this);
+		const $count = $("#noticeLikeCnt");
+
+		$.ajax({
+			type: "POST",
+			url: "/bbs/notice/like.do",
+			data: { nttId: nttId },
+			success: function(res) {
+
+				let current = parseInt($count.text()) || 0;
+
+				if (res === "LIKED") {
+					$count.text(current + 1);
+					$btn.addClass("active");
+				}
+				else if (res === "UNLIKED") {
+					$count.text(current - 1);
+					$btn.removeClass("active");
+				}
+				else {
+					alert("처리 중 오류가 발생했습니다.");
+				}
+			},
+			error: function() {
+				alert("서버 오류가 발생했습니다.");
+			}
+		});
+	});
+
+});

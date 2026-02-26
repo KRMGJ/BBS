@@ -12,6 +12,7 @@ public class BbsVO implements Serializable {
 	private String frstRegisterId; // 작성자
 	private String frstRegistPnttm;// 작성일(문자 처리: 나중에 DATE로 바꿔도 됨)
 	private int viewCnt; // 조회수
+	private int likeCnt; // 좋아요 수
 
 	private String pinnedAt; // 고정여부(Y/N)
 	private String startDate; // YYYYMMDD
@@ -204,5 +205,13 @@ public class BbsVO implements Serializable {
 
 	public void setCvlId(String cvlId) {
 		this.cvlId = cvlId;
+	}
+
+	public int getLikeCnt() {
+		return likeCnt;
+	}
+
+	public void setLikeCnt(int likeCnt) {
+		this.likeCnt = likeCnt;
 	}
 }

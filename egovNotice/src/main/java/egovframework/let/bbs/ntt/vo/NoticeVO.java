@@ -6,6 +6,7 @@ public class NoticeVO extends BbsVO {
 	private static final long serialVersionUID = 1L;
 	private String parntNttId;
 	private String rootId;
+	private String likeId;
 	private String parentDelAt;
 	private String rootDelAt;
 	private boolean hidden;
@@ -66,5 +67,13 @@ public class NoticeVO extends BbsVO {
 
 	public void setRootId(String rootId) {
 		this.rootId = rootId;
+	}
+
+	public String getLikeId() {
+		return likeId;
+	}
+
+	public void setLikeId(String likeId) {
+		this.likeId = likeId;
 	}
 }
