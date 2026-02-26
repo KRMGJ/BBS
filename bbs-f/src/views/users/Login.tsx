@@ -1,13 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react'
 import { apis, endpoints } from '../../apis/api'
 import style from './login.module.css'
 import { useNavigate } from 'react-router-dom'
+import { useLoginUserStore } from '../../hooks/useLoginUser';
 
 interface LoginResponse {
     result: string;
+    loginVO: any;
 }
 
 export default function Login() {
+    const { setLoginUser } = useLoginUserStore();
     const [userId, setUserId] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [msg, setMsg] = useState<string>('')
@@ -26,6 +30,7 @@ export default function Login() {
         if (res.result == 'OK') {
             setMsg('로그인 성공!')
             setError(false)
+            setLoginUser(res.loginVO);
             navigate('/bbs/notice/list.do')
         } else {
             setError(true)

@@ -1,0 +1,65 @@
+#egovHeader {
+    border-bottom: 1px solid #dcdcdc;
+    background-color: #ffffff;
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo a {
+    font-size: 20px;
+    font-weight: bold;
+    color: #003964;
+    text-decoration: none;
+}
+
+.gnb ul {
+    display: flex;
+    gap: 24px;
+}
+
+.gnb a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.gnb a:hover {
+    color: #003964;
+}
+
+.gnb a.active {
+    color: #003964;
+    font-weight: bold;
+}
+
+.userArea {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.userName {
+    font-size: 14px;
+    color: #555;
+}
+
+.userArea .btn {
+    padding: 6px 12px;
+    border: 1px solid #003964;
+    color: #003964;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 2px;
+}
+
+.userArea .btn:hover {
+    background-color: #003964;
+    color: #fff;
+}
