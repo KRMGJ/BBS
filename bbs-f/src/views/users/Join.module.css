@@ -1,0 +1,19 @@
+.joinWrap {
+    width: 380px;
+    margin: 80px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+input {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.joinWrap button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 6px;
+}

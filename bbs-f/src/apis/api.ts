@@ -32,4 +32,6 @@ export const endpoints = {
     login: 'user/login.do',
     logout: 'user/logout.do',
     me: 'user/me.do',
+    join: 'user/join.do',
+    checkDuplicate: 'user/checkUserId.do',
 }

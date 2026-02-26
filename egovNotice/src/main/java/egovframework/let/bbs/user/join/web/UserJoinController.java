@@ -6,17 +6,19 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import egovframework.com.cmm.vo.ApiVO;
 import egovframework.let.bbs.user.join.service.UserJoinService;
 import egovframework.let.bbs.user.vo.ComtnUserVO;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@RestController
 @RequestMapping("/bbs/user")
 public class UserJoinController {
 
@@ -35,8 +37,7 @@ public class UserJoinController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/join.do", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> join(ComtnUserVO user, Model model) throws Exception {
+	public ResponseEntity<Map<String, Object>> join(@RequestBody ComtnUserVO user) throws Exception {
 
 		userJoinService.join(user);
 
@@ -52,12 +53,12 @@ public class UserJoinController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/checkUserId.do", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<Model> checkUserId(@RequestParam("userId") String userId, Model model) throws Exception {
+	public ResponseEntity<?> checkUserId(@RequestParam("userId") String userId) throws Exception {
 
 		boolean duplicated = userJoinService.isDuplicatedUserId(userId);
-		model.addAttribute("duplicated", duplicated);
+		Map<String, Object> res = new HashMap<>();
+		res.put("duplicated", duplicated);
 
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(ApiVO.success("중복 체크 성공", res));
 	}
 }

@@ -38,7 +38,7 @@ export default function Login() {
         }
     }
     return (
-        <div className={style.loginWrapper}>
+        <div className={style.loginWrap}>
             <div className={style.row}>
                 <label htmlFor="userId">아이디</label>
                 <input type="text" id="userId" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} />
