@@ -371,4 +371,12 @@
         WHERE USER_ID = #{userId}
             AND NTT_ID = #{nttId}
     </update>
+    
+    <select id="selectNoticeLikeCountByUser" resultType="int">
+	    SELECT COUNT(*)
+		FROM COMTNBBS_LIKE
+		WHERE NTT_ID = #{nttId}
+			AND USER_ID = #{userId}
+			AND USE_AT = 'Y'
+    </select>
 </mapper>

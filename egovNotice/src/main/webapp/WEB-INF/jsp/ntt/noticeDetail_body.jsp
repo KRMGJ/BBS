@@ -29,11 +29,10 @@
 			<span>작성일: <c:out value="${notice.frstRegistPnttm}" /></span> 
 			<span>조회수: <c:out value="${notice.viewCnt}" /></span>
 			<span class="nt-like-area">
-        		<button type="button" id="btnNoticeLike" class="nt-like-btn">
-            		👍 <span id="noticeLikeCnt"><c:out value="${notice.likeCnt}" />
-            </span>
-        </button>
-    </span>
+				<button type="button" id="btnNoticeLike" class="nt-like-btn ${liked ? 'active' : ''}">
+				    👍 <span id="noticeLikeCnt"><c:out value="${notice.likeCnt}" /></span>
+				</button>
+    		</span>
 		</div>
 
 		<!-- 공지 기간 -->

@@ -85,6 +85,7 @@ public class NoticeServiceImpl implements NoticeService {
 	 * 공지사항 상세를 조회한다.
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public NoticeVO selectNoticeDetail(NoticeVO vo, String viewerId) throws Exception {
 		Boolean increaseViewCnt = false;
 		if (viewerId != null && !viewerId.isEmpty()) {

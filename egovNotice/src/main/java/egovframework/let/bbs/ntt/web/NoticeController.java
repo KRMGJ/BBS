@@ -27,6 +27,7 @@ import egovframework.let.bbs.cmm.fms.service.FileMngService;
 import egovframework.let.bbs.cmm.fms.service.impl.FileMngServiceImpl.FileSaveResult;
 import egovframework.let.bbs.cmm.fms.vo.FileVO;
 import egovframework.let.bbs.cmm.util.EgovUtil;
+import egovframework.let.bbs.ntt.dao.NoticeDAO;
 import egovframework.let.bbs.ntt.service.NoticeService;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
@@ -39,6 +40,9 @@ public class NoticeController {
 
 	@Resource(name = "fileMngService")
 	private FileMngService fileMngService;
+
+	@Resource(name = "noticeDAO")
+	private NoticeDAO noticeDAO;
 
 	private static final String NOTICE_BBS_ID = "BBSMSTR_000000000001";
 
@@ -180,6 +184,15 @@ public class NoticeController {
 		if (notice == null) {
 			throw new IllegalStateException("존재하지 않거나 삭제된 게시물입니다.");
 		}
+
+		boolean liked = false;
+
+		if (viewerId != null) {
+			int cnt = noticeDAO.selectNoticeLikeCountByUser(searchVO.getNttId(), viewerId);
+			liked = cnt > 0;
+		}
+
+		model.addAttribute("liked", liked);
 
 		// 첨부파일 목록 (우리 파일 모듈 사용)
 		if (notice.getAtchFileId() != null && !notice.getAtchFileId().isBlank()) {

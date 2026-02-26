@@ -197,4 +197,15 @@ public class NoticeDAO extends EgovAbstractMapper {
 	public void updateLikeUseAt(NoticeVO vo, String userId, String string) {
 		update("NoticeDAO.updateLikeUseAt", Map.of("nttId", vo.getNttId(), "userId", userId, "useAt", string));
 	}
+
+	/**
+	 * 공지사항 좋아요 수를 조회한다.
+	 * 
+	 * @param nttId    - 공지사항 ID
+	 * @param viewerId - 조회자 ID
+	 * @return 좋아요 수
+	 */
+	public int selectNoticeLikeCountByUser(String nttId, String viewerId) {
+		return selectOne("NoticeDAO.selectNoticeLikeCountByUser", Map.of("nttId", nttId, "userId", viewerId));
+	}
 }
