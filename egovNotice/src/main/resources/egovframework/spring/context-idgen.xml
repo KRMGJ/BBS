@@ -58,4 +58,32 @@
 		<property name="tableName" value="COMTNBBS_VIEW_LOG" />
 		<property name="blockSize" value="1" />
 	</bean>
+	
+	<bean id="cmlIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="CML_" />
+		<property name="fillChar" value="0" />
+		<property name="cipers" value="12" />
+	</bean>
+
+	<bean id="egovCMLIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="cmlIdStrategy" />
+		<property name="table" value="COMTECOPSEQ" />
+		<property name="tableName" value="COMMENT_LIKE" />
+		<property name="blockSize" value="1" />
+	</bean>
+	
+	<bean id="cblIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="CBL_" />
+		<property name="fillChar" value="0" />
+		<property name="cipers" value="12" />
+	</bean>
+
+	<bean id="egovCBLIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="cblIdStrategy" />
+		<property name="table" value="COMTECOPSEQ" />
+		<property name="tableName" value="COMTNBBS_LIKE" />
+		<property name="blockSize" value="1" />
+	</bean>
 </beans>

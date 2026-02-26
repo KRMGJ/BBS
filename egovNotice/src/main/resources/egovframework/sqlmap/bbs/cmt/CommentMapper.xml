@@ -72,5 +72,37 @@
         FROM COMTNBBS_COMMENT
         WHERE NTT_ID = #{nttId}
     </select>
+    
+    <select id="selectLike" parameterType="map" resultType="egovframework.let.bbs.cmt.vo.CommentLikeVO">
+        SELECT *
+        FROM COMTNBBS_COMMENT_LIKE
+        WHERE COMMENT_ID = #{commentId}
+          AND USER_ID = #{userId}
+    </select>
+    
+    <insert id="insertLike" parameterType="map">
+        INSERT INTO COMTNBBS_COMMENT_LIKE (
+            COMMENT_LIKE_ID,
+            COMMENT_ID,
+            USER_ID
+        ) VALUES (
+            #{likeId},
+            #{commentId},
+            #{userId}
+        )
+    </insert>
+    
+    <update id="updateLikeCount" parameterType="map">
+        UPDATE COMTNBBS_COMMENT
+        SET LIKE_CNT = LIKE_CNT + #{likeCount}
+        WHERE COMMENT_ID = #{commentId}
+    </update>
+    
+    <update id="updateLikeUseAt" parameterType="map">
+        UPDATE COMTNBBS_COMMENT_LIKE
+        SET USE_AT = #{useAt}
+        WHERE COMMENT_ID = #{commentId}
+          AND USER_ID = #{userId}
+    </update>
 
 </mapper>

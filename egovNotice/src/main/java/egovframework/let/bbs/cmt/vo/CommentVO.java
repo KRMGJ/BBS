@@ -12,6 +12,8 @@ public class CommentVO implements Serializable {
 	private String delAt;
 	private String frstRegisterId;
 	private String frstRegistPnttm;
+	private Integer likeCnt; // 좋아요 수
+	private String likeId; // COMMENT_LIKE_ID
 	private String parentId; // 부모 댓글 ID
 	private String commentGroup; // 댓글 그룹
 	private Integer commentDepth; // 댓글 깊이
@@ -107,5 +109,21 @@ public class CommentVO implements Serializable {
 
 	public void setCommentOrder(Integer commentOrder) {
 		this.commentOrder = commentOrder;
+	}
+
+	public String getLikeId() {
+		return likeId;
+	}
+
+	public void setLikeId(String likeId) {
+		this.likeId = likeId;
+	}
+
+	public Integer getLikeCnt() {
+		return likeCnt;
+	}
+
+	public void setLikeCnt(Integer likeCnt) {
+		this.likeCnt = likeCnt;
 	}
 }

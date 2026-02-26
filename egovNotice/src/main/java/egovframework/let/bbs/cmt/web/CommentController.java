@@ -81,4 +81,15 @@ public class CommentController {
 		commentService.updateComment(vo);
 		return "OK";
 	}
+
+	@RequestMapping(value = "/like.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String likeComment(CommentVO vo) throws Exception {
+
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String userId = loginVO.getUniqId() == null ? "user1" : loginVO.getUniqId();
+
+		String res = commentService.likeComment(vo, userId);
+		return res;
+	}
 }

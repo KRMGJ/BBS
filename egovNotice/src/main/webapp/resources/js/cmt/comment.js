@@ -27,6 +27,32 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#commentList").on("click", ".btn-like", function() {
+
+		if (!loginUserId) {
+			alert("로그인 후 이용하세요.");
+			return;
+		}
+
+		const commentId = $(this).data("id");
+		const $btn = $(this);
+
+		$.post("/bbs/cmt/like.do", {
+			commentId: commentId
+		}, function(res) {
+
+			if (res === "LIKED") {
+				let $count = $btn.find(".like-count");
+				let current = parseInt($count.text()) || 0;
+				$count.text(current + 1);
+			} else if (res === "UNLIKED") {
+				let $count = $btn.find(".like-count");
+				let current = parseInt($count.text()) || 0;
+				$count.text(current > 0 ? current - 1 : 0);
+			}
+		});
+	});
+
 	loadComments();
 
 	function loadComments() {
@@ -61,6 +87,11 @@ $(document).ready(function() {
 
 			html += "  <div class='comment-actions'>";
 			html += "    <button class='btn-reply'>답글</button>";
+
+			// 좋아요 버튼 추가
+			html += "    <button class='btn-like' data-id='" + c.commentId + "'>";
+			html += "      👍 <span class='like-count'>" + (c.likeCnt || 0) + "</span>";
+			html += "    </button>";
 
 			if (loginUserId && loginUserId === c.frstRegisterId) {
 				html += "    <button class='btn-edit'>수정</button>";

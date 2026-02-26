@@ -6,9 +6,11 @@ import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.let.bbs.cmt.dao.CommentDAO;
 import egovframework.let.bbs.cmt.service.CommentService;
+import egovframework.let.bbs.cmt.vo.CommentLikeVO;
 import egovframework.let.bbs.cmt.vo.CommentVO;
 
 @Service("commentService")
@@ -19,6 +21,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Resource(name = "egovCmtIdGnrService")
 	private EgovIdGnrService egovCmtIdGnrService;
+
+	@Resource(name = "egovCMLIdGnrService")
+	private EgovIdGnrService egovCMLIdGnrService;
 
 	/**
 	 * 댓글 목록 조회
@@ -74,6 +79,29 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void updateComment(CommentVO vo) throws Exception {
 		commentDAO.updateComment(vo);
+	}
+
+	@Override
+	@Transactional
+	public String likeComment(CommentVO vo, String userId) throws Exception {
+		CommentLikeVO like = commentDAO.selectLike(vo, userId);
+
+		if (like == null) {
+			vo.setLikeId(egovCMLIdGnrService.getNextStringId());
+			commentDAO.insertLike(vo, userId);
+			commentDAO.updateLikeCount(vo, 1);
+			return "LIKED";
+		}
+
+		if ("Y".equals(like.getUseAt())) {
+			commentDAO.updateLikeUseAt(vo, userId, "N");
+			commentDAO.updateLikeCount(vo, -1);
+			return "UNLIKED";
+		} else {
+			commentDAO.updateLikeUseAt(vo, userId, "Y");
+			commentDAO.updateLikeCount(vo, 1);
+			return "LIKED";
+		}
 	}
 
 }

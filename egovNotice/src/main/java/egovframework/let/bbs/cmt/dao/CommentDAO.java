@@ -1,10 +1,12 @@
 package egovframework.let.bbs.cmt.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
 import org.springframework.stereotype.Repository;
 
+import egovframework.let.bbs.cmt.vo.CommentLikeVO;
 import egovframework.let.bbs.cmt.vo.CommentVO;
 
 @Repository("commentDAO")
@@ -74,5 +76,23 @@ public class CommentDAO extends EgovAbstractMapper {
 	 */
 	public int selectMaxOrder(String nttId) {
 		return selectOne("CommentDAO.selectMaxOrder", nttId);
+	}
+
+	public CommentLikeVO selectLike(CommentVO vo, String userId) {
+		return selectOne("CommentDAO.selectLike", Map.of("commentId", vo.getCommentId(), "userId", userId));
+	}
+
+	public void updateLikeCount(CommentVO vo, int i) {
+		update("CommentDAO.updateLikeCount", Map.of("commentId", vo.getCommentId(), "likeCount", i));
+	}
+
+	public void insertLike(CommentVO vo, String userId) {
+		insert("CommentDAO.insertLike",
+				Map.of("likeId", vo.getLikeId(), "commentId", vo.getCommentId(), "userId", userId));
+	}
+
+	public void updateLikeUseAt(CommentVO vo, String userId, String string) {
+		update("CommentDAO.updateLikeUseAt", Map.of("commentId", vo.getCommentId(), "userId", userId, "useAt", string));
+
 	}
 }
