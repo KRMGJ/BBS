@@ -174,10 +174,9 @@ public class NoticeController {
 	public String selectNoticeDetail(@ModelAttribute("searchVO") NoticeVO searchVO, HttpServletRequest request,
 			Model model) throws Exception {
 
-		// 조회수 세션 중복방지
-		boolean increase = EgovUtil.shouldIncreaseViewCount(request.getSession(), searchVO.getNttId());
+		String viewerId = EgovUtil.getLoginIdOrNull(request.getSession());
 
-		NoticeVO notice = noticeService.selectNoticeDetail(searchVO, increase);
+		NoticeVO notice = noticeService.selectNoticeDetail(searchVO, viewerId);
 		if (notice == null) {
 			throw new IllegalStateException("존재하지 않거나 삭제된 게시물입니다.");
 		}
@@ -267,7 +266,7 @@ public class NoticeController {
 
 		vo.setBbsId(NOTICE_BBS_ID);
 
-		NoticeVO result = noticeService.selectNoticeDetail(vo, false);
+		NoticeVO result = noticeService.selectNoticeDetail(vo, null);
 		model.addAttribute("notice", result);
 
 		if (result.getAtchFileId() != null && !result.getAtchFileId().isBlank()) {

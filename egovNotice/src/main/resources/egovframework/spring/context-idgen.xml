@@ -44,4 +44,18 @@
 		<property name="tableName" value="COMTNBBS_COMMENT" />
 		<property name="blockSize" value="1" />
 	</bean>
+	
+	<bean id="cvlIdStrategy" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="CVL_" />
+		<property name="fillChar" value="0" />
+		<property name="cipers" value="12" />
+	</bean>
+
+	<bean id="egovCVLIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="cvlIdStrategy" />
+		<property name="table" value="COMTECOPSEQ" />
+		<property name="tableName" value="COMTNBBS_VIEW_LOG" />
+		<property name="blockSize" value="1" />
+	</bean>
 </beans>

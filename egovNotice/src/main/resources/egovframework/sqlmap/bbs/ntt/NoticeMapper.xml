@@ -453,4 +453,23 @@
 	         #{nttId}
 	     </foreach>
 	</update>
+	
+	<insert id="insertViewHistory" parameterType="map">
+        INSERT INTO COMTNBBS_VIEW_LOG (
+            VIEW_LOG_ID,
+            NTT_ID,
+            VIEWER_ID
+        ) VALUES (
+            #{cvlId},
+            #{nttId},
+            #{viewerId}
+        )
+    </insert>
+	
+	<select id="selectViewHistory" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM COMTNBBS_VIEW_LOG
+        WHERE NTT_ID = #{nttId}
+            AND VIEWER_ID = #{viewerId}
+	</select>
 </mapper>

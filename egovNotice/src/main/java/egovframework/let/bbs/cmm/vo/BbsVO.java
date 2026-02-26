@@ -22,6 +22,8 @@ public class BbsVO implements Serializable {
 
 	private String atchFileId; // 첨부그룹ID
 
+	private String cvlId; // VIEW_LOG_ID (조회 로그 ID)
+
 	private String searchCondition; // 0:제목, 1:내용, 2:작성자
 	private String searchKeyword; // 검색어
 
@@ -194,5 +196,13 @@ public class BbsVO implements Serializable {
 
 	public void setNttId(String nttId) {
 		this.nttId = nttId;
+	}
+
+	public String getCvlId() {
+		return cvlId;
+	}
+
+	public void setCvlId(String cvlId) {
+		this.cvlId = cvlId;
 	}
 }

@@ -8,20 +8,6 @@ import javax.servlet.http.HttpSession;
 import egovframework.com.cmm.vo.LoginVO;
 
 public class EgovUtil {
-	/**
-	 * 세션 기반 조회수 증가 여부 판단
-	 */
-	public static boolean shouldIncreaseViewCount(HttpSession session, String nttId) {
-		if (nttId == null || nttId.isBlank()) {
-			return false;
-		}
-		String key = "NOTICE_VIEWED_" + nttId;
-		if (session.getAttribute(key) != null) {
-			return false;
-		}
-		session.setAttribute(key, Boolean.TRUE);
-		return true;
-	}
 
 	/**
 	 * 세션에서 loginId를 얻는다.

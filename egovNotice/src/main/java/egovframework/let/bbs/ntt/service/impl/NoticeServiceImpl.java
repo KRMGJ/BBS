@@ -24,6 +24,9 @@ public class NoticeServiceImpl implements NoticeService {
 	@Resource(name = "egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
+	@Resource(name = "egovCVLIdGnrService")
+	private EgovIdGnrService egovCVLIdGnrService;
+
 	@Resource(name = "fileMngService")
 	private FileMngService fileMngService;
 
@@ -78,9 +81,16 @@ public class NoticeServiceImpl implements NoticeService {
 	 * 공지사항 상세를 조회한다.
 	 */
 	@Override
-	public NoticeVO selectNoticeDetail(NoticeVO vo, boolean increaseViewCnt) throws Exception {
+	public NoticeVO selectNoticeDetail(NoticeVO vo, String viewerId) throws Exception {
+		Boolean increaseViewCnt = false;
+		if (viewerId != null && !viewerId.isEmpty()) {
+			increaseViewCnt = noticeDAO.selectViewHistory(vo, viewerId) == 0;
+		}
+		log.info("increaseViewCnt: {}", increaseViewCnt);
 		if (increaseViewCnt) {
+			vo.setCvlId(egovCVLIdGnrService.getNextStringId());
 			noticeDAO.updateInqireCo(vo);
+			noticeDAO.insertViewHistory(vo, viewerId);
 		}
 		return noticeDAO.selectNoticeDetail(vo);
 	}

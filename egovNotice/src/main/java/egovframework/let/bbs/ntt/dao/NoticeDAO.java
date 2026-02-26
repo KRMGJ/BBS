@@ -132,4 +132,26 @@ public class NoticeDAO extends EgovAbstractMapper {
 	public int selectNoticeParentListTotCnt(NoticeVO searchVO) {
 		return selectOne("NoticeDAO.selectNoticeParentListTotCnt", searchVO);
 	}
+
+	/**
+	 * 공지사항 조회이력을 등록한다.
+	 * 
+	 * @param vo       - 조회할 정보가 담긴 VO
+	 * @param viewerId - 조회자 ID
+	 */
+	public void insertViewHistory(NoticeVO vo, String viewerId) {
+		Map<String, Object> paramMap = Map.of("cvlId", vo.getCvlId(), "nttId", vo.getNttId(), "viewerId", viewerId);
+		insert("NoticeDAO.insertViewHistory", paramMap);
+	}
+
+	/**
+	 * 공지사항 조회이력을 조회한다.
+	 * 
+	 * @param vo       - 조회할 정보가 담긴 VO
+	 * @param viewerId - 조회자 ID
+	 * @return 조회이력 수
+	 */
+	public int selectViewHistory(NoticeVO vo, String viewerId) {
+		return selectOne("NoticeDAO.selectViewHistory", Map.of("nttId", vo.getNttId(), "viewerId", viewerId));
+	}
 }

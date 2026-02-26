@@ -49,7 +49,7 @@ public interface NoticeService {
 	 * @return 공지사항 상세정보
 	 * @throws Exception
 	 */
-	NoticeVO selectNoticeDetail(NoticeVO vo, boolean increaseViewCnt) throws Exception;
+	NoticeVO selectNoticeDetail(NoticeVO vo, String viewerId) throws Exception;
 
 	/**
 	 * 공지사항 첨부파일 ID를 조회한다.

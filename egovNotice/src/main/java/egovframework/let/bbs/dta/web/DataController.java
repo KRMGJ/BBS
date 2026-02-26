@@ -103,22 +103,20 @@ public class DataController {
 	}
 
 	/** 자료실 글 상세를 조회한다. */
-	@RequestMapping("/detail.do")
-	public String selectDataDetail(DataVO searchVO, Model model, HttpServletRequest request) throws Exception {
-
-		boolean increase = EgovUtil.shouldIncreaseViewCount(request.getSession(), searchVO.getNttId());
-
-		DataVO data = dataService.selectDataDetail(searchVO, increase);
-
-		if (data.getAtchFileId() != null && !data.getAtchFileId().isBlank()) {
-			List<FileVO> fileList = fileMngService.selectFileList(data.getAtchFileId());
-			model.addAttribute("fileList", fileList);
-		}
-
-		model.addAttribute("result", data);
-
-		return "dta/dataDetail";
-	}
+	/*
+	 * @RequestMapping("/detail.do") public String selectDataDetail(DataVO searchVO,
+	 * Model model, HttpServletRequest request) throws Exception {
+	 * 
+	 * DataVO data = dataService.selectDataDetail(searchVO, increase);
+	 * 
+	 * if (data.getAtchFileId() != null && !data.getAtchFileId().isBlank()) {
+	 * List<FileVO> fileList = fileMngService.selectFileList(data.getAtchFileId());
+	 * model.addAttribute("fileList", fileList); }
+	 * 
+	 * model.addAttribute("result", data);
+	 * 
+	 * return "dta/dataDetail"; }
+	 */
 
 	/** 자료실 글에 첨부된 파일을 다운로드한다. */
 	@RequestMapping("/downloadDataFile.do")
