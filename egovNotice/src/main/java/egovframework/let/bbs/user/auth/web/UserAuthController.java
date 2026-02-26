@@ -1,19 +1,24 @@
 package egovframework.let.bbs.user.auth.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import egovframework.com.cmm.vo.ApiVO;
 import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.user.auth.service.UserAuthService;
+import egovframework.let.bbs.user.vo.ComtnUserVO;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@RestController
 @RequestMapping("/bbs/user")
 public class UserAuthController {
 
@@ -32,14 +37,12 @@ public class UserAuthController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<Model> login(@RequestParam("userId") String userId, @RequestParam("password") String password,
-			Model model) throws Exception {
-		LoginVO loginVO = userAuthService.login(userId, password);
-
-		model.addAttribute("result", "OK");
-		model.addAttribute("loginVO", loginVO);
-		return ResponseEntity.ok(model);
+	public ResponseEntity<ApiVO<?>> login(@RequestBody ComtnUserVO vo) throws Exception {
+		LoginVO loginVO = userAuthService.login(vo.getUserId(), vo.getPassword());
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "OK");
+		result.put("loginVO", loginVO);
+		return ResponseEntity.ok(ApiVO.success("로그인 성공", result));
 	}
 
 	/**
@@ -48,11 +51,9 @@ public class UserAuthController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/logout.do", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<Model> logout(Model model) throws Exception {
+	public ResponseEntity<?> logout() throws Exception {
 		userAuthService.logout();
-		model.addAttribute("result", "OK");
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(Map.of("result", "OK"));
 	}
 
 	/**
@@ -61,11 +62,11 @@ public class UserAuthController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/me.do", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<Model> me(Model model) throws Exception {
+	public ResponseEntity<ApiVO<?>> me() throws Exception {
 		LoginVO loginVO = userAuthService.meOrNull();
-		model.addAttribute("isLogin", loginVO != null);
-		model.addAttribute("loginVO", loginVO);
-		return ResponseEntity.ok(model);
+		Map<String, Object> result = new HashMap<>();
+		result.put("isLogin", loginVO != null);
+		result.put("loginVO", loginVO);
+		return ResponseEntity.ok(ApiVO.success("현재 로그인 사용자 정보", result));
 	}
 }
