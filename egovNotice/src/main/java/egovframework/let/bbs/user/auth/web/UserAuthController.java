@@ -53,7 +53,9 @@ public class UserAuthController {
 	@RequestMapping(value = "/logout.do", method = RequestMethod.POST)
 	public ResponseEntity<?> logout() throws Exception {
 		userAuthService.logout();
-		return ResponseEntity.ok(Map.of("result", "OK"));
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "OK");
+		return ResponseEntity.ok(ApiVO.success("로그아웃 성공", result));
 	}
 
 	/**

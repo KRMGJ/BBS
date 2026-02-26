@@ -1,4 +1,5 @@
-import { endpoints, postData } from '../apis/api';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { apis, endpoints } from '../apis/api';
 import { useLoginUserStore } from '../hooks/useLoginUser'
 import style from './Header.module.css'
 
@@ -16,7 +17,7 @@ export default function Header() {
     })
 
     const logoutBtn = async () => {
-        const res = await postData(endpoints.logout, {});
+        const res = await apis.post<any>(endpoints.logout, {});
         if(res.result != 'OK') {
             alert('로그아웃 실패')
             return

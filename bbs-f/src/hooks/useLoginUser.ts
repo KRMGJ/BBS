@@ -9,29 +9,19 @@ type User = {
 
 type AuthState = {
     user: User | null;
-    lastSyncedAt: number;
     setLoginUser: (u: User) => void;
     resetLoginUser: () => void;
-    setSyncedNow: () => void;
-    _hydrated: boolean;
-    setHydrated: (v: boolean) => void;
 };
 
 export const useLoginUserStore = create<AuthState>()(
     persist(
         (set) => ({
             user: null,
-            lastSyncedAt: 0,
             setLoginUser: (u) => set({ user: u }),
-            resetLoginUser: () => set({ user: null, lastSyncedAt: 0 }),
-            setSyncedNow: () => set({ lastSyncedAt: Date.now() }),
-            _hydrated: false,
-            setHydrated: (v) => set({ _hydrated: v }),
+            resetLoginUser: () => set({ user: null }),
         }),
         {
-            name: "login-user",
-            partialize: (s) => ({ user: s.user, lastSyncedAt: s.lastSyncedAt }),
-            onRehydrateStorage: () => (state) => state?.setHydrated(true),
+            name: "login-user"
         }
     )
 );
