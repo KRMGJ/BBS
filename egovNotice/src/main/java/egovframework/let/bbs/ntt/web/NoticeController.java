@@ -128,24 +128,22 @@ public class NoticeController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/insert.do", method = RequestMethod.POST)
-	public String insertNotice(@ModelAttribute("notice") NoticeVO vo,
-			@RequestParam(value = "files", required = false) MultipartFile[] files,
-			RedirectAttributes redirectAttributes, HttpSession session) throws Exception {
+	public ResponseEntity<?> insertNotice(@ModelAttribute NoticeVO vo,
+			@RequestParam(value = "files", required = false) MultipartFile[] files, HttpSession session)
+			throws Exception {
 
 		vo.setBbsId(NOTICE_BBS_ID);
 
 		if (vo.getSubject() == null || vo.getSubject().trim().isEmpty()) {
-			redirectAttributes.addFlashAttribute("msg", "제목은 필수입니다.");
-			return "redirect:/bbs/notice/form.do";
+			return ResponseEntity.badRequest().body(ApiVO.error("제목은 필수입니다."));
 		}
 
 		if (vo.getContent() == null || vo.getContent().trim().isEmpty()) {
-			redirectAttributes.addFlashAttribute("msg", "내용은 필수입니다.");
-			return "redirect:/bbs/notice/form.do";
+			return ResponseEntity.badRequest().body(ApiVO.error("내용은 필수입니다."));
 		}
 
-		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
-		vo.setFrstRegisterId(loginVO.getUniqId());
+		String loginId = EgovUtil.getLoginIdOrNull(session);
+		vo.setFrstRegisterId(loginId == null ? "user1" : loginId);
 
 		List<String> savedFilePaths = new ArrayList<>();
 
@@ -164,9 +162,7 @@ public class NoticeController {
 			}
 			throw e;
 		}
-
-		redirectAttributes.addFlashAttribute("msg", "등록되었습니다.");
-		return "redirect:/bbs/notice/list.do";
+		return ResponseEntity.ok(ApiVO.success("게시물이 등록되었습니다.", Map.of("nttId", vo.getNttId())));
 	}
 
 	/**

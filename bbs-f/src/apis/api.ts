@@ -59,5 +59,8 @@ export const endpoints = {
     join: 'user/join.do',
     checkDuplicate: 'user/checkUserId.do',
     nttList: (param: typeof searchParam) => `notice/list.do?${toQueryString(param)}`,
-    deleteNttList: 'notice/deleteList.do'
+    deleteNttList: 'notice/deleteList.do',
+    nttDetail: (nttId: string) => `notice/selectNoticeDetail.do?nttId=${nttId}`,
+    insertNtt: 'notice/insert.do',
+    updateNtt: 'notice/update.do',
 }
