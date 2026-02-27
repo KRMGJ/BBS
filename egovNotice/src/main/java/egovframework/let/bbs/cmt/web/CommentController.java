@@ -55,7 +55,7 @@ public class CommentController {
 	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
 	public ResponseEntity<?> deleteComment(@RequestBody CommentVO vo) throws Exception {
 
-		if (vo.getUserId().equals(vo.getFrstRegisterId())) {
+		if (!vo.getUserId().equals(vo.getFrstRegisterId())) {
 			return ResponseEntity.status(403).body(ApiVO.error("권한이 없습니다."));
 		}
 		commentService.deleteComment(vo);
@@ -70,7 +70,7 @@ public class CommentController {
 
 		vo.setCommentCn(EgovUtil.clearXSS(vo.getCommentCn()));
 
-		if (vo.getUserId().equals(vo.getFrstRegisterId())) {
+		if (!vo.getUserId().equals(vo.getFrstRegisterId())) {
 			return ResponseEntity.status(403).body(ApiVO.error("권한이 없습니다."));
 		}
 		commentService.updateComment(vo);

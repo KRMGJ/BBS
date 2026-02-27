@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -141,8 +140,7 @@ public class NoticeController {
 			return ResponseEntity.badRequest().body(ApiVO.error("내용은 필수입니다."));
 		}
 
-		String loginId = EgovUtil.getLoginIdOrNull(session);
-		vo.setFrstRegisterId(loginId == null ? "user1" : loginId);
+		vo.setFrstRegisterId(vo.getUserId());
 
 		List<String> savedFilePaths = new ArrayList<>();
 
@@ -174,11 +172,10 @@ public class NoticeController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/selectNoticeDetail.do")
-	public ResponseEntity<?> selectNoticeDetail(@ModelAttribute("searchVO") NoticeVO searchVO, HttpSession session)
-			throws Exception {
+	public ResponseEntity<?> selectNoticeDetail(NoticeVO searchVO) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 
-		String viewerId = EgovUtil.getLoginIdOrNull(session);
+		String viewerId = searchVO.getUserId();
 
 		NoticeVO notice = noticeService.selectNoticeDetail(searchVO, viewerId);
 		if (notice == null) {
@@ -199,8 +196,7 @@ public class NoticeController {
 		}
 
 		// 권한: 일단 "작성자ID == 세션 loginId" 기준(관리자 확장 가능)
-		String loginId = EgovUtil.getLoginIdOrNull(session);
-		boolean canEdit = (loginId != null && loginId.equals(notice.getFrstRegisterId()));
+		boolean canEdit = (searchVO.getUserId() != null && searchVO.getUserId().equals(notice.getFrstRegisterId()));
 
 		response.put("notice", notice);
 		response.put("canEdit", canEdit);
@@ -342,7 +338,6 @@ public class NoticeController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/deleteList.do", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseEntity<?> deleteNoticeList(
 			@RequestParam(value = "nttIdList", required = false) List<String> nttIdList,
 			@RequestParam(value = "nttId", required = false) String nttId) throws Exception {
@@ -359,22 +354,19 @@ public class NoticeController {
 	/**
 	 * 공지사항 답변을 등록한다.
 	 * 
-	 * @param vo                 - 등록할 정보가 담긴 VO
-	 * @param session            - 세션
-	 * @param redirectAttributes - 리다이렉트 속성
+	 * @param vo - 등록할 정보가 담긴 VO
 	 * @return 공지사항 목록 View로 리다이렉트
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/reply.do", method = RequestMethod.POST)
-	public String insertReply(@RequestBody NoticeVO vo, RedirectAttributes redirectAttributes) throws Exception {
+	public ResponseEntity<?> insertReply(@RequestBody NoticeVO vo) throws Exception {
 
 		vo.setFrstRegisterId(vo.getUserId());
 		vo.setBbsId(NOTICE_BBS_ID);
 
 		noticeService.insertReply(vo);
 
-		redirectAttributes.addFlashAttribute("msg", "답글이 등록되었습니다.");
-		return "redirect:/bbs/notice/list.do";
+		return ResponseEntity.ok(ApiVO.success("답글이 등록되었습니다.", "OK"));
 	}
 
 	@RequestMapping(value = "/like.do", method = RequestMethod.POST)
