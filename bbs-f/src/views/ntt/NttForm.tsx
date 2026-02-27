@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState, type ChangeEvent } from "react"
+import { useEffect, useState, type ChangeEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { apis, endpoints } from "../../apis/api"
 import style from "./ntt.module.css"
@@ -30,7 +31,7 @@ export default function NttForm() {
 
     useEffect(() => {
         if (isEdit) {
-            checkUser();
+            if(!checkUser()) return;
             apis.get(endpoints.nttDetail(nttId, user?.uniqId || '')).then((res: any) => {
                 setForm(res.notice)
                 setFileList(res.fileList || [])
@@ -46,7 +47,7 @@ export default function NttForm() {
     }
 
     const handleSubmit = async () => {
-        checkUser();
+        if(!checkUser()) return;
 
         const title = form.subject?.trim()
         const body = form.content?.trim()

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { apis, endpoints } from '../../apis/api'
 import { useNavigate } from 'react-router-dom'
 import style from './Join.module.css'

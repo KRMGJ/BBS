@@ -44,7 +44,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     }, [nttId]);
 
     const handleNoticeLike = async () => {
-        checkUser();
+        if(!checkUser()) return;
 
         const res = await apis.post<any>(endpoints.nttLike, { nttId, userId: user?.uniqId });
 
@@ -62,7 +62,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleCommentLike = async (commentId: string) => {
-        checkUser();
+        if(!checkUser()) return;
 
         const res = await apis.post<any>(endpoints.commentLike, { commentId, userId: user?.uniqId });
 
@@ -84,7 +84,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleCommentSubmit = async () => {
-        checkUser();
+        if(!checkUser()) return;
         if (!commentText.trim()) {
             alert("내용을 입력하세요.");
             return;
@@ -102,7 +102,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleReplySubmit = async () => {
-        checkUser();
+        if(!checkUser()) return;
         if (!replyText.trim()) {
             alert("내용을 입력하세요.");
             return;
@@ -126,7 +126,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleEditSave = async (commentId: string) => {
-        checkUser();
+        if(!checkUser()) return;
         if (!editText.trim()) {
             alert("내용을 입력하세요.");
             return;
@@ -145,7 +145,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleDelete = async (commentId: string) => {
-        checkUser();
+        if(!checkUser()) return;
         if (!window.confirm("삭제하시겠습니까?")) return;
 
         await apis.post(endpoints.deleteComment, {

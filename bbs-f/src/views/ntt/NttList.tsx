@@ -39,7 +39,7 @@ export default function NttList() {
     }
 
     const handleDelete = async () => {
-        checkUser();
+        if(!checkUser()) return;
         const checked = Array.from(
             document.querySelectorAll("input[name='nttId']:checked")
         ) as HTMLInputElement[]
@@ -65,7 +65,7 @@ export default function NttList() {
     }
 
     const handleDeleteReply = async (nttId: string) => {
-        checkUser();
+        if(!checkUser()) return;
         if (!confirm("댓글을 삭제하시겠습니까?")) {
             return
         }
@@ -80,7 +80,7 @@ export default function NttList() {
     }
 
     const handleReply = async () => {
-        checkUser();
+        if(!checkUser()) return;
         if (!replyParentId) {
             alert("답글의 부모 게시글이 없습니다.")
             return

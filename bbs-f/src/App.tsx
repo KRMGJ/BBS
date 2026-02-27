@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Login from './views/users/Login'

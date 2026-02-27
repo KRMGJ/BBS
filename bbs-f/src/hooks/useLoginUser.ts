@@ -11,7 +11,7 @@ type AuthState = {
     user: User | null;
     setLoginUser: (u: User) => void;
     resetLoginUser: () => void;
-    checkUser: () => void;
+    checkUser: () => boolean;
 };
 
 export const useLoginUserStore = create<AuthState>()(
@@ -24,8 +24,9 @@ export const useLoginUserStore = create<AuthState>()(
                 const { user } = useLoginUserStore.getState();
                 if (!user) {
                     alert("로그인이 필요한 기능입니다.");
-                    return;
+                    return false;
                 }
+                return true;
             }
         }),
         {
