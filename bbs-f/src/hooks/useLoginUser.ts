@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type User = {
-    userId: string;
+    uniqId: string;
     name: string;
     email: string;
 }

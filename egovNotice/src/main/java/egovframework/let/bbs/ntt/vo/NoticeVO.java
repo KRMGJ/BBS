@@ -12,6 +12,7 @@ public class NoticeVO extends BbsVO {
 	private boolean hidden;
 	private int nttLevel;
 	private String hasChild;
+	private String userId; // 로그인한 사용자 ID
 
 	public String getParntNttId() {
 		return parntNttId;
@@ -75,5 +76,13 @@ public class NoticeVO extends BbsVO {
 
 	public void setLikeId(String likeId) {
 		this.likeId = likeId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }

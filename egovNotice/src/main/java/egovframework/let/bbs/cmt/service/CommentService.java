@@ -43,10 +43,9 @@ public interface CommentService {
 	/**
 	 * 댓글 좋아요
 	 * 
-	 * @param vo     - 좋아요할 댓글 정보가 담긴 CommentVO
-	 * @param userId - 좋아요를 누른 사용자ID
+	 * @param vo - 좋아요할 댓글 정보가 담긴 CommentVO
 	 * @return 좋아요 결과 메시지 ("OK" 또는 "ALREADY_LIKED")
 	 * @throws Exception
 	 */
-	String likeComment(CommentVO vo, String userId) throws Exception;
+	String likeComment(CommentVO vo) throws Exception;
 }

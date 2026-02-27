@@ -18,6 +18,7 @@ public class CommentVO implements Serializable {
 	private String commentGroup; // 댓글 그룹
 	private Integer commentDepth; // 댓글 깊이
 	private Integer commentOrder; // 댓글 순서
+	private String userId; // 로그인한 사용자 ID
 
 	public String getCommentId() {
 		return commentId;
@@ -125,5 +126,13 @@ public class CommentVO implements Serializable {
 
 	public void setLikeCnt(Integer likeCnt) {
 		this.likeCnt = likeCnt;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }

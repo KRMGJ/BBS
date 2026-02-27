@@ -83,7 +83,8 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	@Transactional
-	public String likeComment(CommentVO vo, String userId) throws Exception {
+	public String likeComment(CommentVO vo) throws Exception {
+		String userId = vo.getUserId();
 		CommentLikeVO like = commentDAO.selectLike(vo, userId);
 
 		if (like == null) {

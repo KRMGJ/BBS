@@ -63,4 +63,10 @@ export const endpoints = {
     nttDetail: (nttId: string) => `notice/selectNoticeDetail.do?nttId=${nttId}`,
     insertNtt: 'notice/insert.do',
     updateNtt: 'notice/update.do',
+    nttLike: 'notice/like.do',
+    comments: (nttId: string) => `cmt/list.do?nttId=${nttId}`,
+    commentLike: 'cmt/like.do',
+    insertComment: 'cmt/insert.do',
+    updateComment: 'cmt/update.do',
+    deleteComment: 'cmt/delete.do'
 }

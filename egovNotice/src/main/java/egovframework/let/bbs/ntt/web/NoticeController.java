@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,9 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.vo.ApiVO;
-import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.cmm.fms.service.FileMngService;
 import egovframework.let.bbs.cmm.fms.service.impl.FileMngServiceImpl.FileSaveResult;
 import egovframework.let.bbs.cmm.fms.vo.FileVO;
@@ -175,10 +174,11 @@ public class NoticeController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/selectNoticeDetail.do")
-	public String selectNoticeDetail(@ModelAttribute("searchVO") NoticeVO searchVO, HttpServletRequest request,
-			Model model) throws Exception {
+	public ResponseEntity<?> selectNoticeDetail(@ModelAttribute("searchVO") NoticeVO searchVO, HttpSession session)
+			throws Exception {
+		Map<String, Object> response = new HashMap<>();
 
-		String viewerId = EgovUtil.getLoginIdOrNull(request.getSession());
+		String viewerId = EgovUtil.getLoginIdOrNull(session);
 
 		NoticeVO notice = noticeService.selectNoticeDetail(searchVO, viewerId);
 		if (notice == null) {
@@ -192,22 +192,21 @@ public class NoticeController {
 			liked = cnt > 0;
 		}
 
-		model.addAttribute("liked", liked);
-
 		// 첨부파일 목록 (우리 파일 모듈 사용)
 		if (notice.getAtchFileId() != null && !notice.getAtchFileId().isBlank()) {
 			List<FileVO> fileList = fileMngService.selectFileList(notice.getAtchFileId());
-			model.addAttribute("fileList", fileList);
+			response.put("fileList", fileList);
 		}
 
 		// 권한: 일단 "작성자ID == 세션 loginId" 기준(관리자 확장 가능)
-		String loginId = EgovUtil.getLoginIdOrNull(request.getSession());
+		String loginId = EgovUtil.getLoginIdOrNull(session);
 		boolean canEdit = (loginId != null && loginId.equals(notice.getFrstRegisterId()));
 
-		model.addAttribute("notice", notice);
-		model.addAttribute("canEdit", canEdit);
+		response.put("notice", notice);
+		response.put("canEdit", canEdit);
+		response.put("liked", liked);
 
-		return "ntt/noticeDetail";
+		return ResponseEntity.ok(ApiVO.success("게시물 상세 조회 성공", response));
 	}
 
 	/**
@@ -367,11 +366,9 @@ public class NoticeController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/reply.do", method = RequestMethod.POST)
-	public String insertReply(@ModelAttribute NoticeVO vo, HttpSession session, RedirectAttributes redirectAttributes)
-			throws Exception {
+	public String insertReply(@RequestBody NoticeVO vo, RedirectAttributes redirectAttributes) throws Exception {
 
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		vo.setFrstRegisterId(loginVO.getUniqId() == null ? "user1" : loginVO.getUniqId());
+		vo.setFrstRegisterId(vo.getUserId());
 		vo.setBbsId(NOTICE_BBS_ID);
 
 		noticeService.insertReply(vo);
@@ -381,13 +378,11 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "/like.do", method = RequestMethod.POST)
-	@ResponseBody
-	public String likeNotice(@ModelAttribute NoticeVO vo, HttpSession session) throws Exception {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String userId = loginVO.getUniqId();
+	public ResponseEntity<?> likeNotice(@RequestBody NoticeVO vo) throws Exception {
 
-		String result = noticeService.likeNotice(vo, userId);
+		String result = noticeService.likeNotice(vo, vo.getUserId());
 
-		return result;
+		return ResponseEntity
+				.ok(ApiVO.success(result.equals("liked") ? "좋아요를 눌렀습니다." : "좋아요를 취소했습니다.", Map.of("status", result)));
 	}
 }
