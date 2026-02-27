@@ -3,6 +3,30 @@ import axios from "axios";
 
 const BASE_URL = 'http://localhost:8088/bbs';
 
+export const searchParam = {
+    searchCondition: '0',
+    searchKeyword: '',
+    pageIndex: 1,
+    pageUnit: 10,
+    pageSize: 10
+}
+
+const toQueryString = (params: typeof searchParam) => {
+    const query = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+        if (v === undefined || v === null || v === '' || v === 'undefined' || v === 'null') return;
+
+        if (Array.isArray(v)) {
+            v.forEach((item) => {
+                if (item !== undefined && item !== null && item !== '' && item !== 'undefined' && item !== 'null') query.append(k, String(item));
+            });
+        } else {
+            query.append(k, String(v));
+        }
+    });
+    return query.toString();
+};
+
 export const getData = async (endpoint: string) => {
     try {
         const res = await axios.get(`${BASE_URL}/${endpoint}`);
@@ -34,4 +58,6 @@ export const endpoints = {
     me: 'user/me.do',
     join: 'user/join.do',
     checkDuplicate: 'user/checkUserId.do',
+    nttList: (param: typeof searchParam) => `notice/list.do?${toQueryString(param)}`,
+    deleteNttList: 'notice/deleteList.do'
 }

@@ -1,0 +1,288 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.ntWrap {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 22px;
+    margin: 0 0 16px;
+}
+
+.ntToolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.ntSearch {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+select,
+input[type="text"] {
+    height: 32px;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+button,
+.ntBtn {
+    height: 32px;
+    padding: 0 12px;
+    cursor: pointer;
+}
+
+.ntMuted {
+    color: #666;
+    font-size: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+}
+
+th {
+    background: #f7f7f7;
+}
+
+.ntColNo {
+    width: 70px;
+    text-align: center;
+}
+
+.ntColDate {
+    width: 170px;
+    text-align: center;
+}
+
+.ntColView {
+    width: 90px;
+    text-align: center;
+}
+
+.ntNotice {
+    background: #fff7e6;
+}
+
+.pagination {
+    margin: 16px 0;
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* detail/form 공통 */
+.ntBox {
+    border: 1px solid #ddd;
+    padding: 14px;
+    border-radius: 6px;
+}
+
+.ntMeta {
+    display: flex;
+    gap: 16px;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.ntContent {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.ntFiles {
+    margin-top: 14px;
+}
+
+.ntFiles ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+}
+
+.ntActions {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+}
+
+.ntActions button {
+    height: 34px;
+}
+
+.ntRow {
+    margin-bottom: 12px;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 240px;
+    resize: none;
+}
+
+.ntGrid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.ntHint {
+    color: #666;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.ntTitle {
+    font-size: 18px;
+    margin: 0 0 8px;
+}
+
+.ntBadgeNotice {
+    color: #d46b08;
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.ntNoticePeriod {
+    margin-bottom: 10px;
+}
+
+.ntFiles ul li a {
+    font-size: 14px;
+}
+
+.ntFiles ul li a:hover {
+    text-decoration: underline;
+}
+
+.ntReplyRow {
+    background: #fafafa;
+}
+
+.replyBox {
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.replyArrow {
+    color: #999;
+    margin-right: 6px;
+}
+
+.replyContent {
+    margin-right: 10px;
+}
+
+.replyDate {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.deletedParentMsg {
+    color: #999;
+    font-style: italic;
+}
+
+.deletedText {
+    color: #999;
+    font-style: italic;
+}
+
+.toggleIcon {
+    margin-right: 5px;
+    color: #666;
+}
+
+.parentTitle:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    margin: 40px 0;
+    text-align: center;
+    font-size: 0;
+}
+
+.pagination a,
+.pagination strong {
+    display: inline-block;
+    min-width: 36px;
+    height: 36px;
+    line-height: 34px;
+    margin: 0 3px;
+    padding: 0 10px;
+    font-size: 14px;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.pagination a:hover {
+    background: #f1f4f8;
+    border-color: #9aa7b2;
+}
+
+.pagination strong {
+    background: #005ea6;
+    border: 1px solid #005ea6;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination a:first-child,
+.pagination a:last-child {
+    padding: 0 14px;
+    font-weight: 500;
+}
+
+.ntLikeBtn {
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.ntLikeBtn.active {
+    color: #fff;
+    background: #e74c3c;
+    border-color: #e74c3c;
+}

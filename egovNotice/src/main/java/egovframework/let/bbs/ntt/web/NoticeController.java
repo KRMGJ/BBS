@@ -3,7 +3,9 @@ package egovframework.let.bbs.ntt.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,17 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.vo.ApiVO;
 import egovframework.com.cmm.vo.LoginVO;
 import egovframework.let.bbs.cmm.fms.service.FileMngService;
 import egovframework.let.bbs.cmm.fms.service.impl.FileMngServiceImpl.FileSaveResult;
@@ -31,7 +35,8 @@ import egovframework.let.bbs.ntt.dao.NoticeDAO;
 import egovframework.let.bbs.ntt.service.NoticeService;
 import egovframework.let.bbs.ntt.vo.NoticeVO;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@RestController
 @RequestMapping("/bbs/notice")
 public class NoticeController {
 
@@ -55,7 +60,7 @@ public class NoticeController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list.do")
-	public String noticeList(NoticeVO searchVO, Model model) throws Exception {
+	public ResponseEntity<?> noticeList(NoticeVO searchVO) throws Exception {
 
 		searchVO.setBbsId(NOTICE_BBS_ID);
 
@@ -85,16 +90,15 @@ public class NoticeController {
 		List<NoticeVO> noticeList = noticeService.selectNoticeList(searchVO);
 		List<NoticeVO> pinnedList = noticeService.selectNoticePinnedList(searchVO);
 
-		model.addAttribute("noticeList", noticeList);
-		model.addAttribute("pinnedList", pinnedList);
-
-		model.addAttribute("searchVO", searchVO);
-		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("totalPageCount", totalPageCount);
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-
-		return "ntt/noticeList";
+		Map<String, Object> response = new HashMap<>();
+		response.put("noticeList", noticeList);
+		response.put("pinnedList", pinnedList);
+		response.put("searchVO", searchVO);
+		response.put("totalCount", totalCount);
+		response.put("totalPageCount", totalPageCount);
+		response.put("startPage", startPage);
+		response.put("endPage", endPage);
+		return ResponseEntity.ok(ApiVO.success("게시물 목록 조회 성공", response));
 	}
 
 	/**
