@@ -60,7 +60,7 @@ export const endpoints = {
     checkDuplicate: 'user/checkUserId.do',
     nttList: (param: typeof searchParam) => `notice/list.do?${toQueryString(param)}`,
     deleteNttList: (nttIdList: string[]) => `notice/deleteList.do?nttIdList=${nttIdList.join(',')}`,
-    nttDetail: (nttId: string) => `notice/selectNoticeDetail.do?nttId=${nttId}`,
+    nttDetail: (nttId: string, userId: string) => `notice/selectNoticeDetail.do?nttId=${nttId}&userId=${userId}`,
     insertNtt: 'notice/insert.do',
     updateNtt: 'notice/update.do',
     nttLike: 'notice/like.do',

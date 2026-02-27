@@ -23,7 +23,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     const [editText, setEditText] = useState("");
 
     const loadNotice = async () => {
-        const res = await apis.get<any>(endpoints.nttDetail(nttId));
+        const res = await apis.get<any>(endpoints.nttDetail(nttId, user?.uniqId || ''));
         if (res) {
             setNotice(res.notice);
             setLiked(res.liked);
