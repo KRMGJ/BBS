@@ -3,9 +3,11 @@ import React, { useEffect, useState, type ChangeEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { apis, endpoints } from "../../apis/api"
 import style from "./ntt.module.css"
+import { useLoginUserStore } from "../../hooks/useLoginUser";
 
 export default function NttForm() {
 
+    const {user, checkUser} = useLoginUserStore();
     const navigate = useNavigate()
     const { nttId } = useParams()
 
@@ -18,7 +20,8 @@ export default function NttForm() {
         content: "",
         pinnedAt: "N",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        userId: user?.uniqId || ""
     })
 
     const [fileList, setFileList] = useState<any[]>([])
@@ -27,7 +30,8 @@ export default function NttForm() {
 
     useEffect(() => {
         if (isEdit) {
-            apis.get(endpoints.nttDetail(nttId)).then((res: any) => {
+            checkUser();
+            apis.get(endpoints.nttDetail(nttId, user?.uniqId || '')).then((res: any) => {
                 setForm(res.notice)
                 setFileList(res.fileList || [])
             })
@@ -42,6 +46,7 @@ export default function NttForm() {
     }
 
     const handleSubmit = async () => {
+        checkUser();
 
         const title = form.subject?.trim()
         const body = form.content?.trim()

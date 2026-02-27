@@ -10,7 +10,7 @@ interface Props {
 }
 
 const NoticeDetail = ({ nttId }: Props) => {
-    const { user } = useLoginUserStore();
+    const { user, checkUser } = useLoginUserStore();
     const [notice, setNotice] = useState<any | null>(null);
     const [liked, setLiked] = useState(false);
     const [comments, setComments] = useState<any[]>([]);
@@ -44,12 +44,9 @@ const NoticeDetail = ({ nttId }: Props) => {
     }, [nttId]);
 
     const handleNoticeLike = async () => {
-        if (!user) {
-            alert("로그인 후 이용하세요.");
-            return;
-        }
+        checkUser();
 
-        const res = await apis.post<any>(endpoints.nttLike, { nttId, userId: user.uniqId });
+        const res = await apis.post<any>(endpoints.nttLike, { nttId, userId: user?.uniqId });
 
         if (res.status === "LIKED") {
             setNotice((prev: any) =>
@@ -65,12 +62,9 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleCommentLike = async (commentId: string) => {
-        if (!user) {
-            alert("로그인 후 이용하세요.");
-            return;
-        }
+        checkUser();
 
-        const res = await apis.post<any>(endpoints.commentLike, { commentId, userId: user.uniqId });
+        const res = await apis.post<any>(endpoints.commentLike, { commentId, userId: user?.uniqId });
 
         setComments((prev) =>
             prev.map((c) =>
@@ -90,11 +84,11 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleCommentSubmit = async () => {
+        checkUser();
         if (!commentText.trim()) {
             alert("내용을 입력하세요.");
             return;
         }
-        console.log(user);
 
         await apis.post(endpoints.insertComment, {
             nttId,
@@ -108,6 +102,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleReplySubmit = async () => {
+        checkUser();
         if (!replyText.trim()) {
             alert("내용을 입력하세요.");
             return;
@@ -131,6 +126,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleEditSave = async (commentId: string) => {
+        checkUser();
         if (!editText.trim()) {
             alert("내용을 입력하세요.");
             return;
@@ -149,6 +145,7 @@ const NoticeDetail = ({ nttId }: Props) => {
     };
 
     const handleDelete = async (commentId: string) => {
+        checkUser();
         if (!window.confirm("삭제하시겠습니까?")) return;
 
         await apis.post(endpoints.deleteComment, {

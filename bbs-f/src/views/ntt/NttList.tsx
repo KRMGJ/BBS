@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginUserStore } from '../../hooks/useLoginUser';
 
 export default function NttList() {
-    const { user } = useLoginUserStore();
+    const { user, checkUser } = useLoginUserStore();
     const [searchVO, setSearchVO] = useState<any>({})
     const [noticeList, setNoticeList] = useState<any[]>([])
     const [pinnedList, setPinnedList] = useState<any[]>([])
@@ -39,6 +39,7 @@ export default function NttList() {
     }
 
     const handleDelete = async () => {
+        checkUser();
         const checked = Array.from(
             document.querySelectorAll("input[name='nttId']:checked")
         ) as HTMLInputElement[]
@@ -64,6 +65,7 @@ export default function NttList() {
     }
 
     const handleDeleteReply = async (nttId: string) => {
+        checkUser();
         if (!confirm("댓글을 삭제하시겠습니까?")) {
             return
         }
@@ -78,6 +80,7 @@ export default function NttList() {
     }
 
     const handleReply = async () => {
+        checkUser();
         if (!replyParentId) {
             alert("답글의 부모 게시글이 없습니다.")
             return

@@ -7,6 +7,7 @@ import Join from './views/users/Join'
 import NttList from './views/ntt/NttList'
 import NttForm from './views/ntt/NttForm'
 import NttDetail from './views/ntt/NttDetail'
+import './App.css'
 
 function App() {
 
