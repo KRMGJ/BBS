@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { apis, endpoints } from '../../apis/api'
-import style from './login.module.css'
 import { useNavigate } from 'react-router-dom'
 import { useLoginUserStore } from '../../hooks/useLoginUser';
 
@@ -38,21 +37,84 @@ export default function Login() {
         }
     }
     return (
-        <div className={style.loginWrap}>
-            <div className={style.row}>
-                <label htmlFor="userId">아이디</label>
-                <input type="text" id="userId" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} />
+        <div
+            style={{
+                width: '360px',
+                margin: '80px auto',
+                padding: '20px',
+                border: '1px solid #ddd'
+            }}
+        >
+            <div style={{ marginBottom: '12px' }}>
+                <label htmlFor="userId" style={{ display: 'block', marginBottom: '6px' }}>
+                    아이디
+                </label>
+                <input
+                    type="text"
+                    id="userId"
+                    autoComplete="username"
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
+                    style={{
+                        width: '100%',
+                        padding: '8px',
+                        boxSizing: 'border-box'
+                    }}
+                />
             </div>
 
-            <div className={style.row}>
-                <label htmlFor="password">비밀번호</label>
-                <input type="password" id="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <div style={{ marginBottom: '12px' }}>
+                <label htmlFor="password" style={{ display: 'block', marginBottom: '6px' }}>
+                    비밀번호
+                </label>
+                <input
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                        width: '100%',
+                        padding: '8px',
+                        boxSizing: 'border-box'
+                    }}
+                />
             </div>
 
-            <button type="button" id="btnLogin" onClick={handleLogin}>로그인</button>
-            <button type="button" id="btnJoin" onClick={() => navigate('/bbs/user/joinView.do')}>회원가입</button>
+            <button
+                style={{
+                    width: '100%',
+                    padding: '10px',
+                    marginBottom: '12px'
+                }}
+                type="button"
+                id="btnLogin"
+                onClick={handleLogin}
+            >
+                로그인
+            </button>
 
-            <p className={error ? 'err' : ''}>{msg}</p>
+            <button
+                style={{
+                    width: '100%',
+                    padding: '10px',
+                    marginBottom: '12px'
+                }}
+                type="button"
+                id="btnJoin"
+                onClick={() => navigate('/bbs/user/joinView.do')}
+            >
+                회원가입
+            </button>
+
+            <p
+                style={{
+                    marginTop: '12px',
+                    color: error ? '#c00' : 'inherit'
+                }}
+            >
+                {msg}
+            </p>
         </div>
     )
 }

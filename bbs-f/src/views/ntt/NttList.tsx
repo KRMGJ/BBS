@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import { apis, endpoints } from '../../apis/api';
-import style from './ntt.module.css'
 import { useNavigate } from 'react-router-dom';
 import { useLoginUserStore } from '../../hooks/useLoginUser';
 
@@ -39,7 +38,7 @@ export default function NttList() {
     }
 
     const handleDelete = async () => {
-        if(!checkUser()) return;
+        if (!checkUser()) return;
         const checked = Array.from(
             document.querySelectorAll("input[name='nttId']:checked")
         ) as HTMLInputElement[]
@@ -65,7 +64,7 @@ export default function NttList() {
     }
 
     const handleDeleteReply = async (nttId: string) => {
-        if(!checkUser()) return;
+        if (!checkUser()) return;
         if (!confirm("댓글을 삭제하시겠습니까?")) {
             return
         }
@@ -80,7 +79,7 @@ export default function NttList() {
     }
 
     const handleReply = async () => {
-        if(!checkUser()) return;
+        if (!checkUser()) return;
         if (!replyParentId) {
             alert("답글의 부모 게시글이 없습니다.")
             return
@@ -133,141 +132,192 @@ export default function NttList() {
 
     return (
         <>
-            <div className={style.ntWrap}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <form id="searchForm" method="get">
                     <input type="hidden" name="pageIndex" value={searchVO.pageIndex} />
                     <input type="hidden" name="bbsId" value={searchVO.bbsId} />
 
-                    <div className={style.ntToolbar}>
-                        <div className={style.ntSearch}>
-                            <select name="searchCondition" value={searchVO.searchCondition} onChange={(e) => setSearchVO({ ...searchVO, searchCondition: e.target.value })}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-end',
+                            gap: '12px',
+                            margin: '12px 0'
+                        }}
+                    >
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <select
+                                name="searchCondition"
+                                value={searchVO.searchCondition}
+                                onChange={(e) => setSearchVO({ ...searchVO, searchCondition: e.target.value })}
+                                style={{ height: '32px', padding: '0 8px', boxSizing: 'border-box' }}
+                            >
                                 <option value="0">제목</option>
                                 <option value="1">내용</option>
                                 <option value="2">작성자</option>
                             </select>
-                            <input type="text" name="searchKeyword" value={searchVO.searchKeyword} onChange={(e) => setSearchVO({ ...searchVO, searchKeyword: e.target.value })} placeholder="검색어 입력" />
-                            <button type="button" id="btnSearch" onClick={handleSearch}>검색</button>
+
+                            <input
+                                type="text"
+                                name="searchKeyword"
+                                value={searchVO.searchKeyword}
+                                onChange={(e) => setSearchVO({ ...searchVO, searchKeyword: e.target.value })}
+                                placeholder="검색어 입력"
+                                style={{ height: '32px', padding: '0 8px', boxSizing: 'border-box' }}
+                            />
+
+                            <button
+                                type="button"
+                                id="btnSearch"
+                                onClick={handleSearch}
+                                style={{ height: '32px', padding: '0 12px', cursor: 'pointer' }}
+                            >
+                                검색
+                            </button>
                         </div>
 
                         <div>
-                            <button type="button" onClick={handleReg}>등록</button>
+                            <button
+                                type="button"
+                                onClick={handleReg}
+                                style={{ height: '32px', padding: '0 12px', cursor: 'pointer' }}
+                            >
+                                등록
+                            </button>
                         </div>
-                    </div >
-                </form >
+                    </div>
+                </form>
 
-                <div className={style.ntMuted}>
-                    총 <b>{paginationInfo ? paginationInfo.totalRecordCount : (totalCount ? totalCount : 0)}</b>
-                    건
+                <div style={{ color: '#666', fontSize: '12px' }}>
+                    총 <b>{paginationInfo ? paginationInfo.totalRecordCount : (totalCount ? totalCount : 0)}</b>건
                 </div>
 
-                <table>
+                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
                     <thead>
                         <tr>
-                            <th style={{ width: '40px' }}><input type="checkbox" id="checkAll" /></th>
-                            <th className={style.ntColNo}>번호</th>
-                            <th>제목</th>
-                            <th className={style.ntColDate}>등록일</th>
-                            <th className={style.ntColView}>조회</th>
+                            <th style={{ width: '40px', border: '1px solid #ddd', padding: '10px', background: '#f7f7f7' }}>
+                                <input type="checkbox" id="checkAll" />
+                            </th>
+                            <th style={{ width: '70px', textAlign: 'center', border: '1px solid #ddd', padding: '10px', background: '#f7f7f7' }}>
+                                번호
+                            </th>
+                            <th style={{ border: '1px solid #ddd', padding: '10px', background: '#f7f7f7' }}>
+                                제목
+                            </th>
+                            <th style={{ width: '170px', textAlign: 'center', border: '1px solid #ddd', padding: '10px', background: '#f7f7f7' }}>
+                                등록일
+                            </th>
+                            <th style={{ width: '90px', textAlign: 'center', border: '1px solid #ddd', padding: '10px', background: '#f7f7f7' }}>
+                                조회
+                            </th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {pinnedList && pinnedList.length > 0 && pinnedList.map((n) => (
-                            <tr className={style.ntNotice} key={`pinned-${n.nttId}`}>
-                                <td style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <tr key={`pinned-${n.nttId}`} style={{ background: '#fff7e6' }}>
+                                <td style={{ border: '1px solid #ddd', padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <input type="checkbox" name="nttId" value={n.nttId} />
                                 </td>
-                                <td className={style.ntColNo}>공지</td>
-                                <td>
-                                    <a href={`/bbs/notice/selectNoticeDetail.do?nttId=${n.nttId}`}>
+                                <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>공지</td>
+                                <td style={{ border: '1px solid #ddd', padding: '10px' }}>
+                                    <a
+                                        href={`/bbs/notice/selectNoticeDetail.do?nttId=${n.nttId}`}
+                                        style={{ color: '#1a73e8', textDecoration: 'none' }}
+                                    >
                                         {n.subject}
                                     </a>
                                     {n.atchFileId && (
-                                        <span className={style.ntMuted}>[첨부]</span>
+                                        <span style={{ color: '#666', fontSize: '12px', marginLeft: '6px' }}>[첨부]</span>
                                     )}
                                 </td>
-                                <td className={style.ntColDate}>{n.frstRegistPnttm}</td>
-                                <td className={style.ntColView}>{n.viewCnt}</td>
+                                <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
+                                    {n.frstRegistPnttm}
+                                </td>
+                                <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
+                                    {n.viewCnt}
+                                </td>
                             </tr>
                         ))}
+
                         {noticeList && noticeList.length > 0 ? (
                             noticeList.map((n) => (
                                 <React.Fragment key={n.nttId}>
                                     {n.nttLevel === 1 ? (
-                                        <tr
-                                            className={style.ntRow}
-                                            data-root={n.rootId}
-                                            data-id={n.nttId}
-                                        >
-                                            <td>
+                                        <tr data-root={n.rootId} data-id={n.nttId}>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
                                                 <input type="checkbox" name="nttId" value={n.nttId} />
                                             </td>
-                                            <td className={style.ntColNo}>{n.nttId}</td>
-                                            <td>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
+                                                {n.nttId}
+                                            </td>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px' }}>
                                                 {n.delAt === 'Y' ? (
-                                                    <span className={style.deletedText}>
+                                                    <span style={{ color: '#999', fontStyle: 'italic' }}>
                                                         삭제된 게시글입니다.
                                                     </span>
                                                 ) : (
                                                     <>
-                                                        <a href={`/bbs/notice/selectNoticeDetail.do?nttId=${n.nttId}`}>
+                                                        <a
+                                                            href={`/bbs/notice/selectNoticeDetail.do?nttId=${n.nttId}`}
+                                                            style={{ color: '#1a73e8', textDecoration: 'none' }}
+                                                        >
                                                             {n.subject}
                                                         </a>
                                                         <button
                                                             type="button"
-                                                            className={style.btnReply}
                                                             onClick={() => openReply(n.nttId)}
+                                                            style={{ marginLeft: '8px', fontSize: '12px', cursor: 'pointer' }}
                                                         >
                                                             답글
                                                         </button>
                                                     </>
                                                 )}
                                             </td>
-                                            <td className={style.ntColDate}>{n.frstRegistPnttm}</td>
-                                            <td className={style.ntColView}>{n.viewCnt}</td>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
+                                                {n.frstRegistPnttm}
+                                            </td>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center' }}>
+                                                {n.viewCnt}
+                                            </td>
                                         </tr>
                                     ) : (
-                                        <tr
-                                            className={style.ntReplyRow}
-                                            data-root={n.rootId}
-                                            data-id={n.nttId}
-                                        >
-                                            <td></td>
-                                            <td></td>
-                                            <td colSpan={3}>
-                                                <div
-                                                    className={style.replyBox}
-                                                    style={{ marginLeft: `${(n.nttLevel - 1) * 25}px` }}
-                                                >
+                                        <tr data-root={n.rootId} data-id={n.nttId} style={{ background: '#fafafa' }}>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px' }}></td>
+                                            <td style={{ border: '1px solid #ddd', padding: '10px' }}></td>
+                                            <td colSpan={3} style={{ border: '1px solid #ddd', padding: '10px' }}>
+                                                <div style={{ padding: '6px 0', fontSize: '14px', marginLeft: `${(n.nttLevel - 1) * 25}px` }}>
                                                     {n.rootDelAt === 'Y' ? (
-                                                        <span className={style.deletedParentMsg}>
+                                                        <span style={{ color: '#999', fontStyle: 'italic' }}>
                                                             삭제된 게시물의 답글입니다.
                                                         </span>
                                                     ) : n.delAt === 'Y' ? (
-                                                        <span className={style.deletedText}>
+                                                        <span style={{ color: '#999', fontStyle: 'italic' }}>
                                                             삭제된 게시글입니다.
                                                         </span>
                                                     ) : (
                                                         <>
                                                             <a
                                                                 href={`/bbs/notice/selectNoticeDetail.do?nttId=${n.nttId}`}
-                                                                className={style.replyContent}
+                                                                style={{ marginRight: '10px', color: '#1a73e8', textDecoration: 'none' }}
                                                             >
                                                                 {n.subject}
                                                             </a>
-                                                            <span className={style.replyDate}>
+                                                            <span style={{ color: '#aaa', fontSize: '12px' }}>
                                                                 ({n.frstRegistPnttm})
                                                             </span>
                                                             <button
                                                                 type="button"
-                                                                className={style.btnReply}
                                                                 onClick={() => openReply(n.nttId)}
+                                                                style={{ marginLeft: '8px', fontSize: '12px', cursor: 'pointer' }}
                                                             >
                                                                 답글
                                                             </button>
                                                             <button
                                                                 type="button"
-                                                                className={style.btnDeleteReply}
                                                                 onClick={() => handleDeleteReply(n.nttId)}
+                                                                style={{ marginLeft: '6px', fontSize: '12px', cursor: 'pointer' }}
                                                             >
                                                                 삭제
                                                             </button>
@@ -280,30 +330,33 @@ export default function NttList() {
 
                                     {replyParentId === n.nttId && (
                                         <tr>
-                                            <td colSpan={5}>
-                                                <div
-                                                    style={{
-                                                        marginLeft: `${(n.nttLevel - 1) * 25}px`,
-                                                        padding: '10px 0'
-                                                    }}
-                                                >
+                                            <td colSpan={5} style={{ border: '1px solid #ddd', padding: '10px' }}>
+                                                <div style={{ marginLeft: `${(n.nttLevel - 1) * 25}px`, padding: '10px 0' }}>
                                                     <input
                                                         value={replyTitle}
                                                         onChange={(e) => setReplyTitle(e.target.value)}
                                                         placeholder="제목"
+                                                        style={{ width: '100%', marginBottom: '8px', padding: '8px', boxSizing: 'border-box' }}
                                                     />
 
                                                     <textarea
                                                         value={replyText}
                                                         onChange={(e) => setReplyText(e.target.value)}
                                                         placeholder="내용"
+                                                        style={{ width: '100%', minHeight: '240px', padding: '10px', boxSizing: 'border-box', resize: 'none' }}
                                                     />
 
-                                                    <button onClick={handleReply}>등록</button>
+                                                    <button
+                                                        onClick={handleReply}
+                                                        style={{ marginTop: '8px', height: '34px', padding: '0 12px', cursor: 'pointer' }}
+                                                    >
+                                                        등록
+                                                    </button>
 
                                                     <button
                                                         type="button"
                                                         onClick={() => setReplyParentId(null)}
+                                                        style={{ marginLeft: '8px', height: '34px', padding: '0 12px', cursor: 'pointer' }}
                                                     >
                                                         취소
                                                     </button>
@@ -311,39 +364,118 @@ export default function NttList() {
                                             </td>
                                         </tr>
                                     )}
-
                                 </React.Fragment>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={5} style={{ textAlign: 'center', color: '#666' }}>
+                                <td colSpan={5} style={{ border: '1px solid #ddd', padding: '10px', textAlign: 'center', color: '#666' }}>
                                     조회된 데이터가 없습니다.
                                 </td>
                             </tr>
                         )}
                     </tbody>
-                </table >
+                </table>
 
-                <div className={style.btnArea}>
-                    <button type="button" onClick={handleDelete}>선택삭제</button>
+                <div style={{ marginTop: '14px', display: 'flex', gap: '8px' }}>
+                    <button
+                        type="button"
+                        onClick={handleDelete}
+                        style={{ height: '32px', padding: '0 12px', cursor: 'pointer' }}
+                    >
+                        선택삭제
+                    </button>
                 </div>
 
-                <div className={style.pagination}>
+                <div style={{ margin: '40px 0', textAlign: 'center', fontSize: 0 }}>
                     {totalPageCount > 0 && startPage > 1 && (
-                        <a onClick={() => linkPage(startPage - 1)}>이전</a>
+                        <a
+                            onClick={() => linkPage(startPage - 1)}
+                            style={{
+                                display: 'inline-block',
+                                minWidth: '36px',
+                                height: '36px',
+                                lineHeight: '34px',
+                                margin: '0 3px',
+                                padding: '0 14px',
+                                fontSize: '14px',
+                                border: '1px solid #c9c9c9',
+                                background: '#fff',
+                                color: '#333',
+                                textDecoration: 'none',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            이전
+                        </a>
                     )}
-                    {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((i) => (
+
+                    {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((i) =>
                         i === searchVO.pageIndex ? (
-                            <strong key={i}>{i}</strong>
+                            <strong
+                                key={i}
+                                style={{
+                                    display: 'inline-block',
+                                    minWidth: '36px',
+                                    height: '36px',
+                                    lineHeight: '34px',
+                                    margin: '0 3px',
+                                    padding: '0 10px',
+                                    fontSize: '14px',
+                                    border: '1px solid #005ea6',
+                                    background: '#005ea6',
+                                    color: '#fff',
+                                    fontWeight: 600
+                                }}
+                            >
+                                {i}
+                            </strong>
                         ) : (
-                            <a key={i} onClick={() => linkPage(i)}>{i}</a>
+                            <a
+                                key={i}
+                                onClick={() => linkPage(i)}
+                                style={{
+                                    display: 'inline-block',
+                                    minWidth: '36px',
+                                    height: '36px',
+                                    lineHeight: '34px',
+                                    margin: '0 3px',
+                                    padding: '0 10px',
+                                    fontSize: '14px',
+                                    border: '1px solid #c9c9c9',
+                                    background: '#fff',
+                                    color: '#333',
+                                    textDecoration: 'none',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {i}
+                            </a>
                         )
-                    ))}
+                    )}
+
                     {totalPageCount > 0 && endPage < totalPageCount && (
-                        <a onClick={() => linkPage(endPage + 1)}>다음</a>
+                        <a
+                            onClick={() => linkPage(endPage + 1)}
+                            style={{
+                                display: 'inline-block',
+                                minWidth: '36px',
+                                height: '36px',
+                                lineHeight: '34px',
+                                margin: '0 3px',
+                                padding: '0 14px',
+                                fontSize: '14px',
+                                border: '1px solid #c9c9c9',
+                                background: '#fff',
+                                color: '#333',
+                                textDecoration: 'none',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            다음
+                        </a>
                     )}
                 </div>
-            </div >
+            </div>
         </>
     )
 }

@@ -3,12 +3,11 @@
 import { useEffect, useState, type ChangeEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { apis, endpoints } from "../../apis/api"
-import style from "./ntt.module.css"
 import { useLoginUserStore } from "../../hooks/useLoginUser";
 
 export default function NttForm() {
 
-    const {user, checkUser} = useLoginUserStore();
+    const { user, checkUser } = useLoginUserStore();
     const navigate = useNavigate()
     const { nttId } = useParams()
 
@@ -31,7 +30,7 @@ export default function NttForm() {
 
     useEffect(() => {
         if (isEdit) {
-            if(!checkUser()) return;
+            if (!checkUser()) return;
             apis.get(endpoints.nttDetail(nttId, user?.uniqId || '')).then((res: any) => {
                 setForm(res.notice)
                 setFileList(res.fileList || [])
@@ -47,7 +46,7 @@ export default function NttForm() {
     }
 
     const handleSubmit = async () => {
-        if(!checkUser()) return;
+        if (!checkUser()) return;
 
         const title = form.subject?.trim()
         const body = form.content?.trim()
@@ -115,36 +114,67 @@ export default function NttForm() {
     }
 
     return (
-        <div className={style.ntWrap}>
-            <div className={style.ntBox}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ border: '1px solid #ddd', padding: '14px', borderRadius: '6px' }}>
 
-                <div className={style.ntRow}>
-                    <label>제목</label>
+                <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', fontWeight: 700, marginBottom: '6px' }}>
+                        제목
+                    </label>
                     <input
                         type="text"
                         name="subject"
                         value={form.subject}
                         onChange={handleChange}
                         maxLength={500}
+                        style={{
+                            width: '100%',
+                            padding: '8px',
+                            boxSizing: 'border-box'
+                        }}
                     />
                 </div>
 
-                <div className={style.ntRow}>
-                    <label>내용</label>
+                <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', fontWeight: 700, marginBottom: '6px' }}>
+                        내용
+                    </label>
                     <textarea
                         name="content"
                         value={form.content}
                         onChange={handleChange}
+                        style={{
+                            width: '100%',
+                            padding: '10px',
+                            boxSizing: 'border-box',
+                            minHeight: '240px',
+                            resize: 'none'
+                        }}
                     />
                 </div>
 
-                <div className={`${style.ntRow} ${style.ntGrid2}`}>
+                <div
+                    style={{
+                        marginBottom: '12px',
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '12px'
+                    }}
+                >
                     <div>
-                        <label>공지 설정</label>
+                        <label style={{ display: 'block', fontWeight: 700, marginBottom: '6px' }}>
+                            공지 설정
+                        </label>
                         <select
                             name="pinnedAt"
                             value={form.pinnedAt}
                             onChange={handleChange}
+                            style={{
+                                height: '32px',
+                                padding: '0 8px',
+                                boxSizing: 'border-box',
+                                width: '100%'
+                            }}
                         >
                             <option value="N">일반</option>
                             <option value="Y">공지(상단)</option>
@@ -152,14 +182,21 @@ export default function NttForm() {
                     </div>
 
                     <div>
-                        <label>게시기간</label>
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                        <label style={{ display: 'block', fontWeight: 700, marginBottom: '6px' }}>
+                            게시기간
+                        </label>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                             <input
                                 type="text"
                                 name="startDate"
                                 placeholder="시작(YYYYMMDD)"
                                 value={form.startDate}
                                 onChange={handleChange}
+                                style={{
+                                    width: '100%',
+                                    padding: '8px',
+                                    boxSizing: 'border-box'
+                                }}
                             />
                             <input
                                 type="text"
@@ -167,13 +204,20 @@ export default function NttForm() {
                                 placeholder="종료(YYYYMMDD)"
                                 value={form.endDate}
                                 onChange={handleChange}
+                                style={{
+                                    width: '100%',
+                                    padding: '8px',
+                                    boxSizing: 'border-box'
+                                }}
                             />
                         </div>
                     </div>
                 </div>
 
-                <div className={style.ntRow}>
-                    <label>첨부파일</label>
+                <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', fontWeight: 700, marginBottom: '6px' }}>
+                        첨부파일
+                    </label>
                     <input
                         type="file"
                         multiple
@@ -185,11 +229,11 @@ export default function NttForm() {
                             <div style={{ fontWeight: 700 }}>기존 첨부</div>
 
                             {fileList.length > 0 ? (
-                                <ul style={{ marginTop: 6 }}>
+                                <ul style={{ marginTop: 6, paddingLeft: '18px' }}>
                                     {fileList.map(f => (
                                         <li key={f.fileSn}>
                                             {f.orignlFileNm}
-                                            <span className={style.ntMuted}>
+                                            <span style={{ color: '#666', fontSize: '12px', marginLeft: '6px' }}>
                                                 ({f.fileSize} bytes)
                                             </span>
 
@@ -204,7 +248,7 @@ export default function NttForm() {
                                     ))}
                                 </ul>
                             ) : (
-                                <div className={style.ntMuted}>
+                                <div style={{ color: '#666', fontSize: '12px', marginTop: '6px' }}>
                                     기존 첨부파일이 없습니다.
                                 </div>
                             )}
@@ -212,10 +256,11 @@ export default function NttForm() {
                     )}
                 </div>
 
-                <div className={style.ntActions}>
+                <div style={{ marginTop: '14px', display: 'flex', gap: '8px' }}>
                     <button
                         type="button"
                         onClick={() => navigate("/bbs/notice/list.do")}
+                        style={{ height: '34px', padding: '0 12px', cursor: 'pointer' }}
                     >
                         목록
                     </button>
@@ -223,6 +268,7 @@ export default function NttForm() {
                     <button
                         type="button"
                         onClick={handleSubmit}
+                        style={{ height: '34px', padding: '0 12px', cursor: 'pointer' }}
                     >
                         {isEdit ? "수정" : "등록"}
                     </button>

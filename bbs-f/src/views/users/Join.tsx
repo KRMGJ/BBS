@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { apis, endpoints } from '../../apis/api'
 import { useNavigate } from 'react-router-dom'
-import style from './Join.module.css'
 
 export default function Join() {
     const [userId, setUserId] = useState('')
@@ -50,18 +49,108 @@ export default function Join() {
         }
     }
     return (
-        <div className={style.joinWrap}>
-            <input placeholder="아이디" value={userId} onChange={(e) => setUserId(e.target.value)} />
-            <button type="button" onClick={handleCheckDuplicate}>중복확인</button>
+        <div
+            style={{
+                width: '380px',
+                margin: '80px auto',
+                padding: '20px',
+                border: '1px solid #ddd'
+            }}
+        >
+            <input
+                placeholder="아이디"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                style={{
+                    width: '100%',
+                    marginBottom: '8px',
+                    padding: '8px',
+                    boxSizing: 'border-box'
+                }}
+            />
 
-            <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <input placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
-            <input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input placeholder="휴대폰" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <button
+                type="button"
+                onClick={handleCheckDuplicate}
+                style={{
+                    width: '100%',
+                    padding: '10px',
+                    marginBottom: '6px'
+                }}
+            >
+                중복확인
+            </button>
 
-            <button type="button" onClick={handleJoin}>가입하기</button>
+            <input
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{
+                    width: '100%',
+                    marginBottom: '8px',
+                    padding: '8px',
+                    boxSizing: 'border-box'
+                }}
+            />
 
-            <p className={error ? 'err' : ''}>{msg}</p>
+            <input
+                placeholder="이름"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{
+                    width: '100%',
+                    marginBottom: '8px',
+                    padding: '8px',
+                    boxSizing: 'border-box'
+                }}
+            />
+
+            <input
+                type="email"
+                placeholder="이메일"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{
+                    width: '100%',
+                    marginBottom: '8px',
+                    padding: '8px',
+                    boxSizing: 'border-box'
+                }}
+            />
+
+            <input
+                placeholder="휴대폰"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                style={{
+                    width: '100%',
+                    marginBottom: '8px',
+                    padding: '8px',
+                    boxSizing: 'border-box'
+                }}
+            />
+
+            <button
+                type="button"
+                onClick={handleJoin}
+                style={{
+                    width: '100%',
+                    padding: '10px',
+                    marginBottom: '6px'
+                }}
+            >
+                가입하기
+            </button>
+
+            <p
+                style={{
+                    marginTop: '12px',
+                    color: error ? '#c00' : 'inherit'
+                }}
+            >
+                {msg}
+            </p>
         </div>
     )
 }
